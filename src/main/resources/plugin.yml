@@ -1,0 +1,5 @@
+name: PointsCore
+author: marcangeloh
+version: 1.0.0-SNAPSHOT
+description: The Ultimate points plugin with an easy to use API.
+main: me.marcangeloh.PointsCore
