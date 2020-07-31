@@ -20,18 +20,18 @@ public class PointsCore extends JavaPlugin implements Paths {
     private boolean isMySQLEnabled = false;
     private SQLManager sqlManager;
     private Plugin plugin;
-    private static PlayerPoints playerPoints;
+    public static PlayerPoints playerPoints;
 
 
     public void onDisable() {
-        sqlManager.saveData(playerPoints.armorPoints.getArmorPoints(),
-                playerPoints.meleeWeaponPoints.getMeleeWeaponPoints(),
-                playerPoints.rangedWeaponPoints.getRangedWeaponPoints(),
-                playerPoints.hoePoints.getHoePoints(),
-                playerPoints.pickaxePoints.getPickaxePoints(),
-                playerPoints.axePoints.getAxePoints(),
-                playerPoints.fishingPoints.getFishingPoints(),
-                playerPoints.shovelPoints.getShovelPoints() );
+        sqlManager.saveData(PointsCore.playerPoints.armorPoints.getArmorPoints(),
+                PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints(),
+                PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints(),
+                PointsCore.playerPoints.hoePoints.getHoePoints(),
+                PointsCore.playerPoints.pickaxePoints.getPickaxePoints(),
+                PointsCore.playerPoints.axePoints.getAxePoints(),
+                PointsCore.playerPoints.fishingPoints.getFishingPoints(),
+                PointsCore.playerPoints.shovelPoints.getShovelPoints() );
     }
 
     public void onEnable() {
@@ -41,7 +41,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         //sets up the default configuration
         setupDefaultConfig();
 
-        playerPoints = new PlayerPoints();
+        PointsCore.playerPoints = new PlayerPoints();
 
         //If SQL is not enabled Initiates the data from the config and loads it
         if(!getConfig().getBoolean(pathIsSQLEnabled)) {
@@ -50,7 +50,7 @@ public class PointsCore extends JavaPlugin implements Paths {
             isMySQLEnabled = true;
             //MySQL Initialization
             try {
-                sqlManager = new SQLManager(getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword), "Points",getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase), playerPoints);
+                sqlManager = new SQLManager(getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword), "Points",getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -79,9 +79,9 @@ public class PointsCore extends JavaPlugin implements Paths {
      * Registers the events to the server
      */
     private void registerEvents() {
-        eventRegistration(new LoadDataEvent(playerPoints, isMySQLEnabled(), dataManager, sqlManager));
-        eventRegistration(new ArmorEvent(playerPoints.armorPoints, plugin)); //Registers the armor points events
-        eventRegistration(new ToolEvents(plugin, playerPoints)); //Registers the tool points events
+        eventRegistration(new LoadDataEvent(isMySQLEnabled(), dataManager, sqlManager));
+        eventRegistration(new ArmorEvent(plugin)); //Registers the armor points events
+        eventRegistration(new ToolEvents(plugin)); //Registers the tool points events
     }
 
     /**
@@ -103,10 +103,6 @@ public class PointsCore extends JavaPlugin implements Paths {
     private void setupDefaultConfig() {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
-    }
-
-    public static void updatePlayerPoints(PlayerPoints playerPoint) {
-        playerPoints = playerPoint;
     }
 
 }

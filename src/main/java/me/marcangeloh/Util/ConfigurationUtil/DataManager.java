@@ -36,24 +36,24 @@ public class DataManager {
         return fileConfig;
     }
 
-    public void addPlayerToSaveFile(PlayerPoints playerPoints, Player player) throws IOException {
+    public void addPlayerToSaveFile(Player player) throws IOException {
         String uuid = player.getUniqueId().toString();
         fileConfig.set(uuid+Paths.pathRangedWeaponPoints,
-                playerPoints.rangedWeaponPoints.getPoints(player));
+                PointsCore.playerPoints.rangedWeaponPoints.getPoints(player));
         fileConfig.set(uuid+Paths.pathMeleeWeaponPoints,
-                playerPoints.meleeWeaponPoints.getPoints(player));
+                PointsCore.playerPoints.meleeWeaponPoints.getPoints(player));
         fileConfig.set(uuid+Paths.pathArmorPoints,
-                playerPoints.armorPoints.getPoints(player));
+                PointsCore.playerPoints.armorPoints.getPoints(player));
         fileConfig.set(uuid+Paths.pathAxePoints,
-                playerPoints.axePoints.getPoints(player));
+                PointsCore.playerPoints.axePoints.getPoints(player));
         fileConfig.set(uuid+Paths.pathFishingRodPoints,
-                playerPoints.fishingPoints.getPoints(player));
+                PointsCore.playerPoints.fishingPoints.getPoints(player));
         fileConfig.set(uuid+Paths.pathHoePoints,
-                playerPoints.hoePoints.getPoints(player));
+                PointsCore.playerPoints.hoePoints.getPoints(player));
         fileConfig.set(uuid+Paths.pathPickaxePoints,
-                playerPoints.pickaxePoints.getPoints(player));
+                PointsCore.playerPoints.pickaxePoints.getPoints(player));
         fileConfig.set(uuid+Paths.pathShovelPoints,
-                playerPoints.shovelPoints.getPoints(player));
+                PointsCore.playerPoints.shovelPoints.getPoints(player));
         fileConfig.save(playerFiles);
     }
 
@@ -83,6 +83,5 @@ public class DataManager {
         if(!playerPoints.armorPoints.containsPlayer(player)) {
             playerPoints.armorPoints.addPointsToPlayer(player, fileConfig.getDouble(uuid+ Paths.pathArmorPoints));
         }
-        PointsCore.updatePlayerPoints(playerPoints);
     }
 }

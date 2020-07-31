@@ -11,11 +11,9 @@ import org.bukkit.plugin.Plugin;
 
 public class ArmorEvent implements Listener {
 
-    private ArmorPoints armorPoints;
     private Plugin plugin;
 
-    public ArmorEvent(ArmorPoints armorPoints, Plugin plugin) {
-        this.armorPoints = armorPoints;
+    public ArmorEvent(Plugin plugin) {
         this.plugin = plugin;
     }
 
@@ -24,7 +22,7 @@ public class ArmorEvent implements Listener {
         if(event.getEntityType().equals(EntityType.PLAYER)) {
             if(event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
-                armorPoints.addPointsToPlayer(player, plugin.getConfig().getDouble(PointsCore.pathArmorPointsIncrement));
+                PointsCore.playerPoints.armorPoints.addPointsToPlayer(player, plugin.getConfig().getDouble(PointsCore.pathArmorPointsIncrement));
             }
         }
     }

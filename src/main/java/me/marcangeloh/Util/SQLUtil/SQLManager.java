@@ -23,11 +23,10 @@ public class SQLManager {
     private final String columnFishingPoints = "FISHING_POINTS";
     private Connection connection;
     private final String username, password, table, host, database;
-    private PlayerPoints playerPoints;
 
     HashMap<String, SQLLoadUtil> loadUtilHashMap  = new HashMap<>();
 
-    public SQLManager(String username, String password, String table, String host, String database, PlayerPoints playerPoints) throws SQLException, ClassNotFoundException {
+    public SQLManager(String username, String password, String table, String host, String database) throws SQLException, ClassNotFoundException {
         this.username = username;
         this.password = password;
         this.table = table;
@@ -35,7 +34,6 @@ public class SQLManager {
         this.database = database;
         connect();
         createTable();
-        this.playerPoints = playerPoints;
     }
 
 
@@ -46,16 +44,15 @@ public class SQLManager {
             preparedStatement.setString(2, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()) {
-                playerPoints.armorPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnArmorPoints));
-                playerPoints.axePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnAxePoints));
-                playerPoints.fishingPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnFishingPoints));
-                playerPoints.hoePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnHoePoints));
-                playerPoints.meleeWeaponPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnMeleeWeaponPoints));
-                playerPoints.pickaxePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnPickaxePoints));
-                playerPoints.rangedWeaponPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnRangedWeaponPoints));
-                playerPoints.shovelPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnShovelPoints));
+                PointsCore.playerPoints.armorPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnArmorPoints));
+                PointsCore.playerPoints.axePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnAxePoints));
+                PointsCore.playerPoints.fishingPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnFishingPoints));
+                PointsCore.playerPoints.hoePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnHoePoints));
+                PointsCore.playerPoints.meleeWeaponPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnMeleeWeaponPoints));
+                PointsCore.playerPoints.pickaxePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnPickaxePoints));
+                PointsCore.playerPoints.rangedWeaponPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnRangedWeaponPoints));
+                PointsCore.playerPoints.shovelPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnShovelPoints));
             }
-            PointsCore.updatePlayerPoints(playerPoints);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

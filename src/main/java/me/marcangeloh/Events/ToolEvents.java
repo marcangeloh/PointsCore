@@ -1,6 +1,6 @@
 package me.marcangeloh.Events;
 
-import me.marcangeloh.API.PointsUtil.PlayerPoints;
+import me.marcangeloh.PointsCore;
 import me.marcangeloh.Util.ConfigurationUtil.ValueUtil;
 import me.marcangeloh.Util.Tools;
 import org.bukkit.Material;
@@ -14,10 +14,8 @@ import org.bukkit.plugin.Plugin;
 
 public class ToolEvents implements Listener {
     private ValueUtil valueUtil;
-    private PlayerPoints playerPoints;
 
-    public ToolEvents(Plugin plugin, PlayerPoints playerPoints) {
-        this.playerPoints = playerPoints;
+    public ToolEvents(Plugin plugin) {
         valueUtil = new ValueUtil(plugin);
     }
 
@@ -29,15 +27,15 @@ public class ToolEvents implements Listener {
      */
     private void addPoints(Player player, Double incrementValue, String toolType) {
         if(toolType.equalsIgnoreCase(Tools.AXE)) {
-            playerPoints.axePoints.addPointsToPlayer(player, incrementValue);
+            PointsCore.playerPoints.axePoints.addPointsToPlayer(player, incrementValue);
         } else if (toolType.equalsIgnoreCase(Tools.SHOVEL)) {
-            playerPoints.shovelPoints.addPointsToPlayer(player, incrementValue);
+            PointsCore.playerPoints.shovelPoints.addPointsToPlayer(player, incrementValue);
         } else if (toolType.equalsIgnoreCase(Tools.PICKAXE)) {
-            playerPoints.pickaxePoints.addPointsToPlayer(player, incrementValue);
+            PointsCore.playerPoints.pickaxePoints.addPointsToPlayer(player, incrementValue);
         } else if(toolType.equalsIgnoreCase(Tools.FISHING_ROD)) {
-            playerPoints.fishingPoints.addPointsToPlayer(player,incrementValue);
+            PointsCore.playerPoints.fishingPoints.addPointsToPlayer(player,incrementValue);
         } else if(toolType.equalsIgnoreCase(Tools.HOE)) {
-            playerPoints.hoePoints.addPointsToPlayer(player,incrementValue);
+            PointsCore.playerPoints.hoePoints.addPointsToPlayer(player,incrementValue);
         }
     }
 

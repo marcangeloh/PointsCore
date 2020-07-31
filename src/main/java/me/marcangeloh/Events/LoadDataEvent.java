@@ -2,6 +2,7 @@ package me.marcangeloh.Events;
 
 import me.marcangeloh.API.PointsUtil.DetailedPoints.*;
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
+import me.marcangeloh.PointsCore;
 import me.marcangeloh.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.Util.SQLUtil.SQLManager;
 import org.bukkit.entity.Player;
@@ -11,13 +12,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
 public class LoadDataEvent implements Listener {
-    private PlayerPoints playerPoints;
     private boolean mySQL;
     private DataManager dataManager;
     private SQLManager sqlManager;
 
-    public LoadDataEvent(PlayerPoints playerPoints, boolean isMySQLEnabled, DataManager dataManager, SQLManager sqlManager) {
-        this.playerPoints = playerPoints;
+    public LoadDataEvent(boolean isMySQLEnabled, DataManager dataManager, SQLManager sqlManager) {
         mySQL = isMySQLEnabled;
         this.dataManager = dataManager;
         this.sqlManager = sqlManager;
@@ -37,7 +36,7 @@ public class LoadDataEvent implements Listener {
             } else {
 
                 //Otherwise load from config
-                dataManager.loadPlayerFromSaveFile(playerPoints, player);
+                dataManager.loadPlayerFromSaveFile(PointsCore.playerPoints, player);
 
             }
         }
@@ -49,10 +48,10 @@ public class LoadDataEvent implements Listener {
      * @return the value of the points contained
      */
     private boolean allPointsContainPlayer(Player player) {
-        if(playerPoints.armorPoints.containsPlayer(player) && playerPoints.meleeWeaponPoints.containsPlayer(player) &&
-                playerPoints.rangedWeaponPoints.containsPlayer(player) && playerPoints.hoePoints.containsPlayer(player) &&
-                playerPoints.pickaxePoints.containsPlayer(player) && playerPoints.axePoints.containsPlayer(player) && playerPoints.fishingPoints.containsPlayer(player) &&
-                playerPoints.shovelPoints.containsPlayer(player)) {
+        if(PointsCore.playerPoints.armorPoints.containsPlayer(player) && PointsCore.playerPoints.meleeWeaponPoints.containsPlayer(player) &&
+                PointsCore.playerPoints.rangedWeaponPoints.containsPlayer(player) && PointsCore.playerPoints.hoePoints.containsPlayer(player) &&
+                PointsCore.playerPoints.pickaxePoints.containsPlayer(player) && PointsCore.playerPoints.axePoints.containsPlayer(player) && PointsCore.playerPoints.fishingPoints.containsPlayer(player) &&
+                PointsCore.playerPoints.shovelPoints.containsPlayer(player)) {
             return true;
         }
         return false;
