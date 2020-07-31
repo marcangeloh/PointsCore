@@ -78,6 +78,9 @@ public class HoePoints implements Points {
     private boolean addPointsMethod(String player, Double points) {
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
+        if(!pointsAddedEvent.isCancelled()) {
+            return false;
+        }
         if(hoePoints.containsKey(player)) {
             double pointsToAdd = hoePoints.get(player);
             hoePoints.remove(player);
@@ -98,6 +101,9 @@ public class HoePoints implements Points {
     private boolean removePointsMethod(String player, Double points) {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
+        if(!pointsRemovedEvent.isCancelled()) {
+            return false;
+        }
         if(hoePoints.containsKey(player)) {
             double pointsToAdd = hoePoints.get(player);
 

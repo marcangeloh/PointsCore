@@ -82,6 +82,9 @@ public class PickaxePoints implements Points {
     private boolean addPointsMethod(String player, Double points) {
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
+        if(!pointsAddedEvent.isCancelled()) {
+            return false;
+        }
         if(pickaxePoints.containsKey(player)) {
             double pointsToAdd = pickaxePoints.get(player);
             pickaxePoints.remove(player);
@@ -102,6 +105,9 @@ public class PickaxePoints implements Points {
     private boolean removePointsMethod(String player, Double points) {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
+        if(!pointsRemovedEvent.isCancelled()) {
+            return false;
+        }
         if(pickaxePoints.containsKey(player)) {
             double pointsToAdd = pickaxePoints.get(player);
 

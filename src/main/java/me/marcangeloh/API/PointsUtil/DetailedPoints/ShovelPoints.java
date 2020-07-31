@@ -84,6 +84,10 @@ public class ShovelPoints implements Points {
         //Fires the event
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
+        //If the event was cancelled cancel adding points
+        if(!pointsAddedEvent.isCancelled()) {
+            return false;
+        }
         //Adds point to player
         if(shovelPoints.containsKey(player)) {
             double pointsToAdd = shovelPoints.get(player);
@@ -106,6 +110,10 @@ public class ShovelPoints implements Points {
         //Fires the event
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
+        //Cancel if event was canceled
+        if(!pointsRemovedEvent.isCancelled()) {
+            return false;
+        }
         //Adds the points to the player
         if(shovelPoints.containsKey(player)) {
             double pointsToAdd = shovelPoints.get(player);

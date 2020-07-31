@@ -1,11 +1,12 @@
 package me.marcangeloh.API.Events;
 
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import java.util.UUID;
 
-public class PointsRemovedEvent extends Event {
+public class PointsRemovedEvent extends Event implements Cancellable {
 
     private final static HandlerList HANDLERS = new HandlerList();
     private final UUID uuid;
@@ -32,5 +33,15 @@ public class PointsRemovedEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return false;
+    }
+
+    @Override
+    public void setCancelled(boolean b) {
+
     }
 }
