@@ -1,14 +1,17 @@
 package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
+import me.marcangeloh.API.Events.PointsAddedEvent;
+import me.marcangeloh.API.Events.PointsRemovedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 public class HoePoints implements Points {
-    private final HashMap<String, Double> hoePoints = new HashMap<String, Double>();
+    private final HashMap<String, Double> hoePoints = new HashMap<>();
     public HashMap<String, Double> getHoePoints() {
         return hoePoints;
     }
@@ -30,36 +33,14 @@ public class HoePoints implements Points {
         }
         return hoePoints.get(player);  }
     /**
-     * This method should be called on disable, it registers all of the players
-     * In the hoePoints HashMap
-     * @return
-     */
-    public boolean onDisable() {
-        if(hoePoints.isEmpty()) {
-            return true;
-        } else {
-            Set<String> keySet = hoePoints.keySet();
-            for (String key: keySet
-            ) {
-                if(hoePoints.get(key) > 0.0) { //If they have any points
-                    //Perform the save
-                }
-            }
-        }
-
-        return hoePoints.isEmpty();
-    }
-
-
-    /**
      * Checks if the player is contained in the hashmap
      * @param player The player to check for
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(hoePoints.containsKey(player)){
+        if(hoePoints.containsKey(player.getUniqueId().toString()))
             return true;
-        }
+
         return false;
     }
     /**
@@ -69,8 +50,8 @@ public class HoePoints implements Points {
      * @return true if the player already is in the hashmap, false if they aren't.
      */
     public boolean addPointsToPlayer(Player player, Double points) {
-        if(points == null)
-            points = 0.0;
+        if(points == null) {
+            points = 0.0;}
         String playerName = player.getName();
 
         return addPointsMethod(playerName, points);
@@ -95,6 +76,8 @@ public class HoePoints implements Points {
      * @return True if already exists, False if they don't exist
      */
     private boolean addPointsMethod(String player, Double points) {
+        PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsAddedEvent);
         if(hoePoints.containsKey(player)) {
             double pointsToAdd = hoePoints.get(player);
             hoePoints.remove(player);
@@ -113,6 +96,8 @@ public class HoePoints implements Points {
      * @return True if successful, False if player's point balance would go into the negative
      */
     private boolean removePointsMethod(String player, Double points) {
+        PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
         if(hoePoints.containsKey(player)) {
             double pointsToAdd = hoePoints.get(player);
 

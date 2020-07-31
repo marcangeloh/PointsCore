@@ -1,14 +1,17 @@
 package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
+import me.marcangeloh.API.Events.PointsAddedEvent;
+import me.marcangeloh.API.Events.PointsRemovedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 public class ArmorPoints implements Points {
-    private final HashMap<String, Double> armorPoints = new HashMap<String, Double>();
+    private final HashMap<String, Double> armorPoints = new HashMap<>();
 
     public HashMap<String, Double> getArmorPoints() {
         return armorPoints;
@@ -38,35 +41,15 @@ public class ArmorPoints implements Points {
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(armorPoints.containsKey(player)){
+        if(armorPoints.containsKey(player.getUniqueId().toString()))
             return true;
-        }
+
         return false;
     }
 
-    /**
-     * This method should be called on disable, it registers all of the players
-     * In the armorPoints HashMap
-     * @return
-     */
-    public boolean onDisable() {
-        if (!armorPoints.isEmpty()) {
-            Set<String> keySet = armorPoints.keySet();
-            for (String key: keySet
-                 ) {
-                if(armorPoints.get(key) > 0.0) {
-
-                }
-            }
-        } else {
-            return true;
-        }
-
-        return armorPoints.isEmpty();
-    }
 
     /**
-     * Adds the player to the armorPoints HashMap.
+     * Adds the player to the armorPoints HashMap. And calls the add point event
      * @param player The player in Player format to add
      * @param points Adds this amount of points to the player (if null will be 0)
      * @return true if the player already is in the hashmap, false if they aren't.
@@ -74,8 +57,8 @@ public class ArmorPoints implements Points {
     public boolean addPointsToPlayer(Player player, Double points) {
         if(points == null)
             points = 0.0;
-        String uuid = player.getUniqueId().toString();
 
+        String uuid = player.getUniqueId().toString();
         return addPointsMethod(uuid, points);
     }
 
@@ -98,6 +81,8 @@ public class ArmorPoints implements Points {
      * @return True if already exists, False if they don't exist
      */
     private boolean addPointsMethod(String player, Double points) {
+        PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsAddedEvent);
         if(armorPoints.containsKey(player)) {
             double pointsToAdd = armorPoints.get(player);
             armorPoints.remove(player);
@@ -116,6 +101,8 @@ public class ArmorPoints implements Points {
      * @return True if successful, False if player's point balance would go into the negative
      */
     private boolean removePointsMethod(String player, Double points) {
+        PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
         if(armorPoints.containsKey(player)) {
             double pointsToAdd = armorPoints.get(player);
 

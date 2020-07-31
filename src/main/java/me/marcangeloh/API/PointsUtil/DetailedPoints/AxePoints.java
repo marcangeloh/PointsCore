@@ -1,15 +1,17 @@
 package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
+import me.marcangeloh.API.Events.PointsAddedEvent;
+import me.marcangeloh.API.Events.PointsRemovedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
+import java.util.UUID;
 
 public class AxePoints implements Points {
 
-    private final HashMap<String, Double> axePoints = new HashMap<String, Double>();
+    private final HashMap<String, Double> axePoints = new HashMap<>();
     public HashMap<String, Double> getAxePoints() {
         return axePoints;
     }
@@ -30,26 +32,6 @@ public class AxePoints implements Points {
             axePoints.putIfAbsent(player, 0.0);
         }
         return axePoints.get(player);  }
-    /**
-     * This method should be called on disable, it registers all of the players
-     * In the axePoints HashMap
-     * @return
-     */
-    public boolean onDisable() {
-        if(axePoints.isEmpty()) {
-            return true;
-        } else {
-            Set<String> keySet = axePoints.keySet();
-            for (String key: keySet
-            ) {
-                if(axePoints.get(key) > 0.0) { //If they have any points
-                    //Perform the save
-                }
-            }
-        }
-
-        return axePoints.isEmpty();
-    }
 
     /**
      * Checks if the player is contained in the hashmap
@@ -57,9 +39,9 @@ public class AxePoints implements Points {
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(axePoints.containsKey(player)){
+        if(axePoints.containsKey(player.getUniqueId().toString()))
             return true;
-        }
+
         return false;
     }
 
@@ -96,6 +78,8 @@ public class AxePoints implements Points {
      * @return True if already exists, False if they don't exist
      */
     private boolean addPointsMethod(String player, Double points) {
+        PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsAddedEvent);
         if(axePoints.containsKey(player)) {
             double pointsToAdd = axePoints.get(player);
             axePoints.remove(player);
@@ -114,6 +98,8 @@ public class AxePoints implements Points {
      * @return True if successful, False if player's point balance would go into the negative
      */
     private boolean removePointsMethod(String player, Double points) {
+        PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
         if(axePoints.containsKey(player)) {
             double pointsToAdd = axePoints.get(player);
 

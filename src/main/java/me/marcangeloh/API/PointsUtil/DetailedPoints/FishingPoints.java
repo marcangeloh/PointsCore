@@ -1,15 +1,18 @@
 package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
+import me.marcangeloh.API.Events.PointsAddedEvent;
+import me.marcangeloh.API.Events.PointsRemovedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 public class FishingPoints implements Points {
 
-    private final HashMap<String, Double> fishingPoints = new HashMap<String, Double>();
+    private final HashMap<String, Double> fishingPoints = new HashMap<>();
     public HashMap<String, Double> getFishingPoints() {
         return fishingPoints;
     }
@@ -30,26 +33,6 @@ public class FishingPoints implements Points {
             fishingPoints.putIfAbsent(player, 0.0);
         }
         return fishingPoints.get(player);  }
-    /**
-     * This method should be called on disable, it registers all of the players
-     * In the fishingPoints HashMap
-     * @return
-     */
-    public boolean onDisable() {
-        if(fishingPoints.isEmpty()) {
-            return true;
-        } else {
-            Set<String> keySet = fishingPoints.keySet();
-            for (String key: keySet
-            ) {
-                if(fishingPoints.get(key) > 0.0) { //If they have any points
-                    //Perform the save
-                }
-            }
-        }
-
-        return fishingPoints.isEmpty();
-    }
 
     /**
      * Checks if the player is contained in the hashmap
@@ -57,9 +40,9 @@ public class FishingPoints implements Points {
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(fishingPoints.containsKey(player)){
+        if(fishingPoints.containsKey(player.getUniqueId().toString()))
             return true;
-        }
+
         return false;
     }
 
@@ -96,6 +79,8 @@ public class FishingPoints implements Points {
      * @return True if already exists, False if they don't exist
      */
     private boolean addPointsMethod(String player, Double points) {
+        PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsAddedEvent);
         if(fishingPoints.containsKey(player)) {
             double pointsToAdd = fishingPoints.get(player);
             fishingPoints.remove(player);
@@ -114,6 +99,8 @@ public class FishingPoints implements Points {
      * @return True if successful, False if player's point balance would go into the negative
      */
     private boolean removePointsMethod(String player, Double points) {
+        PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
         if(fishingPoints.containsKey(player)) {
             double pointsToAdd = fishingPoints.get(player);
 

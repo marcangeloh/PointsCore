@@ -1,14 +1,17 @@
 package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
+import me.marcangeloh.API.Events.PointsAddedEvent;
+import me.marcangeloh.API.Events.PointsRemovedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 public class RangedWeaponPoints implements Points {
-    private final HashMap<String, Double> rangedWeaponPoints = new HashMap<String, Double>();
+    private final HashMap<String, Double> rangedWeaponPoints = new HashMap<>();
     public HashMap<String, Double> getRangedWeaponPoints() {
         return rangedWeaponPoints;
     }
@@ -28,9 +31,9 @@ public class RangedWeaponPoints implements Points {
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(rangedWeaponPoints.containsKey(player)){
+        if(rangedWeaponPoints.containsKey(player.getUniqueId().toString()))
             return true;
-        }
+
         return false;
     }
 
@@ -41,26 +44,6 @@ public class RangedWeaponPoints implements Points {
             rangedWeaponPoints.putIfAbsent(player, 0.0);
         }
         return rangedWeaponPoints.get(player);  }
-    /**
-     * This method should be called on disable, it registers all of the players
-     * In the rangedWeaponPoints HashMap
-     * @return
-     */
-    public boolean onDisable() {
-        if(rangedWeaponPoints.isEmpty()) {
-            return true;
-        } else {
-            Set<String> keySet = rangedWeaponPoints.keySet();
-            for (String key: keySet
-            ) {
-                if(rangedWeaponPoints.get(key) > 0.0) { //If they have any points
-                    //Perform the save
-                }
-            }
-        }
-
-        return rangedWeaponPoints.isEmpty();
-    }
 
 
 
@@ -71,8 +54,9 @@ public class RangedWeaponPoints implements Points {
      * @return true if the player already is in the hashmap, false if they aren't.
      */
     public boolean addPointsToPlayer(Player player, Double points) {
-        if(points == null)
+        if(points == null) {
             points = 0.0;
+        }
         String playerName = player.getName();
 
         return addPointsMethod(playerName, points);
@@ -97,6 +81,8 @@ public class RangedWeaponPoints implements Points {
      * @return True if already exists, False if they don't exist
      */
     private boolean addPointsMethod(String player, Double points) {
+        PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsAddedEvent);
         if(rangedWeaponPoints.containsKey(player)) {
             double pointsToAdd = rangedWeaponPoints.get(player);
             rangedWeaponPoints.remove(player);
@@ -115,6 +101,8 @@ public class RangedWeaponPoints implements Points {
      * @return True if successful, False if player's point balance would go into the negative
      */
     private boolean removePointsMethod(String player, Double points) {
+        PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
+        Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
         if(rangedWeaponPoints.containsKey(player)) {
             double pointsToAdd = rangedWeaponPoints.get(player);
 

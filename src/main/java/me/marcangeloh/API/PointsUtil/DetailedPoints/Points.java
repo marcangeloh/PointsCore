@@ -20,12 +20,6 @@ public interface Points extends Listener {
      */
     double getPoints(String player);
 
-    /**
-     * This method should be called on disable, it registers all of the players
-     * In the armorPoints HashMap
-     * @return
-     */
-    boolean onDisable();
 
     /**
      * Checks if the hashmap contains the player
@@ -65,4 +59,5 @@ public interface Points extends Listener {
      * @return true if the player already is in the hashmap, false if they aren't.
      */
     boolean removePointsFromPlayer(Player playerInstance, Double points);
+
 }
