@@ -7,11 +7,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 public class PickaxePoints implements Points {
-    private final HashMap<String, Double> pickaxePoints = new HashMap<>();
+    private final HashMap<String, Double> pickaxePoints;
+
+    public PickaxePoints() {
+        pickaxePoints = new HashMap<>();
+    }
+
     public HashMap<String, Double> getPickaxePoints() {
         return pickaxePoints;
     }
@@ -40,10 +44,7 @@ public class PickaxePoints implements Points {
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(pickaxePoints.containsKey(player.getUniqueId().toString()))
-            return true;
-
-        return false;
+        return pickaxePoints.containsKey(player.getUniqueId().toString());
     }
 
 
@@ -56,9 +57,9 @@ public class PickaxePoints implements Points {
     public boolean addPointsToPlayer(Player player, Double points) {
         if(points == null)
             points = 0.0;
-        String playerName = player.getName();
+        String uuid = player.getUniqueId().toString();
 
-        return addPointsMethod(playerName, points);
+        return addPointsMethod(uuid, points);
     }
 
     /**
@@ -75,51 +76,51 @@ public class PickaxePoints implements Points {
 
     /**
      * Adds points to the player in the hashmap
-     * @param player The player in question
+     * @param uuid The player's uuid in question
      * @param points The amount of points
      * @return True if already exists, False if they don't exist
      */
-    private boolean addPointsMethod(String player, Double points) {
-        PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
+    private boolean addPointsMethod(String uuid, Double points) {
+        PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(uuid), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
-        if(!pointsAddedEvent.isCancelled()) {
+
+        if(pointsAddedEvent.isCancelled()) {
             return false;
         }
-        if(pickaxePoints.containsKey(player)) {
-            double pointsToAdd = pickaxePoints.get(player);
-            pickaxePoints.remove(player);
-            pickaxePoints.put(player, points + pointsToAdd);
+
+        if(pickaxePoints.containsKey(uuid)) {
+            double pointsToAdd = pickaxePoints.get(uuid);
+            pickaxePoints.replace(uuid, points + pointsToAdd);
             return true;
         } else {
-            pickaxePoints.put(player, points);
+            pickaxePoints.put(uuid, points);
             return false;
         }
     }
 
     /**
      * Remove points from the player
-     * @param player The player's name
+     * @param uuid The player's uuid
      * @param points The amount of points to add
      * @return True if successful, False if player's point balance would go into the negative
      */
-    private boolean removePointsMethod(String player, Double points) {
-        PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
+    private boolean removePointsMethod(String uuid, Double points) {
+        PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(uuid), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
-        if(!pointsRemovedEvent.isCancelled()) {
+        if(pointsRemovedEvent.isCancelled()) {
             return false;
         }
-        if(pickaxePoints.containsKey(player)) {
-            double pointsToAdd = pickaxePoints.get(player);
+        if(pickaxePoints.containsKey(uuid)) {
+            double pointsToRemove = pickaxePoints.get(uuid);
 
-            if(pointsToAdd < points) { //If pointsToAdd-points < 0
+            if(pointsToRemove < points) { //If pointsToAdd-points < 0
                 return false;//Return false
             }
 
-            pickaxePoints.remove(player);
-            pickaxePoints.put(player, pointsToAdd - points);
+            pickaxePoints.replace(uuid, pointsToRemove - points);
             return true;
         } else {
-            pickaxePoints.put(player, points);
+            pickaxePoints.put(uuid, points);
             return false;
         }
     }
@@ -146,7 +147,7 @@ public class PickaxePoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
 }

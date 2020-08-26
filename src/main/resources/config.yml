@@ -1,4 +1,7 @@
 Points:
+  #Available modes are: INTENSE, LIGHT, NONE
+  DebugMode: INTENSE
+  #What are the points enabled for?
   EnabledFor:
     RangedWeapons: true
     MeleeWeapons: true
@@ -8,9 +11,11 @@ Points:
     Axe: true
     FishingRod: true
     Hoe: true
+    #What should be the symbol of the points
     CurrencySymbol: "$"
     #Should only be enabled if the tools are false
     Tools: false
+  #The Values to add to each tool
   Increment:
     PickaxeValues: #Per Block Mined
       Stone: 0.01
@@ -170,6 +175,7 @@ Points:
       FallDamage: 0.1
       Other: 0.01
     Tools: 0.1 #per block broken/fish fished
+  #SQL DB settings
   SQL:
     Enabled: false
     ServerAndPort: "192.168.0.1:3306"

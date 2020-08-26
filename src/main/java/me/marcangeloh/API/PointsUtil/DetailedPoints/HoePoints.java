@@ -7,11 +7,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 public class HoePoints implements Points {
-    private final HashMap<String, Double> hoePoints = new HashMap<>();
+    private final HashMap<String, Double> hoePoints;
+
+    public HoePoints() {
+        hoePoints = new HashMap<>();
+    }
+
     public HashMap<String, Double> getHoePoints() {
         return hoePoints;
     }
@@ -52,9 +56,9 @@ public class HoePoints implements Points {
     public boolean addPointsToPlayer(Player player, Double points) {
         if(points == null) {
             points = 0.0;}
-        String playerName = player.getName();
+        String uuid = player.getUniqueId().toString();
 
-        return addPointsMethod(playerName, points);
+        return addPointsMethod(uuid, points);
     }
 
     /**
@@ -83,8 +87,7 @@ public class HoePoints implements Points {
         }
         if(hoePoints.containsKey(player)) {
             double pointsToAdd = hoePoints.get(player);
-            hoePoints.remove(player);
-            hoePoints.put(player, points + pointsToAdd);
+            hoePoints.replace(player, points + pointsToAdd);
             return true;
         } else {
             hoePoints.put(player, points);
@@ -111,8 +114,7 @@ public class HoePoints implements Points {
                 return false;//Return false
             }
 
-            hoePoints.remove(player);
-            hoePoints.put(player, pointsToAdd - points);
+            hoePoints.replace(player, pointsToAdd - points);
             return true;
         } else {
             hoePoints.put(player, points);
@@ -142,7 +144,7 @@ public class HoePoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
 }

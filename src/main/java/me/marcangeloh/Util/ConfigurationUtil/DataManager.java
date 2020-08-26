@@ -16,6 +16,7 @@ public class DataManager {
 
     private File playerFiles;
     private FileConfiguration fileConfig;
+    
 
     public void onEnable(Plugin plugin) {
         playerFiles = new File(plugin.getDataFolder(), "data.yml");

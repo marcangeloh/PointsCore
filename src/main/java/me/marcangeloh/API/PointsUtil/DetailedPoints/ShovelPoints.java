@@ -2,27 +2,34 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.Util.GeneralUtil.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 public class ShovelPoints implements Points {
-    private final HashMap<String, Double> shovelPoints = new HashMap<>();
+    private final HashMap<String, Double> shovelPoints;
+
+    public ShovelPoints() {
+        shovelPoints = new HashMap<>();
+    }
+
     public HashMap<String, Double> getShovelPoints() {
         return shovelPoints;
     }
 
     @Override
     public double getPoints(Player player) {
-        if(!shovelPoints.containsKey(player.getUniqueId().toString())) {
+        String uuid = player.getUniqueId().toString();
+        if(!shovelPoints.containsKey(uuid)) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player "+player.getName()+" was not found. Adding to the hashmap.");
-            shovelPoints.putIfAbsent(player.getUniqueId().toString(), 0.0);
+            shovelPoints.putIfAbsent(uuid, 0.0);
         }
-        return shovelPoints.get(player.getUniqueId().toString());
+        return shovelPoints.get(uuid);
     }
 
     /**
@@ -54,12 +61,9 @@ public class ShovelPoints implements Points {
      * @return true if the player already is in the hashmap, false if they aren't.
      */
     public boolean addPointsToPlayer(Player player, Double points) {
-        if(points == null) {
-            points = 0.0;
-        }
-        String playerName = player.getName();
-
-        return addPointsMethod(playerName, points);
+        String uuid = player.getUniqueId().toString();
+        Message.debugMessage("addPointsToPlayer method executed, with uuid = "+uuid+"\npoints = "+points, DebugIntensity.INTENSE);
+        return addPointsToPlayer(uuid, points);
     }
 
     /**
@@ -71,6 +75,7 @@ public class ShovelPoints implements Points {
     public boolean addPointsToPlayer(String player, Double points) {
         if(points == null)
             points = 0.0;
+        Message.debugMessage("addPointsToPlayer method executed, with uuid = "+player+"\npoints = "+points, DebugIntensity.LIGHT);
         return addPointsMethod(player, points);
     }
 
@@ -81,18 +86,19 @@ public class ShovelPoints implements Points {
      * @return True if already exists, False if they don't exist
      */
     private boolean addPointsMethod(String player, Double points) {
+        //Debugging
+        Bukkit.getServer().getConsoleSender().sendMessage("Giving " + player+ "\n "+points+"Points");
         //Fires the event
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
         //If the event was cancelled cancel adding points
-        if(!pointsAddedEvent.isCancelled()) {
+        if(pointsAddedEvent.isCancelled()) {
             return false;
         }
         //Adds point to player
         if(shovelPoints.containsKey(player)) {
             double pointsToAdd = shovelPoints.get(player);
-            shovelPoints.remove(player);
-            shovelPoints.put(player, points + pointsToAdd);
+            shovelPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
             shovelPoints.put(player, points);
@@ -111,19 +117,18 @@ public class ShovelPoints implements Points {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
         //Cancel if event was canceled
-        if(!pointsRemovedEvent.isCancelled()) {
+        if(pointsRemovedEvent.isCancelled()) {
             return false;
         }
         //Adds the points to the player
         if(shovelPoints.containsKey(player)) {
-            double pointsToAdd = shovelPoints.get(player);
+            double pointsToRemove = shovelPoints.get(player);
 
-            if(pointsToAdd < points) { //If pointsToAdd-points < 0
+            if(pointsToRemove < points) { //If pointsToAdd-points < 0
                 return false;//Return false
             }
 
-            shovelPoints.remove(player);
-            shovelPoints.put(player, pointsToAdd - points);
+            shovelPoints.replace(player, pointsToRemove - points);
             return true;
         } else {
             shovelPoints.put(player, points);
@@ -153,7 +158,7 @@ public class ShovelPoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
 }

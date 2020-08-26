@@ -144,7 +144,17 @@ public class SQLManager {
             return true;
         }
     }
-    public void saveData(HashMap<String, Double> armorPoints, HashMap<String, Double> meleeWeaponPoints, HashMap<String, Double> rangedWeaponPoints, HashMap<String, Double> hoePoints, HashMap<String, Double> pickaxePoints, HashMap<String, Double> axePoints, HashMap<String, Double> fishingPoints, HashMap<String, Double> shovelPoints) {
+    public void saveData() {
+        //Redefining data for change
+        HashMap<String, Double> armorPoints= PointsCore.playerPoints.armorPoints.getArmorPoints(),
+                meleeWeaponPoints = PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints(),
+                rangedWeaponPoints=PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints(),
+                hoePoints=PointsCore.playerPoints.hoePoints.getHoePoints(),
+                pickaxePoints=PointsCore.playerPoints.pickaxePoints.getPickaxePoints(),
+                axePoints=PointsCore.playerPoints.axePoints.getAxePoints(),
+                fishingPoints=PointsCore.playerPoints.fishingPoints.getFishingPoints(),
+                shovelPoints=PointsCore.playerPoints.shovelPoints.getShovelPoints();
+
         if(saveUtil(armorPoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints,axePoints, fishingPoints, shovelPoints)) {
             //Loaded successfully into loadUtilHashmap
             for (String player: loadUtilHashMap.keySet()

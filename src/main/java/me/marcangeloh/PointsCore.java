@@ -1,14 +1,16 @@
 package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
+import me.marcangeloh.Commands.PointCheckCommand;
 import me.marcangeloh.Events.ArmorEvent;
 import me.marcangeloh.Events.LoadDataEvent;
 import me.marcangeloh.Events.ToolEvents;
 import me.marcangeloh.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.Util.ConfigurationUtil.Paths;
+import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.Util.SQLUtil.SQLManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,32 +21,45 @@ public class PointsCore extends JavaPlugin implements Paths {
     private DataManager dataManager;
     private boolean isMySQLEnabled = false;
     private SQLManager sqlManager;
-    private Plugin plugin;
+    public static Plugin plugin;
     public static PlayerPoints playerPoints;
+    public String server_version;
+    public static boolean is1_16 = false;
+    public static DebugIntensity serverDebugIntensity;
 
+    /**
+     * Gets the debug intensity for the messages of the server
+     * @return the Debug intensity
+     */
+    public DebugIntensity getDebugIntensity() {
+        if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("INTENSE")) {
+
+            return DebugIntensity.INTENSE;
+
+        } else if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("LIGHT")) {
+
+            return DebugIntensity.LIGHT;
+
+        } else {
+
+            return DebugIntensity.NONE;
+
+        }
+    }
 
     public void onDisable() {
-        sqlManager.saveData(PointsCore.playerPoints.armorPoints.getArmorPoints(),
-                PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints(),
-                PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints(),
-                PointsCore.playerPoints.hoePoints.getHoePoints(),
-                PointsCore.playerPoints.pickaxePoints.getPickaxePoints(),
-                PointsCore.playerPoints.axePoints.getAxePoints(),
-                PointsCore.playerPoints.fishingPoints.getFishingPoints(),
-                PointsCore.playerPoints.shovelPoints.getShovelPoints() );
+        sqlManager.saveData();
     }
 
     public void onEnable() {
-        dataManager = new DataManager();
         plugin = this;
 
-        //sets up the default configuration
-        setupDefaultConfig();
+        playerPoints = new PlayerPoints();
 
-        PointsCore.playerPoints = new PlayerPoints();
-
+        setupVersion();
         //If SQL is not enabled Initiates the data from the config and loads it
         if(!getConfig().getBoolean(pathIsSQLEnabled)) {
+            dataManager = new DataManager();
             dataManager.onEnable(plugin);
         } else {
             isMySQLEnabled = true;
@@ -63,25 +78,24 @@ public class PointsCore extends JavaPlugin implements Paths {
             }
 
         }
-        registerEvents();
 
+        serverDebugIntensity = getDebugIntensity();
+        registerEvents();
+        this.getCommand("pointcheck").setExecutor(new PointCheckCommand());
     }
 
     /**
      * To avoid code duplication
      * @param event the event to register
      */
-    private void eventRegistration(Listener event) {
-        getServer().getPluginManager().registerEvents(event, plugin);
-    }
 
     /**
      * Registers the events to the server
      */
     private void registerEvents() {
-        eventRegistration(new LoadDataEvent(isMySQLEnabled(), dataManager, sqlManager));
-        eventRegistration(new ArmorEvent(plugin)); //Registers the armor points events
-        eventRegistration(new ToolEvents(plugin)); //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new LoadDataEvent(isMySQLEnabled(), dataManager, sqlManager), this);
+        getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the armor points events
+        getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
     }
 
     /**
@@ -103,6 +117,23 @@ public class PointsCore extends JavaPlugin implements Paths {
     private void setupDefaultConfig() {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
+    }
+
+    private boolean setupVersion() {
+        server_version = "N/A";
+
+        try {
+            server_version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+
+        if(server_version.equalsIgnoreCase("v1_16_R1")) {
+            is1_16 = true;
+            return true;
+        }
+        return false;
     }
 
 }

@@ -11,7 +11,11 @@ import java.util.UUID;
 
 public class AxePoints implements Points {
 
-    private final HashMap<String, Double> axePoints = new HashMap<>();
+    private final HashMap<String, Double> axePoints;
+
+    public AxePoints() {
+        axePoints = new HashMap<>();
+    }
     public HashMap<String, Double> getAxePoints() {
         return axePoints;
     }
@@ -54,9 +58,9 @@ public class AxePoints implements Points {
     public boolean addPointsToPlayer(Player player, Double points) {
         if(points == null)
             points = 0.0;
-        String playerName = player.getName();
+        String uuid = player.getUniqueId().toString();
 
-        return addPointsMethod(playerName, points);
+        return addPointsMethod(uuid, points);
     }
 
     /**
@@ -78,15 +82,17 @@ public class AxePoints implements Points {
      * @return True if already exists, False if they don't exist
      */
     private boolean addPointsMethod(String player, Double points) {
+        //Calls the event
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
-        if(!pointsAddedEvent.isCancelled()) {
+
+        if(pointsAddedEvent.isCancelled()) {
             return false;
         }
+
         if(axePoints.containsKey(player)) {
             double pointsToAdd = axePoints.get(player);
-            axePoints.remove(player);
-            axePoints.put(player, points + pointsToAdd);
+            axePoints.replace(player, points + pointsToAdd);
             return true;
         } else {
             axePoints.put(player, points);
@@ -103,7 +109,7 @@ public class AxePoints implements Points {
     private boolean removePointsMethod(String player, Double points) {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
-        if(!pointsRemovedEvent.isCancelled()) {
+        if(pointsRemovedEvent.isCancelled()) {
             return false;
         }
         if(axePoints.containsKey(player)) {
@@ -113,8 +119,7 @@ public class AxePoints implements Points {
                 return false;//Return false
             }
 
-            axePoints.remove(player);
-            axePoints.put(player, pointsToAdd - points);
+            axePoints.replace(player, pointsToAdd - points);
             return true;
         } else {
             axePoints.put(player, points);
@@ -144,7 +149,7 @@ public class AxePoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
     

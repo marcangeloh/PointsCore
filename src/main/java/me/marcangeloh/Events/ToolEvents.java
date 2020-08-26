@@ -2,22 +2,21 @@ package me.marcangeloh.Events;
 
 import me.marcangeloh.PointsCore;
 import me.marcangeloh.Util.ConfigurationUtil.ValueUtil;
-import me.marcangeloh.Util.Tools;
+import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.Util.GeneralUtil.Message;
+import me.marcangeloh.Util.GeneralUtil.Tools;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.plugin.Plugin;
 
 public class ToolEvents implements Listener {
-    private ValueUtil valueUtil;
+    private ValueUtil valueUtil = new ValueUtil(PointsCore.plugin);
 
-    public ToolEvents(Plugin plugin) {
-        valueUtil = new ValueUtil(plugin);
-    }
 
     /**
      * Adds the points to the proper tool
@@ -25,16 +24,17 @@ public class ToolEvents implements Listener {
      * @param incrementValue The amount of points to add
      * @param toolType the tool used
      */
-    private void addPoints(Player player, Double incrementValue, String toolType) {
-        if(toolType.equalsIgnoreCase(Tools.AXE)) {
+    private void addPoints(Player player, Double incrementValue, Tools toolType) {
+        if(toolType.equals(Tools.AXE)) {
             PointsCore.playerPoints.axePoints.addPointsToPlayer(player, incrementValue);
-        } else if (toolType.equalsIgnoreCase(Tools.SHOVEL)) {
+        } else if (toolType.equals(Tools.SHOVEL)) {
+            Message.debugMessage("Added points to shovel value=" + incrementValue, DebugIntensity.LIGHT);
             PointsCore.playerPoints.shovelPoints.addPointsToPlayer(player, incrementValue);
-        } else if (toolType.equalsIgnoreCase(Tools.PICKAXE)) {
+        } else if (toolType.equals(Tools.PICKAXE)) {
             PointsCore.playerPoints.pickaxePoints.addPointsToPlayer(player, incrementValue);
-        } else if(toolType.equalsIgnoreCase(Tools.FISHING_ROD)) {
+        } else if(toolType.equals(Tools.FISH_ROD)) {
             PointsCore.playerPoints.fishingPoints.addPointsToPlayer(player,incrementValue);
-        } else if(toolType.equalsIgnoreCase(Tools.HOE)) {
+        } else if(toolType.equals(Tools.HOE)) {
             PointsCore.playerPoints.hoePoints.addPointsToPlayer(player,incrementValue);
         }
     }
@@ -46,13 +46,19 @@ public class ToolEvents implements Listener {
      */
     @EventHandler
     public void blockBreak(BlockBreakEvent event) {
-        Material tool = event.getPlayer().getItemOnCursor().getType(),
-        blockBroken = event.getBlock().getType();
+        Material tool = event.getPlayer().getInventory().getItemInMainHand().getType(),
+            blockBroken = event.getBlock().getType();
         Player player = event.getPlayer();
-        String toolType = valueUtil.getToolType(tool);
+        Tools toolType = valueUtil.getToolType(tool);
 
-        if(toolType.equalsIgnoreCase("null"))
+        if(toolType.equals(Tools.NONE)) {
+            //Debug
+            Message.debugMessage("Block Break Event was not triggered due to ToolType = null? " + toolType, DebugIntensity.INTENSE);
             return;
+        }
+
+        //Debug
+        Message.debugMessage("BlockBreak enabled with: tool" +tool.name()+" \nBlock Broken: " +blockBroken, DebugIntensity.INTENSE );
 
         double incrementValue = valueUtil.getMaterialValue(toolType, blockBroken);
 
@@ -68,10 +74,20 @@ public class ToolEvents implements Listener {
     @EventHandler
     public void blockHoe(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Material tool = player.getItemOnCursor().getType(),
+
+        if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            return;
+        }
+
+        if(player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+            return;
+        }
+        Material tool = player.getInventory().getItemInMainHand().getType(),
         blockHoed = event.getClickedBlock().getType();
-        if(valueUtil.getToolType(tool).equalsIgnoreCase(Tools.HOE)) {//if it's a hoe
-            double incrementValue = valueUtil.getMaterialValue(valueUtil.getToolType(tool), blockHoed);
+        Tools toolType = valueUtil.getToolType(tool);
+        if(toolType.equals(Tools.HOE)) {//if it's a hoe
+
+            double incrementValue = valueUtil.getMaterialValue(toolType, blockHoed);
             addPoints(player,incrementValue,Tools.HOE);
         }
     }
@@ -103,9 +119,9 @@ public class ToolEvents implements Listener {
                 material = Material.AIR;
                 break;
         }
-        Material tool = player.getItemOnCursor().getType();
+        Material tool = player.getInventory().getItemInMainHand().getType();
         double incrementValue = valueUtil.getMaterialValue(valueUtil.getToolType(tool), material);
-        addPoints(player,incrementValue,Tools.FISHING_ROD);
+        addPoints(player,incrementValue,Tools.FISH_ROD);
     }
 
 }

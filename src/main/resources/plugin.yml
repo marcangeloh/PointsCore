@@ -1,5 +1,12 @@
 name: PointsCore
 author: marcangeloh
+api-version: 1.13
 version: 1.0.0-SNAPSHOT
 description: The Ultimate points plugin with an easy to use API.
 main: me.marcangeloh.PointsCore
+commands:
+  pointcheck:
+    aliases: [pc]
+    description: Check the amount of points
+    default: none
+    usage: /pointcheck <playername>

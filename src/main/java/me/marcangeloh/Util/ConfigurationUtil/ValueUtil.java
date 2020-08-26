@@ -1,55 +1,69 @@
 package me.marcangeloh.Util.ConfigurationUtil;
 
-import me.marcangeloh.Util.Tools;
+import me.marcangeloh.PointsCore;
+import me.marcangeloh.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
-public class ValueUtil implements Tools, Paths {
+public class ValueUtil implements Paths {
     private Plugin plugin;
     public ValueUtil(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    public String getToolType(Material tool) {
+    public Tools getToolType(Material tool) {
+        return getToolTypeByVersion(tool);
+    }
+
+    private Tools getToolTypeByVersion(Material tool) {
+        if(PointsCore.is1_16) {
+            if (tool.equals(Material.NETHERITE_AXE)) {
+                return Tools.AXE;
+            } else if(tool.equals(Material.NETHERITE_PICKAXE)) {
+                return Tools.PICKAXE;
+            } else if (tool.equals(Material.NETHERITE_SHOVEL)) {
+                return Tools.SHOVEL;
+            } else if (tool.equals(Material.NETHERITE_HOE)) {
+                return Tools.HOE;
+            }
+        }
+
         if(tool.equals(Material.DIAMOND_AXE) ||
                 tool.equals(Material.GOLDEN_AXE) ||
                 tool.equals(Material.IRON_AXE) ||
-                tool.equals(Material.NETHERITE_AXE) ||
                 tool.equals(Material.STONE_AXE) ||
                 tool.equals(Material.WOODEN_AXE)) {
-            return AXE;
+            return Tools.AXE;
         } else if(tool.equals(Material.DIAMOND_PICKAXE) ||
                 tool.equals(Material.GOLDEN_PICKAXE) ||
                 tool.equals(Material.IRON_PICKAXE) ||
-                tool.equals(Material.NETHERITE_PICKAXE) ||
                 tool.equals(Material.STONE_PICKAXE) ||
                 tool.equals(Material.WOODEN_PICKAXE)) {
-            return PICKAXE;
+            return Tools.PICKAXE;
         } else if(tool.equals(Material.DIAMOND_SHOVEL) ||
                 tool.equals(Material.GOLDEN_SHOVEL) ||
                 tool.equals(Material.IRON_SHOVEL) ||
-                tool.equals(Material.NETHERITE_SHOVEL) ||
                 tool.equals(Material.STONE_SHOVEL) ||
                 tool.equals(Material.WOODEN_SHOVEL)) {
-            return SHOVEL;
+            return Tools.SHOVEL;
         }else if(tool.equals(Material.DIAMOND_HOE) ||
                 tool.equals(Material.GOLDEN_HOE) ||
                 tool.equals(Material.IRON_HOE) ||
-                tool.equals(Material.NETHERITE_HOE) ||
                 tool.equals(Material.STONE_HOE) ||
                 tool.equals(Material.WOODEN_HOE)) {
-            return HOE;
+            return Tools.HOE;
         } else if(tool.equals(Material.FISHING_ROD)) {
-            return FISHING_ROD;
+            return Tools.FISH_ROD;
         } else {
-            return "null";
+            return Tools.NONE;
         }
+
     }
 
-    public double getMaterialValue(String tool, Material material) {
-        if(tool.equalsIgnoreCase(PICKAXE)) {
+    public double getMaterialValue(Tools tool, Material material) {
+        if(tool.equals(Tools.PICKAXE)) {
             switch (material) {
                 case ICE:
                     return plugin.getConfig().getDouble(pathIceValue);
@@ -174,7 +188,7 @@ public class ValueUtil implements Tools, Paths {
                 default:
                     return plugin.getConfig().getDouble(pathPOtherValue);
             }
-        } else if(tool.equalsIgnoreCase(SHOVEL)) {
+        } else if(tool.equals(Tools.SHOVEL)) {
             switch (material) {
                 case DIRT:
                 case GRASS:
@@ -193,7 +207,7 @@ public class ValueUtil implements Tools, Paths {
                 default:
                     return plugin.getConfig().getDouble(pathSOtherValue);
             }
-        } else if(tool.equalsIgnoreCase(AXE)) {
+        } else if(tool.equals(Tools.AXE)) {
             switch (material) {
                 case ACACIA_LOG:
                 case ACACIA_WOOD:
@@ -306,7 +320,7 @@ public class ValueUtil implements Tools, Paths {
                 default:
                     return plugin.getConfig().getDouble(pathAOtherValue);
             }
-        } else if (tool.equalsIgnoreCase(HOE)) {
+        } else if (tool.equals(Tools.HOE)) {
             if(material.equals(Material.COARSE_DIRT)) {
                 return plugin.getConfig().getDouble(pathCoarse);
             } else if(material.equals(Material.DIRT) || material.equals(Material.GRASS_BLOCK)){
@@ -314,7 +328,7 @@ public class ValueUtil implements Tools, Paths {
             } else {
                 return 0.0;
             }
-        } else if(tool.equalsIgnoreCase(FISHING_ROD)) {
+        } else if(tool.equals(Tools.FISH_ROD)) {
             switch(material) {
                 case SALMON:
                     return plugin.getConfig().getDouble(pathSalmonValues);
@@ -328,7 +342,7 @@ public class ValueUtil implements Tools, Paths {
                     return plugin.getConfig().getDouble(pathFOtherValues);
             }
         } else {
-            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occured due to the tool type not being found.");
+            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found.");
             return 0.0;
         }
     }

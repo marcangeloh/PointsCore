@@ -36,8 +36,7 @@ public interface Paths {
      */
     String pathIncrement = "Points.Increment.";
     String pathArmorPointsIncrement = pathIncrement +"ArmorPoints";
-    String pathToolsIncrement = pathIncrement + "ToolPoints.";
-    String pathPickaxeValues = pathToolsIncrement + "PickaxeValues.";
+    String pathPickaxeValues = pathIncrement + "PickaxeValues.";
     String pathStoneValue = pathPickaxeValues + "Stone";
     String pathDioriteValue = pathPickaxeValues + "Diorite";
     String pathGraniteValue = pathPickaxeValues + "Granite";
@@ -68,7 +67,7 @@ public interface Paths {
     String pathPOtherValue = pathPickaxeValues + "Other";
 
     //Shovel Paths
-    String pathShovelValues = pathToolsIncrement + "ShovelValues.";
+    String pathShovelValues = pathIncrement + "ShovelValues.";
     String pathDirt =  pathShovelValues + "Dirt";
     String pathSand = pathShovelValues + "Sand";
     String pathSoulSand = pathShovelValues + "SoulSand";
@@ -77,7 +76,7 @@ public interface Paths {
     String pathSOtherValue = pathShovelValues + "Other";
 
     //Axe Paths
-    String pathAxeValues = pathToolsIncrement + "AxeValues.";
+    String pathAxeValues = pathIncrement + "AxeValues.";
     String pathAcaciaValues = pathAxeValues + "Acacia";
     String pathOakValues = pathAxeValues + "Oak";
     String pathDarkOakValues = pathAxeValues + "DarkOak";
@@ -86,10 +85,10 @@ public interface Paths {
     String pathBirchValues = pathAxeValues + "Birch";
     String pathAOtherValue = pathAxeValues + "Other";
     //Hoe Paths
-    String pathHoeValues = pathToolsIncrement + "HoeValues.";
+    String pathHoeValues = pathIncrement + "Hoe.";
     String pathCoarse = pathHoeValues + "ConvertCoarse", pathHoe = "Hoe";
     //Fishing Paths
-    String pathFishingValues = pathToolsIncrement + "FishingValues.";
+    String pathFishingValues = pathIncrement + "FishingValues.";
     String pathCodValues = pathFishingValues + "Cod";
     String pathPufferfishValues = pathFishingValues + "Pufferfish";
     String pathTropicalFishValues = pathFishingValues +"TropicalFish";

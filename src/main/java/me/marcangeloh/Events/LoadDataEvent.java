@@ -1,6 +1,5 @@
 package me.marcangeloh.Events;
 
-import me.marcangeloh.API.PointsUtil.DetailedPoints.*;
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.PointsCore;
 import me.marcangeloh.Util.ConfigurationUtil.DataManager;
@@ -9,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
 
 public class LoadDataEvent implements Listener {
     private boolean mySQL;

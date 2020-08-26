@@ -7,11 +7,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 public class MeleeWeaponPoints implements Points {
-    private final HashMap<String, Double> meleeWeaponPoints = new HashMap<>();
+    private final HashMap<String, Double> meleeWeaponPoints;
+
+    public MeleeWeaponPoints() {
+        meleeWeaponPoints = new HashMap<>();
+    }
+
     public HashMap<String, Double> getMeleeWeaponPoints() {
         return meleeWeaponPoints;
     }
@@ -40,10 +44,7 @@ public class MeleeWeaponPoints implements Points {
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(meleeWeaponPoints.containsKey(player.getUniqueId().toString()))
-            return true;
-
-        return false;
+        return meleeWeaponPoints.containsKey(player.getUniqueId().toString());
     }
 
     /**
@@ -55,9 +56,9 @@ public class MeleeWeaponPoints implements Points {
     public boolean addPointsToPlayer(Player player, Double points) {
         if(points == null)
             points = 0.0;
-        String playerName = player.getName();
+        String uuid = player.getUniqueId().toString();
 
-        return addPointsMethod(playerName, points);
+        return addPointsMethod(uuid, points);
     }
 
     /**
@@ -81,13 +82,12 @@ public class MeleeWeaponPoints implements Points {
     private boolean addPointsMethod(String player, Double points) {
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
-        if(!pointsAddedEvent.isCancelled()) {
+        if(pointsAddedEvent.isCancelled()) {
             return false;
         }
         if(meleeWeaponPoints.containsKey(player)) {
             double pointsToAdd = meleeWeaponPoints.get(player);
-            meleeWeaponPoints.remove(player);
-            meleeWeaponPoints.put(player, points + pointsToAdd);
+            meleeWeaponPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
             meleeWeaponPoints.put(player, points);
@@ -104,7 +104,7 @@ public class MeleeWeaponPoints implements Points {
     private boolean removePointsMethod(String player, Double points) {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
-        if(!pointsRemovedEvent.isCancelled()) {
+        if(pointsRemovedEvent.isCancelled()) {
             return false;
         }
         if(meleeWeaponPoints.containsKey(player)) {
@@ -114,8 +114,7 @@ public class MeleeWeaponPoints implements Points {
                 return false;//Return false
             }
 
-            meleeWeaponPoints.remove(player);
-            meleeWeaponPoints.put(player, pointsToAdd - points);
+            meleeWeaponPoints.replace(player, pointsToAdd - points);
             return true;
         } else {
             meleeWeaponPoints.put(player, points);
@@ -145,7 +144,7 @@ public class MeleeWeaponPoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
 }

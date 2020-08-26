@@ -7,22 +7,27 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 public class RangedWeaponPoints implements Points {
-    private final HashMap<String, Double> rangedWeaponPoints = new HashMap<>();
+    private final HashMap<String, Double> rangedWeaponPoints;
+
+    public RangedWeaponPoints() {
+        rangedWeaponPoints = new HashMap<>();
+    }
+
     public HashMap<String, Double> getRangedWeaponPoints() {
         return rangedWeaponPoints;
     }
 
     @Override
     public double getPoints(Player player) {
-        if(!rangedWeaponPoints.containsKey(player.getUniqueId().toString())) {
+        String uuid = player.getUniqueId().toString();
+        if(!rangedWeaponPoints.containsKey(uuid)) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player "+player.getName()+" was not found. Adding to the hashmap.");
-            rangedWeaponPoints.putIfAbsent(player.getUniqueId().toString(), 0.0);
+            rangedWeaponPoints.putIfAbsent(uuid, 0.0);
         }
-        return rangedWeaponPoints.get(player.getUniqueId().toString());
+        return rangedWeaponPoints.get(uuid);
     }
 
     /**
@@ -57,9 +62,9 @@ public class RangedWeaponPoints implements Points {
         if(points == null) {
             points = 0.0;
         }
-        String playerName = player.getName();
+        String uuid = player.getUniqueId().toString();
 
-        return addPointsMethod(playerName, points);
+        return addPointsMethod(uuid, points);
     }
 
     /**
@@ -83,13 +88,14 @@ public class RangedWeaponPoints implements Points {
     private boolean addPointsMethod(String player, Double points) {
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
-        if(!pointsAddedEvent.isCancelled()) {
+
+        if(pointsAddedEvent.isCancelled()) {
             return false;
         }
+
         if(rangedWeaponPoints.containsKey(player)) {
             double pointsToAdd = rangedWeaponPoints.get(player);
-            rangedWeaponPoints.remove(player);
-            rangedWeaponPoints.put(player, points + pointsToAdd);
+            rangedWeaponPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
             rangedWeaponPoints.put(player, points);
@@ -99,14 +105,14 @@ public class RangedWeaponPoints implements Points {
 
     /**
      * Remove points from the player
-     * @param player The player's name
+     * @param player The player's uuid
      * @param points The amount of points to add
      * @return True if successful, False if player's point balance would go into the negative
      */
     private boolean removePointsMethod(String player, Double points) {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
-        if(!pointsRemovedEvent.isCancelled()) {
+        if(pointsRemovedEvent.isCancelled()) {
             return false;
         }
         if(rangedWeaponPoints.containsKey(player)) {
@@ -116,8 +122,7 @@ public class RangedWeaponPoints implements Points {
                 return false;//Return false
             }
 
-            rangedWeaponPoints.remove(player);
-            rangedWeaponPoints.put(player, pointsToAdd - points);
+            rangedWeaponPoints.replace(player, pointsToAdd - points);
             return true;
         } else {
             rangedWeaponPoints.put(player, points);
@@ -127,7 +132,7 @@ public class RangedWeaponPoints implements Points {
 
     /**
      * Removes points from the player in the rangedWeaponPoints HashMap.
-     * @param player The player's name to remove points from
+     * @param player The player's uuid to remove points from
      * @param points Removes this amount of points from the player (if null will be 0)
      * @return true if the player already is in the hashmap, false if they aren't.
      */
@@ -147,7 +152,7 @@ public class RangedWeaponPoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
 }

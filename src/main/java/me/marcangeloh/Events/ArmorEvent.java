@@ -11,11 +11,9 @@ import org.bukkit.plugin.Plugin;
 
 public class ArmorEvent implements Listener {
 
-    private Plugin plugin;
+    private Plugin plugin =PointsCore.plugin;
 
-    public ArmorEvent(Plugin plugin) {
-        this.plugin = plugin;
-    }
+
 
     @EventHandler
     public void entityHitPlayerEvent(EntityDamageEvent event) {

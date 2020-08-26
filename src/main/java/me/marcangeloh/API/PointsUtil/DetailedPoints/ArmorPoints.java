@@ -7,12 +7,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 
 public class ArmorPoints implements Points {
-    private final HashMap<String, Double> armorPoints = new HashMap<>();
+    private final HashMap<String, Double> armorPoints;
 
+    public ArmorPoints() {
+        armorPoints = new HashMap<>();
+    }
     public HashMap<String, Double> getArmorPoints() {
         return armorPoints;
     }
@@ -41,10 +43,7 @@ public class ArmorPoints implements Points {
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(armorPoints.containsKey(player.getUniqueId().toString()))
-            return true;
-
-        return false;
+        return armorPoints.containsKey(player.getUniqueId().toString());
     }
 
 
@@ -83,14 +82,13 @@ public class ArmorPoints implements Points {
     private boolean addPointsMethod(String player, Double points) {
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
-        if(!pointsAddedEvent.isCancelled()) {
+        if(pointsAddedEvent.isCancelled()) {
             return false;
         }
 
         if(armorPoints.containsKey(player)) {
             double pointsToAdd = armorPoints.get(player);
-            armorPoints.remove(player);
-            armorPoints.put(player, points + pointsToAdd);
+            armorPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
             armorPoints.put(player, points);
@@ -107,7 +105,7 @@ public class ArmorPoints implements Points {
     private boolean removePointsMethod(String player, Double points) {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
-        if(!pointsRemovedEvent.isCancelled()) {
+        if(pointsRemovedEvent.isCancelled()) {
             return false;
         }
         if(armorPoints.containsKey(player)) {
@@ -117,8 +115,7 @@ public class ArmorPoints implements Points {
                 return false;//Return false
             }
 
-            armorPoints.remove(player);
-            armorPoints.put(player, pointsToAdd - points);
+            armorPoints.replace(player, pointsToAdd - points);
             return true;
         } else {
             armorPoints.put(player, points);
@@ -148,7 +145,7 @@ public class ArmorPoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
 }
