@@ -8,10 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 public class ValueUtil implements Paths {
-    private Plugin plugin;
-    public ValueUtil(Plugin plugin) {
-        this.plugin = plugin;
-    }
+    private Plugin plugin = PointsCore.plugin;
 
     public Tools getToolType(Material tool) {
         return getToolTypeByVersion(tool);

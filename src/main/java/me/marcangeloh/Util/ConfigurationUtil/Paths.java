@@ -86,9 +86,9 @@ public interface Paths {
     String pathAOtherValue = pathAxeValues + "Other";
     //Hoe Paths
     String pathHoeValues = pathIncrement + "Hoe.";
-    String pathCoarse = pathHoeValues + "ConvertCoarse", pathHoe = "Hoe";
+    String pathCoarse = pathHoeValues + "ConvertCoarse", pathHoe = pathHoeValues + "Hoe";
     //Fishing Paths
-    String pathFishingValues = pathIncrement + "FishingValues.";
+    String pathFishingValues = pathIncrement + "Fishing.";
     String pathCodValues = pathFishingValues + "Cod";
     String pathPufferfishValues = pathFishingValues + "Pufferfish";
     String pathTropicalFishValues = pathFishingValues +"TropicalFish";

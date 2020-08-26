@@ -54,11 +54,9 @@ public class HoePoints implements Points {
      * @return true if the player already is in the hashmap, false if they aren't.
      */
     public boolean addPointsToPlayer(Player player, Double points) {
-        if(points == null) {
-            points = 0.0;}
         String uuid = player.getUniqueId().toString();
 
-        return addPointsMethod(uuid, points);
+        return addPointsToPlayer(uuid, points);
     }
 
     /**
@@ -82,9 +80,10 @@ public class HoePoints implements Points {
     private boolean addPointsMethod(String player, Double points) {
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
-        if(!pointsAddedEvent.isCancelled()) {
+        if(pointsAddedEvent.isCancelled()) {
             return false;
         }
+
         if(hoePoints.containsKey(player)) {
             double pointsToAdd = hoePoints.get(player);
             hoePoints.replace(player, points + pointsToAdd);
@@ -104,9 +103,10 @@ public class HoePoints implements Points {
     private boolean removePointsMethod(String player, Double points) {
         PointsRemovedEvent pointsRemovedEvent = new PointsRemovedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsRemovedEvent);
-        if(!pointsRemovedEvent.isCancelled()) {
+        if(pointsRemovedEvent.isCancelled()) {
             return false;
         }
+
         if(hoePoints.containsKey(player)) {
             double pointsToAdd = hoePoints.get(player);
 
@@ -116,6 +116,7 @@ public class HoePoints implements Points {
 
             hoePoints.replace(player, pointsToAdd - points);
             return true;
+
         } else {
             hoePoints.put(player, points);
             return false;

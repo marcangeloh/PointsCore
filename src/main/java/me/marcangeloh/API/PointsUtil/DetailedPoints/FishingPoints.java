@@ -54,11 +54,9 @@ public class FishingPoints implements Points {
      * @return true if the player already is in the hashmap, false if they aren't.
      */
     public boolean addPointsToPlayer(Player player, Double points) {
-        if(points == null)
-            points = 0.0;
         String uuid = player.getUniqueId().toString();
 
-        return addPointsMethod(uuid, points);
+        return addPointsToPlayer(uuid, points);
     }
 
     /**
