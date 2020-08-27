@@ -2,9 +2,9 @@ package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.Commands.PointCheckCommand;
-import me.marcangeloh.Events.ArmorEvent;
 import me.marcangeloh.Events.LoadDataEvent;
 import me.marcangeloh.Events.ToolEvents;
+import me.marcangeloh.Events.WeaponEvent;
 import me.marcangeloh.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
@@ -94,7 +94,7 @@ public class PointsCore extends JavaPlugin implements Paths {
      */
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new LoadDataEvent(isMySQLEnabled(), dataManager, sqlManager), this);
-        getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the armor points events
+        getServer().getPluginManager().registerEvents(new WeaponEvent(), this); //Registers the armor points events
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
     }
 

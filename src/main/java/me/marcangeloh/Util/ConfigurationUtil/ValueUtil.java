@@ -1,10 +1,14 @@
 package me.marcangeloh.Util.ConfigurationUtil;
 
 import me.marcangeloh.PointsCore;
+import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 
 public class ValueUtil implements Paths {
@@ -24,6 +28,8 @@ public class ValueUtil implements Paths {
                 return Tools.SHOVEL;
             } else if (tool.equals(Material.NETHERITE_HOE)) {
                 return Tools.HOE;
+            } else if(tool.equals(Material.NETHERITE_SWORD)) {
+                return Tools.MELEE_WEAPON;
             }
         }
 
@@ -53,6 +59,15 @@ public class ValueUtil implements Paths {
             return Tools.HOE;
         } else if(tool.equals(Material.FISHING_ROD)) {
             return Tools.FISH_ROD;
+        } else if(tool.equals(Material.DIAMOND_SWORD) ||
+                tool.equals(Material.GOLDEN_SWORD) ||
+                tool.equals(Material.IRON_SWORD) ||
+                tool.equals(Material.STONE_SWORD) ||
+                tool.equals(Material.WOODEN_SWORD) ) {
+            return Tools.MELEE_WEAPON;
+        } else if(tool.equals(Material.BOW) || tool.equals(Material.CROSSBOW)
+                || tool.equals(Material.TRIDENT)){
+            return Tools.RANGED_WEAPON;
         } else {
             return Tools.NONE;
         }
@@ -339,8 +354,98 @@ public class ValueUtil implements Paths {
                     return plugin.getConfig().getDouble(pathFOtherValues);
             }
         } else {
-            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found.");
+            Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found.", plugin.getServer().getConsoleSender());
             return 0.0;
+        }
+    }
+
+    public double getDamageValues(Tools tool, EntityType type) {
+        switch(tool) {
+            case MELEE_WEAPON:
+                return getConfigValue(pathMeleeWeaponsValues, type);
+            case RANGED_WEAPON:
+                return getConfigValue(pathRangedWeaponsValues, type);
+            default:
+                Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found in weapons.", plugin.getServer().getConsoleSender());
+                return 0.0;
+        }
+    }
+
+    private double getConfigValue(String tool, EntityType entity) {
+        switch(entity) {
+            case BAT:
+                return plugin.getConfig().getDouble(tool + pathBat);
+            case BEE:
+                return plugin.getConfig().getDouble(tool+pathBee);
+            case BLAZE:
+                return plugin.getConfig().getDouble(tool+pathBlaze);
+            case CAVE_SPIDER:
+                return plugin.getConfig().getDouble(tool+pathCaveSpider);
+            case CAT:
+                return plugin.getConfig().getDouble(tool+pathCat);
+            case CREEPER:
+                return plugin.getConfig().getDouble(tool+pathCreeper);
+            case ELDER_GUARDIAN:
+                return plugin.getConfig().getDouble(tool+pathElderGuardian);
+            case GUARDIAN:
+                return plugin.getConfig().getDouble(tool+pathGuardian);
+            case ENDER_DRAGON:
+                return plugin.getConfig().getDouble(tool+pathEnderDragon);
+            case ENDERMAN:
+                return plugin.getConfig().getDouble(tool+pathEnderman);
+            case ENDERMITE:
+                return plugin.getConfig().getDouble(tool+pathEndermite);
+            case EVOKER:
+                return plugin.getConfig().getDouble(tool+pathEvoker);
+            case GHAST:
+                return plugin.getConfig().getDouble(tool+pathGhast);
+            case HUSK:
+                return plugin.getConfig().getDouble(tool+pathHusk);
+            case ILLUSIONER:
+                return plugin.getConfig().getDouble(tool+pathIllusioner);
+            case MAGMA_CUBE:
+                return plugin.getConfig().getDouble(tool+pathMagmaCube);
+            case PHANTOM:
+                return plugin.getConfig().getDouble(tool+pathPhantom);
+            case STRAY:
+                return plugin.getConfig().getDouble(tool+pathStray);
+            case SLIME:
+                return plugin.getConfig().getDouble(tool+pathSlime);
+            case VEX:
+                return plugin.getConfig().getDouble(tool+pathVex);
+            case VINDICATOR:
+                return plugin.getConfig().getDouble(tool+pathVindicator);
+            case WITHER:
+                return plugin.getConfig().getDouble(tool+pathWither);
+            case WITHER_SKELETON:
+                return plugin.getConfig().getDouble(tool+pathWitherSkeleton);
+            case WITCH:
+                return plugin.getConfig().getDouble(tool+pathWitch);
+            case ZOMBIE:
+                return plugin.getConfig().getDouble(tool+pathZombie);
+            case ZOMBIFIED_PIGLIN:
+                return plugin.getConfig().getDouble(tool+pathZombiePigman);
+            case CHICKEN:
+                return plugin.getConfig().getDouble(tool+pathChicken);
+            case COW:
+                return plugin.getConfig().getDouble(tool+pathCow);
+            case HORSE:
+                return plugin.getConfig().getDouble(tool+pathHorse);
+            case LLAMA:
+            case TRADER_LLAMA:
+                return plugin.getConfig().getDouble(tool+pathLlama);
+            case MUSHROOM_COW:
+                return plugin.getConfig().getDouble(tool+pathMushroomCow);
+            case SHEEP:
+                return plugin.getConfig().getDouble(tool+pathSheep);
+            case PIG:
+            case PIGLIN:
+                return plugin.getConfig().getDouble(tool+pathPig);
+            case TURTLE:
+                return plugin.getConfig().getDouble(tool+pathTurtle);
+            default:
+                Message.debugMessage("There is a missing entity in getConfigValue() =>  ValueUtil, the missing entity is:\n"+entity.name(), DebugIntensity.LIGHT);
+                return 0.0;
         }
     }
 }

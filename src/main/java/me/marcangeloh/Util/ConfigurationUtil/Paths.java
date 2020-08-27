@@ -94,7 +94,43 @@ public interface Paths {
     String pathTropicalFishValues = pathFishingValues +"TropicalFish";
     String pathSalmonValues = pathFishingValues + "Salmon";
     String pathFOtherValues = pathFishingValues +"Other";
-
+    //Entity Paths
+    String pathRangedWeaponsValues = pathIncrement + "RangedWeapons";
+    String pathMeleeWeaponsValues = pathIncrement + "MeleeWeapons";
+    String pathBlaze = ".Blaze";
+    String pathBat = ".Bat";
+    String pathBee = ".Bee";
+    String pathCaveSpider = ".CaveSpider";
+    String pathCat = ".Cat";
+    String pathCreeper =".Creeper";
+    String pathElderGuardian = ".ElderGuardian";
+    String pathGuardian = ".Guardian";
+    String pathEnderDragon = ".EnderDragon";
+    String pathEnderman = ".Enderman";
+    String pathEndermite = ".Endermite";
+    String pathEvoker = ".Evoker";
+    String pathGhast = ".Ghast";
+    String pathHusk = ".Husk";
+    String pathIllusioner = ".Illusioner";
+    String pathMagmaCube = ".MagmaCube";
+    String pathPhantom = ".Phantom";
+    String pathSlime = ".Slime";
+    String pathStray = ".Stray";
+    String pathVex = ".Vex";
+    String pathVindicator = ".Vindicator";
+    String pathWither = ".Wither";
+    String pathWitherSkeleton = ".WitherSkeleton";
+    String pathWitch = ".Witch";
+    String pathZombie = ".Zombie";
+    String pathZombiePigman = ".ZombiePigman";
+    String pathChicken = ".Chicken";
+    String pathCow = ".Cow";
+    String pathHorse = ".Horse";
+    String pathLlama =".Llama";
+    String pathMushroomCow=".MushroomCow";
+    String pathSheep =".Sheep";
+    String pathTurtle =".Turtle";
+    String pathPig = ".Pig";
     /**
      * SQL Section
      */

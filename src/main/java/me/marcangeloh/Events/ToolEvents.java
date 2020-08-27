@@ -134,6 +134,10 @@ public class ToolEvents implements Listener {
     @EventHandler
     public void fishFished(PlayerFishEvent event) {
 
+        if(event.getCaught() == null) {
+            return;
+        }
+
         Player player = event.getPlayer();
         Material material;
         switch (event.getCaught().getType()) {
