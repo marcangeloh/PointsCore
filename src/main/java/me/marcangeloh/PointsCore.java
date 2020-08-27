@@ -10,6 +10,7 @@ import me.marcangeloh.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.SQLUtil.SQLManager;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -37,6 +38,10 @@ public class PointsCore extends JavaPlugin implements Paths {
     }
 
     public void onEnable() {
+
+        int pluginId = 8682;
+        Metrics metrics = new Metrics(this, pluginId);
+
         plugin = this;
 
         playerPoints = new PlayerPoints();

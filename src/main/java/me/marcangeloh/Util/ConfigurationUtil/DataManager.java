@@ -12,6 +12,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 public class DataManager {
@@ -41,20 +42,30 @@ public class DataManager {
 
     public void saveAll() {
         ArrayList<String> uuids = new ArrayList<>();
-        for (String uuid: PointsCore.playerPoints.armorPoints.getArmorPoints().keySet()
-             ) {
-            uuids.add(uuid);
-            addUUIDToSaveFile(uuid);
+        if(PointsCore.playerPoints.armorPoints.getArmorPoints() != null) {
+            for (String uuid : PointsCore.playerPoints.armorPoints.getArmorPoints().keySet()
+            ) {
+                uuids.add(uuid);
+                addUUIDToSaveFile(uuid);
+            }
         }
 
-        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.axePoints.getAxePoints().keySet()));
-        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.fishingPoints.getFishingPoints().keySet()));
-        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.hoePoints.getHoePoints().keySet()));
-        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints().keySet()));
-        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.pickaxePoints.getPickaxePoints().keySet()));
-        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints().keySet()));
-        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.shovelPoints.getShovelPoints().keySet()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.axePoints.getAxePoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.fishingPoints.getFishingPoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.hoePoints.getHoePoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.pickaxePoints.getPickaxePoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.shovelPoints.getShovelPoints()));
 
+    }
+
+    private ArrayList<String> nullCheck(ArrayList<String> uuids, HashMap<String, Double> map) {
+        if(map == null) {
+            return null;
+        } else {
+            return checkUUID(uuids, map.keySet());
+        }
     }
 
     private ArrayList<String> checkUUID(ArrayList<String> uuids, Set<String> keySet) {
