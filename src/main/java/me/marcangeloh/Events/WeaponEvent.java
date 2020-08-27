@@ -30,6 +30,21 @@ public class WeaponEvent implements Listener {
 
             incrementHandler(player, incrementValue, tool, event.getEntity());
 
+        } else if(event.getDamager() instanceof Arrow ) {
+            //Gets the player
+            Player player = (Player) ((Arrow)event.getDamager()).getShooter();
+            Tools tool = Tools.RANGED_WEAPON;
+            double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
+
+            incrementHandler(player, incrementValue, tool, event.getEntity());
+
+        } else if(event.getDamager() instanceof Trident) {
+            Player player = (Player) ((Trident)event.getDamager()).getShooter();
+            Tools tool = Tools.RANGED_WEAPON;
+            double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
+
+            incrementHandler(player, incrementValue, tool, event.getEntity());
+            /**Armor Event**/
         } else if (event.getEntity() instanceof Player) {
             //Player got damaged by entity
             Player player = (Player) event.getEntity();
@@ -46,20 +61,6 @@ public class WeaponEvent implements Listener {
             }
 
             addPoints(player, incrementValue, tool);
-        } else if(event.getDamager() instanceof Arrow ) {
-            //Gets the player
-            Player player = (Player) ((Arrow)event.getDamager()).getShooter();
-            Tools tool = Tools.RANGED_WEAPON;
-            double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
-
-            incrementHandler(player, incrementValue, tool, event.getEntity());
-
-        } else if(event.getDamager() instanceof Trident) {
-            Player player = (Player) ((Trident)event.getDamager()).getShooter();
-            Tools tool = Tools.RANGED_WEAPON;
-            double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
-
-            incrementHandler(player, incrementValue, tool, event.getEntity());
         }
     }
 

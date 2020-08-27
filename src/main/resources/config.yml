@@ -100,6 +100,7 @@ Points:
       Sheep: 0.008
       Turtle: 0.03
       Pig: 0.01
+      Other: 0.01
     MeleeWeapons: #Per Hit
       Bat: 0.01
       Bee: 0.02
@@ -135,11 +136,11 @@ Points:
       Sheep: 0.008
       Turtle: 0.03
       Pig: 0.01
+      Other: 0.01
     Hoe:
       Hoe: 1
       ConvertCoarse: 2
     Armor:
-      Arrow: 0.01
       Blaze: 0.02
       CaveSpider: 0.02
       Creeper: 0.05

@@ -365,6 +365,8 @@ public class ValueUtil implements Paths {
                 return getConfigValue(pathMeleeWeaponsValues, type);
             case RANGED_WEAPON:
                 return getConfigValue(pathRangedWeaponsValues, type);
+            case ARMOR:
+                return getConfigValue(pathArmorPointsValues, type);
             default:
                 Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found in weapons.", plugin.getServer().getConsoleSender());
                 return 0.0;
@@ -445,7 +447,7 @@ public class ValueUtil implements Paths {
                 return plugin.getConfig().getDouble(tool+pathTurtle);
             default:
                 Message.debugMessage("There is a missing entity in getConfigValue() =>  ValueUtil, the missing entity is:\n"+entity.name(), DebugIntensity.LIGHT);
-                return 0.0;
+                return plugin.getConfig().getDouble(tool+pathOther);
         }
     }
 }

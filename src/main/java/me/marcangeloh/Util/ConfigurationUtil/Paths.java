@@ -35,7 +35,7 @@ public interface Paths {
      * Path to Point amounts
      */
     String pathIncrement = "Points.Increment.";
-    String pathArmorPointsIncrement = pathIncrement +"ArmorPoints";
+    String pathArmorPointsValues = pathIncrement +"Armor";
     String pathPickaxeValues = pathIncrement + "PickaxeValues.";
     String pathStoneValue = pathPickaxeValues + "Stone";
     String pathDioriteValue = pathPickaxeValues + "Diorite";
@@ -131,6 +131,7 @@ public interface Paths {
     String pathSheep =".Sheep";
     String pathTurtle =".Turtle";
     String pathPig = ".Pig";
+    String pathOther = ".Other";
     /**
      * SQL Section
      */
