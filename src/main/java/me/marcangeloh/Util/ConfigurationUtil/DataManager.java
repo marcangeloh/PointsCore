@@ -11,6 +11,8 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class DataManager {
 
@@ -37,27 +39,63 @@ public class DataManager {
         return fileConfig;
     }
 
-    public void addPlayerToSaveFile(Player player) throws IOException {
-        String uuid = player.getUniqueId().toString();
-        fileConfig.set(uuid+Paths.pathRangedWeaponPoints,
-                PointsCore.playerPoints.rangedWeaponPoints.getPoints(player));
-        fileConfig.set(uuid+Paths.pathMeleeWeaponPoints,
-                PointsCore.playerPoints.meleeWeaponPoints.getPoints(player));
-        fileConfig.set(uuid+Paths.pathArmorPoints,
-                PointsCore.playerPoints.armorPoints.getPoints(player));
-        fileConfig.set(uuid+Paths.pathAxePoints,
-                PointsCore.playerPoints.axePoints.getPoints(player));
-        fileConfig.set(uuid+Paths.pathFishingRodPoints,
-                PointsCore.playerPoints.fishingPoints.getPoints(player));
-        fileConfig.set(uuid+Paths.pathHoePoints,
-                PointsCore.playerPoints.hoePoints.getPoints(player));
-        fileConfig.set(uuid+Paths.pathPickaxePoints,
-                PointsCore.playerPoints.pickaxePoints.getPoints(player));
-        fileConfig.set(uuid+Paths.pathShovelPoints,
-                PointsCore.playerPoints.shovelPoints.getPoints(player));
-        fileConfig.save(playerFiles);
+    public void saveAll() {
+        ArrayList<String> uuids = new ArrayList<>();
+        for (String uuid: PointsCore.playerPoints.armorPoints.getArmorPoints().keySet()
+             ) {
+            uuids.add(uuid);
+            addUUIDToSaveFile(uuid);
+        }
+
+        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.axePoints.getAxePoints().keySet()));
+        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.fishingPoints.getFishingPoints().keySet()));
+        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.hoePoints.getHoePoints().keySet()));
+        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints().keySet()));
+        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.pickaxePoints.getPickaxePoints().keySet()));
+        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints().keySet()));
+        uuids.addAll(checkUUID(uuids, PointsCore.playerPoints.shovelPoints.getShovelPoints().keySet()));
+
     }
 
+    private ArrayList<String> checkUUID(ArrayList<String> uuids, Set<String> keySet) {
+        ArrayList<String> uuidsToAdd = new ArrayList<>();
+        for (String uuid: keySet) {
+            if(!uuids.contains(uuid)) {
+                uuidsToAdd.add(uuid);
+                addUUIDToSaveFile(uuid);
+            }
+        }
+        return uuidsToAdd;
+    }
+
+    public void addPlayerToSaveFile(Player player) {
+        String uuid = player.getUniqueId().toString();
+        addUUIDToSaveFile(uuid);
+    }
+
+    public void addUUIDToSaveFile(String uuid) {
+        fileConfig.set(uuid+Paths.pathRangedWeaponPoints,
+                PointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
+        fileConfig.set(uuid+Paths.pathMeleeWeaponPoints,
+                PointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
+        fileConfig.set(uuid+Paths.pathArmorPoints,
+                PointsCore.playerPoints.armorPoints.getPoints(uuid));
+        fileConfig.set(uuid+Paths.pathAxePoints,
+                PointsCore.playerPoints.axePoints.getPoints(uuid));
+        fileConfig.set(uuid+Paths.pathFishingRodPoints,
+                PointsCore.playerPoints.fishingPoints.getPoints(uuid));
+        fileConfig.set(uuid+Paths.pathHoePoints,
+                PointsCore.playerPoints.hoePoints.getPoints(uuid));
+        fileConfig.set(uuid+Paths.pathPickaxePoints,
+                PointsCore.playerPoints.pickaxePoints.getPoints(uuid));
+        fileConfig.set(uuid+Paths.pathShovelPoints,
+                PointsCore.playerPoints.shovelPoints.getPoints(uuid));
+        try {
+            fileConfig.save(playerFiles);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void loadPlayerFromSaveFile(PlayerPoints playerPoints, Player player) {
         String uuid = player.getUniqueId().toString();
         if(!playerPoints.shovelPoints.containsPlayer(player)) {

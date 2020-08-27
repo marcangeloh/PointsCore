@@ -8,6 +8,7 @@ import me.marcangeloh.Events.WeaponEvent;
 import me.marcangeloh.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.SQLUtil.SQLManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,28 +28,12 @@ public class PointsCore extends JavaPlugin implements Paths {
     public static boolean is1_16 = false;
     public static DebugIntensity serverDebugIntensity;
 
-    /**
-     * Gets the debug intensity for the messages of the server
-     * @return the Debug intensity
-     */
-    public DebugIntensity getDebugIntensity() {
-        if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("INTENSE")) {
-
-            return DebugIntensity.INTENSE;
-
-        } else if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("LIGHT")) {
-
-            return DebugIntensity.LIGHT;
-
-        } else {
-
-            return DebugIntensity.NONE;
-
-        }
-    }
-
     public void onDisable() {
-        sqlManager.saveData();
+        if(isMySQLEnabled) {
+            sqlManager.saveData();
+        } else{
+            dataManager.saveAll();
+        }
     }
 
     public void onEnable() {
@@ -103,7 +88,7 @@ public class PointsCore extends JavaPlugin implements Paths {
      * @param errorMessage the error message to print out
      */
     public void errorMessage(String errorMessage) {
-        getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + errorMessage);
+        Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + errorMessage, getServer().getConsoleSender());
     }
 
     public boolean isMySQLEnabled() {
@@ -136,4 +121,23 @@ public class PointsCore extends JavaPlugin implements Paths {
         return false;
     }
 
+    /**
+     * Gets the debug intensity for the messages of the server
+     * @return the Debug intensity
+     */
+    public DebugIntensity getDebugIntensity() {
+        if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("INTENSE")) {
+
+            return DebugIntensity.INTENSE;
+
+        } else if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("LIGHT")) {
+
+            return DebugIntensity.LIGHT;
+
+        } else {
+
+            return DebugIntensity.NONE;
+
+        }
+    }
 }
