@@ -9,12 +9,17 @@ import me.marcangeloh.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.SQLUtil.SQLManager;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLException;
 
 
@@ -27,6 +32,8 @@ public class PointsCore extends JavaPlugin implements Paths {
     public String server_version;
     public static boolean is1_16 = false;
     public static DebugIntensity serverDebugIntensity;
+    public static String pluginVersion;
+
 
     public void onDisable() {
         if(isMySQLEnabled) {
@@ -37,10 +44,24 @@ public class PointsCore extends JavaPlugin implements Paths {
     }
 
     public void onEnable() {
+        setupPluginVersion();
         basicSetup();
         savingSetup();
         registerEvents();
         getCommand("pointcheck").setExecutor(new PointCheckCommand());
+    }
+
+    private void setupPluginVersion() {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model model = null;
+        try {
+            model = reader.read(new FileReader("pom.xml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        pluginVersion = model.getVersion();
     }
 
     private void basicSetup() {
