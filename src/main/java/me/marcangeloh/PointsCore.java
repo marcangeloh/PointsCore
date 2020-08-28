@@ -2,7 +2,6 @@ package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.Commands.PointCheckCommand;
-import me.marcangeloh.Events.LoadDataEvent;
 import me.marcangeloh.Events.ToolEvents;
 import me.marcangeloh.Events.WeaponEvent;
 import me.marcangeloh.Util.ConfigurationUtil.DataManager;
@@ -38,15 +37,23 @@ public class PointsCore extends JavaPlugin implements Paths {
     }
 
     public void onEnable() {
+        basicSetup();
+        savingSetup();
+        registerEvents();
+        getCommand("pointcheck").setExecutor(new PointCheckCommand());
+    }
 
+    private void basicSetup() {
         int pluginId = 8682;
         Metrics metrics = new Metrics(this, pluginId);
 
         plugin = this;
-
         playerPoints = new PlayerPoints();
-
         setupVersion();
+        serverDebugIntensity = getDebugIntensity();
+    }
+
+    private void savingSetup() {
         //If SQL is not enabled Initiates the data from the config and loads it
         if(!getConfig().getBoolean(pathIsSQLEnabled)) {
             dataManager = new DataManager();
@@ -55,8 +62,8 @@ public class PointsCore extends JavaPlugin implements Paths {
             isMySQLEnabled = true;
             //MySQL Initialization
             try {
-                sqlManager = new SQLManager(getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword), "Points",getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
-
+                sqlManager = new SQLManager(getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword),"POINTS",  getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
+                sqlManager.loadData();
             } catch (SQLException e) {
                 e.printStackTrace();
                 errorMessage("SQL Was not successfully enabled, the details input must be incorrect.");
@@ -68,10 +75,6 @@ public class PointsCore extends JavaPlugin implements Paths {
             }
 
         }
-
-        serverDebugIntensity = getDebugIntensity();
-        registerEvents();
-        this.getCommand("pointcheck").setExecutor(new PointCheckCommand());
     }
 
     /**
@@ -83,7 +86,6 @@ public class PointsCore extends JavaPlugin implements Paths {
      * Registers the events to the server
      */
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new LoadDataEvent(isMySQLEnabled(), dataManager, sqlManager), this);
         getServer().getPluginManager().registerEvents(new WeaponEvent(), this); //Registers the armor points events
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
     }
@@ -96,9 +98,6 @@ public class PointsCore extends JavaPlugin implements Paths {
         Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + errorMessage, getServer().getConsoleSender());
     }
 
-    public boolean isMySQLEnabled() {
-        return isMySQLEnabled;
-    }
 
     public DataManager getDataManager() {
         return dataManager;

@@ -62,7 +62,7 @@ public class DataManager {
 
     private ArrayList<String> nullCheck(ArrayList<String> uuids, HashMap<String, Double> map) {
         if(map == null) {
-            return null;
+            return new ArrayList<String>();
         } else {
             return checkUUID(uuids, map.keySet());
         }

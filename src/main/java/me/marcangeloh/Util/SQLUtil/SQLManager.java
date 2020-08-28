@@ -2,29 +2,31 @@ package me.marcangeloh.Util.SQLUtil;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.PointsCore;
+import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.Util.GeneralUtil.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.sql.*;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Set;
 
 public class SQLManager {
-    private final String columnName = "NAME";
-    private final String columnUUID = "UUID";
-    private final String columnArmorPoints = "ARMOR_POINTS";
-    private final String columnMeleeWeaponPoints = "MELEE_POINTS";
-    private final String columnRangedWeaponPoints = "RANGED_POINTS";
-    private final String columnHoePoints = "HOE_POINTS";
-    private final String columnPickaxePoints = "PICKAXE_POINTS";
-    private final String columnAxePoints = "AXE_POINTS";
-    private final String columnShovelPoints = "SHOVEL_POINTS";
-    private final String columnToolPoints = "TOOL_POINTS";
-    private final String columnFishingPoints = "FISHING_POINTS";
     private Connection connection;
     private final String username, password, table, host, database;
 
-    HashMap<String, SQLLoadUtil> loadUtilHashMap  = new HashMap<>();
+    String columnUuid = "UUID",
+            columnArmor = "ARMOR_POINTS",
+            columnAxe = "AXE_POINTS",
+            columnFishing = "FISHING_POINTS",
+            columnHoe = "HOE_POINTS",
+            columnMelee = "MELEE_WEAPON_POINTS",
+            columnPickaxe = "PICKAXE_POINTS",
+            columnRanged = "RANGED_WEAPON_POINTS",
+            columnShovel = "SHOVEL_POINTS";
 
     public SQLManager(String username, String password, String table, String host, String database) throws SQLException, ClassNotFoundException {
         this.username = username;
@@ -36,180 +38,133 @@ public class SQLManager {
         createTable();
     }
 
-
-    public void loadData(String name, String uuid) {
-        try {
-            PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT * FROM  "+table+" WHERE "+columnUUID+" = ? AND "+columnName+" = ?");
-            preparedStatement.setString(1, uuid);
-            preparedStatement.setString(2, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                PointsCore.playerPoints.armorPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnArmorPoints));
-                PointsCore.playerPoints.axePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnAxePoints));
-                PointsCore.playerPoints.fishingPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnFishingPoints));
-                PointsCore.playerPoints.hoePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnHoePoints));
-                PointsCore.playerPoints.meleeWeaponPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnMeleeWeaponPoints));
-                PointsCore.playerPoints.pickaxePoints.addPointsToPlayer(uuid, resultSet.getDouble(columnPickaxePoints));
-                PointsCore.playerPoints.rangedWeaponPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnRangedWeaponPoints));
-                PointsCore.playerPoints.shovelPoints.addPointsToPlayer(uuid, resultSet.getDouble(columnShovelPoints));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-    }
-
-    private boolean saveUtil(HashMap<String, Double> toCheck, HashMap<String, Double> armorPoints, HashMap<String, Double> meleeWeaponPoints, HashMap<String, Double> rangedWeaponPoints, HashMap<String, Double> hoePoints, HashMap<String, Double> pickaxePoints, HashMap<String, Double> axePoints, HashMap<String, Double> fishingPoints, HashMap<String, Double> shovelPoints) {
-        for(String player:  toCheck.keySet()) { //player is uuid
-            Double melee=0.0, ranged=0.0, armor=0.0, tools=0.0, pickaxe=0.0, fishing=0.0, hoe=0.0, axe=0.0, shovel = 0.0;
-            String name = "";
-            if(meleeWeaponPoints.containsKey(player)) {
-                melee = meleeWeaponPoints.get(player);
-                meleeWeaponPoints.remove(player);
-            }
-            if(armorPoints.containsKey(player)) {
-                armor = armorPoints.get(player);
-                armorPoints.remove(player);
-            }
-            if(rangedWeaponPoints.containsKey(player)) {
-                ranged = rangedWeaponPoints.get(player);
-                rangedWeaponPoints.remove(player);
-            }
-            if(hoePoints.containsKey(player)) {
-                hoe = hoePoints.get(player);
-                hoePoints.remove(player);
-            }
-            if(pickaxePoints.containsKey(player)) {
-                pickaxe = pickaxePoints.get(player);
-                pickaxePoints.get(player);
-            }
-            if(axePoints.containsKey(player)) {
-                axe = axePoints.get(player);
-                axePoints.remove(player);
+    public void saveData() {
+        for (String uuid: getUUIDs()
+             ) {
+            String query = "INSERT INTO " + table + " ("+columnUuid+ ", " +columnArmor + ", "+ columnAxe+", " + columnFishing+", "+ columnHoe+", " +columnMelee+", "+columnPickaxe +", "+ columnRanged+", "+columnShovel+") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "+ columnArmor + "=? ," + columnAxe +"=? ," + columnFishing+"=? ,"+ columnHoe+"=? ," +columnMelee+"=? ,"+columnPickaxe +"=? ,"+ columnRanged+"=? ,"+columnShovel+"=?;";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, uuid);
+                preparedStatement.setDouble(2, PointsCore.playerPoints.armorPoints.getPoints(uuid));
+                preparedStatement.setDouble(3, PointsCore.playerPoints.axePoints.getPoints(uuid));
+                preparedStatement.setDouble(4, PointsCore.playerPoints.fishingPoints.getPoints(uuid));
+                preparedStatement.setDouble(5, PointsCore.playerPoints.hoePoints.getPoints(uuid));
+                preparedStatement.setDouble(6, PointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(7, PointsCore.playerPoints.pickaxePoints.getPoints(uuid));
+                preparedStatement.setDouble(8, PointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(9, PointsCore.playerPoints.shovelPoints.getPoints(uuid));
+                preparedStatement.setDouble(10, PointsCore.playerPoints.armorPoints.getPoints(uuid));
+                preparedStatement.setDouble(11, PointsCore.playerPoints.axePoints.getPoints(uuid));
+                preparedStatement.setDouble(12, PointsCore.playerPoints.fishingPoints.getPoints(uuid));
+                preparedStatement.setDouble(13, PointsCore.playerPoints.hoePoints.getPoints(uuid));
+                preparedStatement.setDouble(14, PointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(15, PointsCore.playerPoints.pickaxePoints.getPoints(uuid));
+                preparedStatement.setDouble(16, PointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(17, PointsCore.playerPoints.shovelPoints.getPoints(uuid));
+                if(!preparedStatement.execute()) {
+                    Message.debugMessage("An error has occurred during the execution of the mysql save statement.", DebugIntensity.LIGHT);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                Message.debugMessage("An error has occurred due to an SQL Exception.", DebugIntensity.LIGHT);
             }
 
-            if(fishingPoints.containsKey(player)) {
-                fishing = fishingPoints.get(player);
-                fishingPoints.remove(player);
-            }
-
-            if(shovelPoints.containsKey(player)) {
-                shovel = fishingPoints.get(player);
-                shovelPoints.remove(player);
-            }
-
-            loadUtilHashMap.put(player, new SQLLoadUtil(player, name, armor, melee,ranged,tools,hoe,pickaxe,axe,fishing, shovel));
-        }
-
-        hashmapCheck(armorPoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-        hashmapCheck(meleeWeaponPoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-        hashmapCheck(rangedWeaponPoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-
-        hashmapCheck(hoePoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-        hashmapCheck(pickaxePoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-        hashmapCheck(axePoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-        hashmapCheck(fishingPoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-        hashmapCheck(shovelPoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints,fishingPoints, shovelPoints);
-
-        if(!isHashMapEmpty(armorPoints) && !isHashMapEmpty(meleeWeaponPoints) &&!isHashMapEmpty(rangedWeaponPoints)
-        && !isHashMapEmpty(hoePoints) && !isHashMapEmpty(pickaxePoints) &&!isHashMapEmpty(axePoints) &&!isHashMapEmpty(fishingPoints) && !isHashMapEmpty(shovelPoints)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void hashmapCheck(HashMap<String, Double> toCheck, HashMap<String, Double> armorPoints, HashMap<String, Double> meleeWeaponPoints, HashMap<String, Double> rangedWeaponPoints, HashMap<String, Double> hoePoints, HashMap<String, Double> pickaxePoints, HashMap<String, Double> axePoints, HashMap<String, Double> fishingPoints, HashMap<String, Double> shovelPoints) {
-        if(isHashMapEmpty(toCheck)) {
-            saveUtil(toCheck, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints, axePoints, fishingPoints, shovelPoints);
         }
     }
 
     /**
-     * Returns the inverted value of HashMap.isEmpty()
-     * @param hashMap the hashmap to check
-     * @return boolean of true if it is not empty or false if it is
+     * Should only be initiated at the start of the plugin
      */
-    private boolean isHashMapEmpty(HashMap<String, Double> hashMap) {
-        if(hashMap.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-    public void saveData() {
-        //Redefining data for change
-        HashMap<String, Double> armorPoints= PointsCore.playerPoints.armorPoints.getArmorPoints(),
-                meleeWeaponPoints = PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints(),
-                rangedWeaponPoints=PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints(),
-                hoePoints=PointsCore.playerPoints.hoePoints.getHoePoints(),
-                pickaxePoints=PointsCore.playerPoints.pickaxePoints.getPickaxePoints(),
-                axePoints=PointsCore.playerPoints.axePoints.getAxePoints(),
-                fishingPoints=PointsCore.playerPoints.fishingPoints.getFishingPoints(),
-                shovelPoints=PointsCore.playerPoints.shovelPoints.getShovelPoints();
+    public void loadData() {
+        String query = "SELECT * FROM "+ table;
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
 
-        if(saveUtil(armorPoints, armorPoints, meleeWeaponPoints, rangedWeaponPoints, hoePoints, pickaxePoints,axePoints, fishingPoints, shovelPoints)) {
-            //Loaded successfully into loadUtilHashmap
-            for (String player: loadUtilHashMap.keySet()
-                 ) {
-                try {
-                    SQLLoadUtil loadUtil = loadUtilHashMap.get(player);
-                    PreparedStatement preparedStatement = getConnection().prepareStatement("INSERT INTO "+table+" ("+columnUUID+", "+columnName+", "+columnArmorPoints+", "+columnMeleeWeaponPoints+", "+columnRangedWeaponPoints+", "+columnHoePoints+", "+columnPickaxePoints+", "+columnAxePoints+", "+columnFishingPoints+", "+shovelPoints+") VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ON DUPLICATE KEY UPDATE "+columnArmorPoints+" = ?, "+columnMeleeWeaponPoints +" = ?, " +columnRangedWeaponPoints+ "= ?, "+columnToolPoints+"= ?, "+columnHoePoints+"= ?,"+columnPickaxePoints+"= ?,"+ columnAxePoints+"= ?"+columnFishingPoints+"= ?,"+columnShovelPoints+"= ? WHERE "+columnUUID+" = ?");
-                    preparedStatement.setString(1, loadUtil.getUuid());
-                    preparedStatement.setString(2, loadUtil.getPlayerName());
-                    preparedStatement.setDouble(3, loadUtil.getArmorPoints());
-                    preparedStatement.setDouble(4, loadUtil.getMeleeWeaponPoints());
-                    preparedStatement.setDouble(5, loadUtil.getRangedWeaponPoints());
-                    preparedStatement.setDouble(6, loadUtil.getToolPoints());
-                    preparedStatement.setDouble(7, loadUtil.getHoePoints());
-                    preparedStatement.setDouble(8, loadUtil.getPickaxePoints());
-                    preparedStatement.setDouble(9, loadUtil.getAxePoints());
-                    preparedStatement.setDouble(10, loadUtil.getFishingPoints());
-                    preparedStatement.setDouble(11, loadUtil.getShovelPoints());preparedStatement.setDouble(3, loadUtil.getArmorPoints());
-                    preparedStatement.setDouble(12, loadUtil.getMeleeWeaponPoints());
-                    preparedStatement.setDouble(13, loadUtil.getRangedWeaponPoints());
-                    preparedStatement.setDouble(14, loadUtil.getHoePoints());
-                    preparedStatement.setDouble(15, loadUtil.getPickaxePoints());
-                    preparedStatement.setDouble(16, loadUtil.getAxePoints());
-                    preparedStatement.setDouble(17, loadUtil.getFishingPoints());
-                    preparedStatement.setDouble(18, loadUtil.getShovelPoints());
-                    preparedStatement.setString(19, loadUtil.getUuid());
-                    preparedStatement.execute();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+            while (rs.next()) {
+                PointsCore.playerPoints.armorPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnArmor));
+                PointsCore.playerPoints.axePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnAxe));
+                PointsCore.playerPoints.fishingPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnFishing));
+                PointsCore.playerPoints.hoePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnHoe));
+                PointsCore.playerPoints.meleeWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnMelee));
+                PointsCore.playerPoints.pickaxePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnPickaxe));
+                PointsCore.playerPoints.rangedWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnRanged));
+                PointsCore.playerPoints.shovelPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnShovel));
             }
-        } else {
-            //Not all data was loaded, an error has occurred.
-
+            return;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
+
+    /**
+     * A method to get all the uuids to save
+     * @return the uuids to save
+     */
+    public ArrayList<String> getUUIDs() {
+        ArrayList<String> uuids = new ArrayList<>();
+        if(PointsCore.playerPoints.armorPoints.getArmorPoints() != null) {
+            for (String uuid : PointsCore.playerPoints.armorPoints.getArmorPoints().keySet()
+            ) {
+                uuids.add(uuid);
+            }
+        }
+
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.axePoints.getAxePoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.fishingPoints.getFishingPoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.hoePoints.getHoePoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.pickaxePoints.getPickaxePoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints()));
+        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.shovelPoints.getShovelPoints()));
+        return uuids;
+    }
+
+    /**
+     * Checks if the hashmap is null
+     * @param uuids the uuid list
+     * @param map the hashmap to check
+     * @return the uuid list
+     */
+    private ArrayList<String> nullCheck(ArrayList<String> uuids, HashMap<String, Double> map) {
+        if(map == null) {
+            return new ArrayList<String>();
+        } else {
+            return checkUUID(uuids, map.keySet());
+        }
+    }
+
+    /**
+     * Checks if the should be added or if it's already contained
+     * in the keyset
+     * @param uuids the uuids
+     * @param keySet the set of uuids to loop through
+     * @return the uuids to add
+     */
+    private ArrayList<String> checkUUID(ArrayList<String> uuids, Set<String> keySet) {
+        ArrayList<String> uuidsToAdd = new ArrayList<>();
+        for (String uuid: keySet) {
+            if(!uuids.contains(uuid)) {
+                uuidsToAdd.add(uuid);
+            }
+        }
+        return uuidsToAdd;
+    }
+
     private void createTable() {
-        String query="CREATE TABLE IF NOT EXISTS "+ table +
-                " ( " +
-                columnUUID + " UNSIGNED VARCHAR(36) NOT NULL, " +
-                columnName + " VARCHAR(20) NOT NULL, " +
-                columnArmorPoints + " DOUBLE, " +
-                columnMeleeWeaponPoints + " DOUBLE, " +
-                columnRangedWeaponPoints + " DOUBLE, " +
-                columnHoePoints + " DOUBLE, " +
-                columnPickaxePoints + " DOUBLE, " +
-                columnAxePoints + " DOUBLE, " +
-                columnToolPoints + " DOUBLE, " +
-                columnShovelPoints + " DOUBLE, " +
-                columnFishingPoints + " DOUBLE, " +
-                "PRIMARY KEY ( "+columnUUID+" ));";
+        String query = "CREATE TABLE IF NOT EXISTS " + table + " ( "+
+                columnUuid + " VARCHAR (50) NOT NULL, " +
+                columnArmor + " DOUBLE PRECISION, "+
+                columnAxe + " DOUBLE PRECISION, "+
+                columnFishing + " DOUBLE PRECISION, "+
+                columnHoe + " DOUBLE PRECISION, "+
+                columnMelee + " DOUBLE PRECISION, "+
+                columnPickaxe + " DOUBLE PRECISION, "+
+                columnRanged + " DOUBLE PRECISION, "+
+                columnShovel + " DOUBLE PRECISION, PRIMARY KEY ( "+columnUuid+" ))";
         createTable(query);
     }
-
-    
 
     /**
      * Creates a MYSQL table based on a Query
@@ -219,10 +174,10 @@ public class SQLManager {
     private void createTable(String query) {
         checkSQLConnection();
         try {
-            Statement statement = getConnection().createStatement();
-            int numOfRows = statement.executeUpdate(query);
-            if(numOfRows != 0)
-                Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + table + " has been created with "+numOfRows+" rows.");
+            PreparedStatement statement = connection.prepareStatement(query);
+            boolean executed = statement.execute();
+            if(executed)
+                Message.debugMessage(table + " has been created.", DebugIntensity.LIGHT);
         } catch (SQLException e) {
             e.printStackTrace();
         }

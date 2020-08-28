@@ -9,13 +9,11 @@ import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Trident;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 public class WeaponEvent implements Listener {
     ValueUtil valueUtil = new ValueUtil();
@@ -31,12 +29,16 @@ public class WeaponEvent implements Listener {
             incrementHandler(player, incrementValue, tool, event.getEntity());
 
         } else if(event.getDamager() instanceof Arrow ) {
-            //Gets the player
-            Player player = (Player) ((Arrow)event.getDamager()).getShooter();
-            Tools tool = Tools.RANGED_WEAPON;
-            double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
+            ProjectileSource projectileSource = ((Arrow)event.getDamager()).getShooter();
+            //If it is a player (and not a skeleton)
+            if(projectileSource instanceof  Player) {
+                //Gets the player
+                Player player = (Player) ((Arrow) event.getDamager()).getShooter();
+                Tools tool = Tools.RANGED_WEAPON;
+                double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
 
-            incrementHandler(player, incrementValue, tool, event.getEntity());
+                incrementHandler(player, incrementValue, tool, event.getEntity());
+            }
 
         } else if(event.getDamager() instanceof Trident) {
             Player player = (Player) ((Trident)event.getDamager()).getShooter();
