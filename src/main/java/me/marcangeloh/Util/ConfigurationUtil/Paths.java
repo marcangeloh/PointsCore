@@ -131,6 +131,8 @@ public interface Paths {
     String pathSheep =".Sheep";
     String pathTurtle =".Turtle";
     String pathPig = ".Pig";
+    String pathFireball = ".Fireball";
+    String pathDragonFireball = ".DragonFireball";
     String pathOther = ".Other";
     /**
      * SQL Section

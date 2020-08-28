@@ -44,13 +44,23 @@ public class PointCheckCommand implements CommandExecutor {
     }
 
     private String pointsToString(Player player) {
-        return "\n" + ChatColor.DARK_GREEN + PointsCore.playerPoints.shovelPoints.getPoints(player) + ChatColor.GOLD+ " Shovel Points." +
-                "\n" +ChatColor.DARK_GREEN + PointsCore.playerPoints.axePoints.getPoints(player) + ChatColor.GOLD+ " Axe Points."+
-                "\n"+ChatColor.DARK_GREEN + PointsCore.playerPoints.pickaxePoints.getPoints(player) + ChatColor.GOLD+ " Pickaxe Points."+
-                "\n"+ChatColor.DARK_GREEN + PointsCore.playerPoints.hoePoints.getPoints(player) + ChatColor.GOLD+ " Hoe Points."+
-                "\n"+ChatColor.DARK_GREEN + PointsCore.playerPoints.fishingPoints.getPoints(player) + ChatColor.GOLD+ " Fishing Points."+
-                "\n"+ChatColor.DARK_GREEN + PointsCore.playerPoints.armorPoints.getPoints(player) + ChatColor.GOLD+ " Armor Points."+
-                "\n"+ChatColor.DARK_GREEN + PointsCore.playerPoints.meleeWeaponPoints.getPoints(player) + ChatColor.GOLD+ " Melee Weapon Points."+
-                "\n"+ChatColor.DARK_GREEN + PointsCore.playerPoints.rangedWeaponPoints.getPoints(player) + ChatColor.GOLD+ " Ranged Weapon Points.";
+        int decimalPlaces = PointsCore.plugin.getConfig().getInt("Points.PointsDecimalPlaces");
+        String symbol = " "+PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
+
+        return "\n" + ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.shovelPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Shovel Points." +
+                "\n" +ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.axePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Axe Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.pickaxePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Pickaxe Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.hoePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Hoe Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.fishingPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Fishing Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.armorPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Armor Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.meleeWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Melee Weapon Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.rangedWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Ranged Weapon Points.";
+    }
+
+
+
+    public static double roundAvoid(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
     }
 }

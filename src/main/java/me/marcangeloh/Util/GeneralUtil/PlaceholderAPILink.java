@@ -29,48 +29,59 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String s) {
 
+        if(player == null){
+            return "";
+        }
+        int decimalPlaces = PointsCore.plugin.getConfig().getInt("Points.PointsDecimalPlaces");
+        String symbol = " "+PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
         // %armor_points%
         if(s.equals("armor_points")){
-            return PointsCore.playerPoints.armorPoints.getPoints(player) +"";
+            return roundAvoid(PointsCore.playerPoints.armorPoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // %axe_points%
         if(s.equals("axe_points")){
-            return  PointsCore.playerPoints.axePoints.getPoints(player) +"";
+            return  roundAvoid(PointsCore.playerPoints.axePoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // %fishing_points%
         if(s.equals("fishing_points")){
-            return  PointsCore.playerPoints.fishingPoints.getPoints(player) +"";
+            return  roundAvoid(PointsCore.playerPoints.fishingPoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // %hoe_points%
         if(s.equals("hoe_points")){
-            return  PointsCore.playerPoints.hoePoints.getPoints(player) +"";
+            return  roundAvoid(PointsCore.playerPoints.hoePoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // %melee_weapon_points%
         if(s.equals("melee_weapon_points")){
-            return  PointsCore.playerPoints.meleeWeaponPoints.getPoints(player) +"";
+            return  roundAvoid(PointsCore.playerPoints.meleeWeaponPoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // %pickaxe_points%
         if(s.equals("pickaxe_points")){
-            return  PointsCore.playerPoints.pickaxePoints.getPoints(player) +"";
+            return  roundAvoid(PointsCore.playerPoints.pickaxePoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // %ranged_weapon_points%
         if(s.equals("ranged_weapon_points")){
-            return  PointsCore.playerPoints.rangedWeaponPoints.getPoints(player) +"";
+            return  roundAvoid(PointsCore.playerPoints.rangedWeaponPoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // %shovel_points%
         if(s.equals("shovel_points")){
-            return  PointsCore.playerPoints.shovelPoints.getPoints(player) +"";
+            return  roundAvoid(PointsCore.playerPoints.shovelPoints.getPoints(player),decimalPlaces) +symbol;
         }
 
         // We return null if an invalid placeholder (f.e. %example_placeholder3%)
         // was provided
         return null;
     }
+
+    private static double roundAvoid(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
+    }
+    
 }

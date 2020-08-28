@@ -1,9 +1,11 @@
 name: PointsCore
 author: marcangeloh
 api-version: 1.13
-version: 1.0.0-SNAPSHOT
+version: 1.1.1-SNAPSHOT
 description: The Ultimate points plugin with an easy to use API.
 main: me.marcangeloh.PointsCore
+softdepend:
+  - PlaceholderAPI
 commands:
   pointcheck:
     aliases: [pc]

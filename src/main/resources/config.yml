@@ -1,20 +1,9 @@
 Points:
   #Available modes are: INTENSE, LIGHT, NONE
   DebugMode: INTENSE
-  #What are the points enabled for?
-  EnabledFor:
-    RangedWeapons: true
-    MeleeWeapons: true
-    Armor: true
-    Pickaxe: true
-    Shovel: true
-    Axe: true
-    FishingRod: true
-    Hoe: true
-    #What should be the symbol of the points
-    CurrencySymbol: "$"
-    #Should only be enabled if the tools are false
-    Tools: false
+  #What should be the symbol of the points
+  PointsSymbol: "points"
+  PointsDecimalPlaces: 10
   #The Values to add to each tool
   Increment:
     PickaxeValues: #Per Block Mined
@@ -180,6 +169,8 @@ Points:
       Zombie: 0.01
       ZombieVillager: 0.02
       FallDamage: 0.1
+      Fireball: 0.1
+      DragonFireball: 1.0
       Other: 0.01
     Tools: 0.1 #per block broken/fish fished
   #SQL DB settings

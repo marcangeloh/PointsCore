@@ -7,7 +7,7 @@
     <groupId>me.marcangeloh</groupId>
     <artifactId>PointsCore</artifactId>
     <packaging>jar</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -52,11 +52,6 @@
             <version>2.8.7</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-model</artifactId>
-            <version>3.3.9</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -69,7 +64,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>me.marcangeloh.Util</shadedPattern>
+                            <shadedPattern>me.marcangeloh</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

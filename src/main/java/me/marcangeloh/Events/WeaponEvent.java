@@ -46,7 +46,7 @@ public class WeaponEvent implements Listener {
             double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
 
             incrementHandler(player, incrementValue, tool, event.getEntity());
-            /**Armor Event**/
+        /**Armor Event**/
         } else if (event.getEntity() instanceof Player) {
             //Player got damaged by entity
             Player player = (Player) event.getEntity();
@@ -94,10 +94,10 @@ public class WeaponEvent implements Listener {
      * @param toolType The type of tool to add the points to
      */
     private void addPoints(Player player, Double incrementValue, Tools toolType) {
-        if(toolType.equals(Tools.ARMOR)) {
-            Message.debugMessage("Added "+ incrementValue + " armor points to "+player.getName(), DebugIntensity.INTENSE);
-            PointsCore.playerPoints.armorPoints.addPointsToPlayer(player,incrementValue);
-        } else if(toolType.equals(Tools.MELEE_WEAPON)) {
+        if (toolType.equals(Tools.ARMOR)) {
+            Message.debugMessage("Added " + incrementValue + " armor points to " + player.getName(), DebugIntensity.INTENSE);
+            PointsCore.playerPoints.armorPoints.addPointsToPlayer(player, incrementValue);
+        }else if(toolType.equals(Tools.MELEE_WEAPON)) {
             Message.debugMessage("Added "+ incrementValue + " melee weapon points to "+player.getName(), DebugIntensity.INTENSE);
             PointsCore.playerPoints.meleeWeaponPoints.addPointsToPlayer(player,incrementValue);
         } else if(toolType.equals(Tools.RANGED_WEAPON)) {

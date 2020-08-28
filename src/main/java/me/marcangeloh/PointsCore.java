@@ -2,24 +2,24 @@ package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.Commands.PointCheckCommand;
+import me.marcangeloh.Events.ArmorEvent;
 import me.marcangeloh.Events.ToolEvents;
 import me.marcangeloh.Events.WeaponEvent;
 import me.marcangeloh.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.Util.GeneralUtil.Message;
+import me.marcangeloh.Util.GeneralUtil.PlaceholderAPILink;
 import me.marcangeloh.Util.SQLUtil.SQLManager;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 
 
@@ -32,7 +32,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     public String server_version;
     public static boolean is1_16 = false;
     public static DebugIntensity serverDebugIntensity;
-    public static String pluginVersion;
+    public final static String pluginVersion ="1.1.1-SNAPSHOT";
 
 
     public void onDisable() {
@@ -44,26 +44,44 @@ public class PointsCore extends JavaPlugin implements Paths {
     }
 
     public void onEnable() {
-        setupPluginVersion();
         basicSetup();
         savingSetup();
         registerEvents();
+        performPluginHooks(); //Hooking into other plugins
         getCommand("pointcheck").setExecutor(new PointCheckCommand());
+        updateChecker();
     }
 
-    private void setupPluginVersion() {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = null;
+    private void updateChecker() {
         try {
-            model = reader.read(new FileReader("pom.xml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
+            HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
+            c.setDoOutput(true);
+            c.setRequestMethod("POST");
+            c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=83263").getBytes("UTF-8"));
+            String oldVersion = this.getDescription().getVersion();
+            String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
+            if(!newVersion.equals(oldVersion)) {
+                //there is a new version
+                Message.notifyMessage("A new version is available for download on spigotmc, your version is "+oldVersion +" the newest version is "+newVersion+".", getServer().getConsoleSender());
+            }
         }
-        pluginVersion = model.getVersion();
+        catch(Exception e) {
+            //update failed, most likely to spigot being down or the server not having internet connection
+            Message.errorMessage("Could not check for latest update! Most likely due to no internet connection or spigot servers being down.", getServer().getConsoleSender());
+        }
     }
 
+    private void performPluginHooks() {
+        //PlaceholderAPI Hook
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceholderAPILink().register();
+        }
+
+    }
+
+    /**
+     * Handles the basic setup for the server
+     */
     private void basicSetup() {
         int pluginId = 8682;
         Metrics metrics = new Metrics(this, pluginId);
@@ -73,6 +91,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         setupVersion();
         serverDebugIntensity = getDebugIntensity();
     }
+
 
     private void savingSetup() {
         //If SQL is not enabled Initiates the data from the config and loads it
@@ -87,11 +106,11 @@ public class PointsCore extends JavaPlugin implements Paths {
                 sqlManager.loadData();
             } catch (SQLException e) {
                 e.printStackTrace();
-                errorMessage("SQL Was not successfully enabled, the details input must be incorrect.");
+                Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
                 isMySQLEnabled = false;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                errorMessage("SQL Was not successfully enabled, the details input must be incorrect.");
+                Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
                 isMySQLEnabled = false;
             }
 
@@ -109,14 +128,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new WeaponEvent(), this); //Registers the armor points events
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
-    }
-
-    /**
-     * Prints out an error message
-     * @param errorMessage the error message to print out
-     */
-    public void errorMessage(String errorMessage) {
-        Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + errorMessage, getServer().getConsoleSender());
+        getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the tool points events
     }
 
 

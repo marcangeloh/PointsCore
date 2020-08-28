@@ -445,6 +445,11 @@ public class ValueUtil implements Paths {
                 return plugin.getConfig().getDouble(tool+pathPig);
             case TURTLE:
                 return plugin.getConfig().getDouble(tool+pathTurtle);
+            case FIREBALL:
+            case SMALL_FIREBALL:
+                return  plugin.getConfig().getDouble(tool+pathFireball );
+            case DRAGON_FIREBALL:
+                return  plugin.getConfig().getDouble(tool+pathDragonFireball );
             default:
                 Message.debugMessage("There is a missing entity in getConfigValue() =>  ValueUtil, the missing entity is:\n"+entity.name(), DebugIntensity.LIGHT);
                 return plugin.getConfig().getDouble(tool+pathOther);
