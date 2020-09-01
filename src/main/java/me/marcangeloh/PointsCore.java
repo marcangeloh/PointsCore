@@ -2,6 +2,7 @@ package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.Commands.PointCheckCommand;
+import me.marcangeloh.Commands.PointsCoreCommands;
 import me.marcangeloh.Events.ArmorEvent;
 import me.marcangeloh.Events.ToolEvents;
 import me.marcangeloh.Events.WeaponEvent;
@@ -10,9 +11,11 @@ import me.marcangeloh.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.GeneralUtil.PlaceholderAPILink;
+import me.marcangeloh.Util.GeneralUtil.Tools;
 import me.marcangeloh.Util.SQLUtil.SQLManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,7 +52,16 @@ public class PointsCore extends JavaPlugin implements Paths {
         registerEvents();
         performPluginHooks(); //Hooking into other plugins
         getCommand("pointcheck").setExecutor(new PointCheckCommand());
+        getCommand("points").setExecutor(new PointsCoreCommands());
         updateChecker();
+    }
+
+    public void removePoints(Tools tool, Player player, double amount) {
+        playerPoints.removePointsToToolType(tool,player,amount);
+    }
+
+    public void addPoints(Tools tool, Player player, double amount) {
+        playerPoints.addPointsToToolType(tool,player,amount);
     }
 
     private void updateChecker() {

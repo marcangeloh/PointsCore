@@ -4,10 +4,8 @@ import me.marcangeloh.PointsCore;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.GeneralUtil.Tools;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.marcangeloh</groupId>
   <artifactId>PointsCore</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.2</version>
   <build>
     <plugins>
       <plugin>
@@ -51,8 +51,8 @@
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>
 
