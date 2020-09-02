@@ -1,18 +1,51 @@
 # PointsCore
 An open- and (hopefully) easy to use API for a neat point system in Minecraft Servers
 
-The PointsCore plugin aims to create a nice and easy to use api for a brand new point system in minecraft. It abstracts all tools and weapon types, and
-based on their usage, adds a configurable amount of points to each user. In the future, I plan to create a cryptocurrency to allow players to actually
-be paid out in real money. This will be linked to this points plugin, in order to redeem real-life rewards.
+**Quick integration (Maven)**:
+```xml
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
 
-Furthermore, a secondary plan with this plugin is to re-create the "UpgraeableTools" plugin with more addded functionality and an optional additional jar
-For custom enchantments which allows a player to upgrade his tools based on the points that the player has accumulated for that particular tool. 
+<dependency>
+    <groupId>com.github.marcangeloh</groupId>
+    <artifactId>PointsCore</artifactId>
+    <version>LATEST</version>
+</dependency>
+```
 
-Lastly the plan with points core is to allow server owners to have a new kind of economy system that rewards players for actively playing on your server.
-This is due to the fact that they will have to use their tools and thus will be able to earn points this way.
+After importing the project through maven include this to access the points:
+```java
+PointsCore pointsCore = (PointsCore) YourPlugin.getServer().getPluginManager().getPlugin("PointsCore");
+```
 
-The possibilities are endless with this plugin and hopefully will be adopted by many devs and server owners in the future. Seen as this is a huge project
-I will require a lot of assistance in it. Therefore if you are a developer, and are interested in working with me on this huge plan, feel free to write
-to me on discord in a dm and i'll be sure to add you to the list of contributors.
+To alter the points there are two methods, remove and add, which both return a boolean
+to check on their success:
+```java
+//To remove points
+pointsCore.playerPoints.removePointsToToolType(Tools tool, Player player, double amount);
+//To add points
+pointsCore.playerPoints.addPointsToToolType(Tools tool, Player player, double amount);
+```
 
-Thanks for reading, I hope this plugin will bring some good to the spigot community.
+If you don't want to check through each tool yourself to get the toolType, you can
+Use the ValueUtil class:
+```java
+Tools tool = new ValueUtil().getToolType(Material tool);
+```
+**How to use placeholderAPI?**
+Just install the plugin and it should automatically add all of the points,
+If you require a list of all points and their placeholders you may find them,
+on the wiki.
+
+**Saving and loading the points:**
+This is done automatically by PointsCore, you don't have to save or load anything!
+
+**Further Reading:**
+You can check out the wiki for a more in-depth guide to the possibilities of PointsCore!
+
+**Support:**
+Currently I offer two forms of support, through my discord channel (Faster support):
+https://discord.gg/qEhF9rA
+Or directly on here by creating an issue.
