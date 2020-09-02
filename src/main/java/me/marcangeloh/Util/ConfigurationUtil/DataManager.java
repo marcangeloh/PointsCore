@@ -19,7 +19,7 @@ public class DataManager {
 
     private File playerFiles;
     private FileConfiguration fileConfig;
-    
+    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
 
     public void onEnable(Plugin plugin) {
         playerFiles = new File(plugin.getDataFolder(), "data.yml");
@@ -42,21 +42,21 @@ public class DataManager {
 
     public void saveAll() {
         ArrayList<String> uuids = new ArrayList<>();
-        if(PointsCore.playerPoints.armorPoints.getArmorPoints() != null) {
-            for (String uuid : PointsCore.playerPoints.armorPoints.getArmorPoints().keySet()
+        if(pointsCore.playerPoints.armorPoints.getArmorPoints() != null) {
+            for (String uuid : pointsCore.playerPoints.armorPoints.getArmorPoints().keySet()
             ) {
                 uuids.add(uuid);
                 addUUIDToSaveFile(uuid);
             }
         }
 
-        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.axePoints.getAxePoints()));
-        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.fishingPoints.getFishingPoints()));
-        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.hoePoints.getHoePoints()));
-        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints()));
-        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.pickaxePoints.getPickaxePoints()));
-        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints()));
-        uuids.addAll(nullCheck(uuids, PointsCore.playerPoints.shovelPoints.getShovelPoints()));
+        uuids.addAll(nullCheck(uuids, pointsCore.playerPoints.axePoints.getAxePoints()));
+        uuids.addAll(nullCheck(uuids, pointsCore.playerPoints.fishingPoints.getFishingPoints()));
+        uuids.addAll(nullCheck(uuids, pointsCore.playerPoints.hoePoints.getHoePoints()));
+        uuids.addAll(nullCheck(uuids, pointsCore.playerPoints.meleeWeaponPoints.getMeleeWeaponPoints()));
+        uuids.addAll(nullCheck(uuids, pointsCore.playerPoints.pickaxePoints.getPickaxePoints()));
+        uuids.addAll(nullCheck(uuids, pointsCore.playerPoints.rangedWeaponPoints.getRangedWeaponPoints()));
+        uuids.addAll(nullCheck(uuids, pointsCore.playerPoints.shovelPoints.getShovelPoints()));
 
     }
 
@@ -86,21 +86,21 @@ public class DataManager {
 
     public void addUUIDToSaveFile(String uuid) {
         fileConfig.set(uuid+Paths.pathRangedWeaponPoints,
-                PointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
+                pointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
         fileConfig.set(uuid+Paths.pathMeleeWeaponPoints,
-                PointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
+                pointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
         fileConfig.set(uuid+Paths.pathArmorPoints,
-                PointsCore.playerPoints.armorPoints.getPoints(uuid));
+                pointsCore.playerPoints.armorPoints.getPoints(uuid));
         fileConfig.set(uuid+Paths.pathAxePoints,
-                PointsCore.playerPoints.axePoints.getPoints(uuid));
+                pointsCore.playerPoints.axePoints.getPoints(uuid));
         fileConfig.set(uuid+Paths.pathFishingRodPoints,
-                PointsCore.playerPoints.fishingPoints.getPoints(uuid));
+                pointsCore.playerPoints.fishingPoints.getPoints(uuid));
         fileConfig.set(uuid+Paths.pathHoePoints,
-                PointsCore.playerPoints.hoePoints.getPoints(uuid));
+                pointsCore.playerPoints.hoePoints.getPoints(uuid));
         fileConfig.set(uuid+Paths.pathPickaxePoints,
-                PointsCore.playerPoints.pickaxePoints.getPoints(uuid));
+                pointsCore.playerPoints.pickaxePoints.getPoints(uuid));
         fileConfig.set(uuid+Paths.pathShovelPoints,
-                PointsCore.playerPoints.shovelPoints.getPoints(uuid));
+                pointsCore.playerPoints.shovelPoints.getPoints(uuid));
         try {
             fileConfig.save(playerFiles);
         } catch (IOException e) {

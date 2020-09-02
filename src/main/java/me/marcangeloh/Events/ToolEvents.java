@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class ToolEvents implements Listener {
     private ValueUtil valueUtil = new ValueUtil();
-
+    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
 
     /**
      * Adds the points to the proper tool
@@ -31,26 +31,26 @@ public class ToolEvents implements Listener {
      */
     private void addPoints(Player player, Double incrementValue, Tools toolType) {
         UUID uuid = player.getUniqueId();
-        if(PointsCore.playerPoints.multiplierMap.containsKey(uuid)) {
-            if(PointsCore.playerPoints.multiplierMap.get(uuid).isStillValid()) {
-                incrementValue = incrementValue*PointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
+        if(pointsCore.playerPoints.multiplierMap.containsKey(uuid)) {
+            if(pointsCore.playerPoints.multiplierMap.get(uuid).isStillValid()) {
+                incrementValue = incrementValue*pointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
             }
         }
         if(toolType.equals(Tools.AXE)) {
             Message.debugMessage("Added points to axe value=" + incrementValue, DebugIntensity.INTENSE);
-            PointsCore.playerPoints.axePoints.addPointsToPlayer(player, incrementValue);
+            pointsCore.playerPoints.axePoints.addPointsToPlayer(player, incrementValue);
         } else if (toolType.equals(Tools.SHOVEL)) {
             Message.debugMessage("Added points to shovel value=" + incrementValue, DebugIntensity.INTENSE);
-            PointsCore.playerPoints.shovelPoints.addPointsToPlayer(player, incrementValue);
+            pointsCore.playerPoints.shovelPoints.addPointsToPlayer(player, incrementValue);
         } else if (toolType.equals(Tools.PICKAXE)) {
             Message.debugMessage("Added points to pickaxe value=" + incrementValue, DebugIntensity.INTENSE);
-            PointsCore.playerPoints.pickaxePoints.addPointsToPlayer(player, incrementValue);
+            pointsCore.playerPoints.pickaxePoints.addPointsToPlayer(player, incrementValue);
         } else if(toolType.equals(Tools.FISH_ROD)) {
             Message.debugMessage("Added points to fishing value=" + incrementValue, DebugIntensity.INTENSE);
-            PointsCore.playerPoints.fishingPoints.addPointsToPlayer(player,incrementValue);
+            pointsCore.playerPoints.fishingPoints.addPointsToPlayer(player,incrementValue);
         } else if(toolType.equals(Tools.HOE)) {
             Message.debugMessage("Added points to hoe value=" + incrementValue, DebugIntensity.INTENSE);
-            PointsCore.playerPoints.hoePoints.addPointsToPlayer(player,incrementValue);
+            pointsCore.playerPoints.hoePoints.addPointsToPlayer(player,incrementValue);
         }
     }
 

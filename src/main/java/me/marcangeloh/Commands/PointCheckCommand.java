@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class PointCheckCommand implements CommandExecutor {
+    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String lbl, String[] args) {
         if(args.length == 0 && !(sender instanceof  Player)) {
@@ -47,14 +48,14 @@ public class PointCheckCommand implements CommandExecutor {
         int decimalPlaces = PointsCore.plugin.getConfig().getInt("Points.PointsDecimalPlaces");
         String symbol = " "+PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
 
-        return "\n" + ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.shovelPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Shovel Points." +
-                "\n" +ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.axePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Axe Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.pickaxePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Pickaxe Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.hoePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Hoe Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.fishingPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Fishing Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.armorPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Armor Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.meleeWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Melee Weapon Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(PointsCore.playerPoints.rangedWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Ranged Weapon Points.";
+        return "\n" + ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.shovelPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Shovel Points." +
+                "\n" +ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.axePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Axe Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.pickaxePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Pickaxe Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.hoePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Hoe Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.fishingPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Fishing Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.armorPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Armor Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.meleeWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Melee Weapon Points."+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.rangedWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Ranged Weapon Points.";
     }
 
 

@@ -19,6 +19,8 @@ import java.util.UUID;
 
 public class ArmorEvent implements Listener {
 
+    PointsCore pointsCore = (PointsCore) PointsCore.plugin; 
+    
     ValueUtil valueUtil = new ValueUtil();
 
     @EventHandler
@@ -60,14 +62,14 @@ public class ArmorEvent implements Listener {
      */
     private void addPoints(Player player, Double incrementValue, Tools toolType) {
         UUID uuid = player.getUniqueId();
-        if(PointsCore.playerPoints.multiplierMap.containsKey(uuid)) {
-            if(PointsCore.playerPoints.multiplierMap.get(uuid).isStillValid()) {
-                incrementValue = incrementValue*PointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
+        if(pointsCore.playerPoints.multiplierMap.containsKey(uuid)) {
+            if(pointsCore.playerPoints.multiplierMap.get(uuid).isStillValid()) {
+                incrementValue = incrementValue*pointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
             }
         }
         if (toolType.equals(Tools.ARMOR)) {
             Message.debugMessage("Added " + incrementValue + " armor points to " + player.getName(), DebugIntensity.INTENSE);
-            PointsCore.playerPoints.armorPoints.addPointsToPlayer(player, incrementValue);
+            pointsCore.playerPoints.armorPoints.addPointsToPlayer(player, incrementValue);
         }
     }
 

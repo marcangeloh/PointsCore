@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import javax.swing.*;
 
 public class PointsCoreCommands implements CommandExecutor {
+    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String lbl, String[] args) {
         if(!command.getName().equalsIgnoreCase("points")) {
@@ -64,26 +66,26 @@ public class PointsCoreCommands implements CommandExecutor {
         if(args[0].equalsIgnoreCase("add") ||args[0].equalsIgnoreCase("increase")||args[0].equalsIgnoreCase("increment")) {
 
             if(args[2].equalsIgnoreCase("shovel") ||args[2].equalsIgnoreCase("spade")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.SHOVEL, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.SHOVEL, player, amount);
             } else if(args[2].equalsIgnoreCase("ranged") ||args[2].equalsIgnoreCase("rangedweapons")||args[2].equalsIgnoreCase("rw")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.RANGED_WEAPON, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.RANGED_WEAPON, player, amount);
             }else if(args[2].equalsIgnoreCase("pick") ||args[2].equalsIgnoreCase("pickaxe")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.PICKAXE, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.PICKAXE, player, amount);
             }else if(args[2].equalsIgnoreCase("melee") ||args[2].equalsIgnoreCase("meleeweapons")||args[2].equalsIgnoreCase("mw")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.MELEE_WEAPON, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.MELEE_WEAPON, player, amount);
             }else if(args[2].equalsIgnoreCase("hoe")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.HOE, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.HOE, player, amount);
             }else if(args[2].equalsIgnoreCase("fishing")||args[2].equalsIgnoreCase("fish")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.FISH_ROD, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.FISH_ROD, player, amount);
             }else if(args[2].equalsIgnoreCase("axe")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.AXE, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.AXE, player, amount);
             }else if(args[2].equalsIgnoreCase("armor")
                     ||args[2].equalsIgnoreCase("chestplate")
                     ||args[2].equalsIgnoreCase("helmet")
                     ||args[2].equalsIgnoreCase("leggings")
                     ||args[2].equalsIgnoreCase("protection")
                     ||args[2].equalsIgnoreCase("boots")) {
-                PointsCore.playerPoints.addPointsToToolType(Tools.ARMOR, player, amount);
+                pointsCore.playerPoints.addPointsToToolType(Tools.ARMOR, player, amount);
             }
 
             return true;
@@ -91,26 +93,26 @@ public class PointsCoreCommands implements CommandExecutor {
         if(args[0].equalsIgnoreCase("remove") ||args[0].equalsIgnoreCase("subtract")||args[0].equalsIgnoreCase("sub")) {
 
             if(args[2].equalsIgnoreCase("shovel") ||args[2].equalsIgnoreCase("spade")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.SHOVEL, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.SHOVEL, player, amount);
             } else if(args[2].equalsIgnoreCase("ranged") ||args[2].equalsIgnoreCase("rangedweapons")||args[2].equalsIgnoreCase("rw")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.RANGED_WEAPON, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.RANGED_WEAPON, player, amount);
             }else if(args[2].equalsIgnoreCase("pick") ||args[2].equalsIgnoreCase("pickaxe")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.PICKAXE, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.PICKAXE, player, amount);
             }else if(args[2].equalsIgnoreCase("melee") ||args[2].equalsIgnoreCase("meleeweapons")||args[2].equalsIgnoreCase("mw")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.MELEE_WEAPON, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.MELEE_WEAPON, player, amount);
             }else if(args[2].equalsIgnoreCase("hoe")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.HOE, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.HOE, player, amount);
             }else if(args[2].equalsIgnoreCase("fishing")||args[2].equalsIgnoreCase("fish")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.FISH_ROD, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.FISH_ROD, player, amount);
             }else if(args[2].equalsIgnoreCase("axe")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.AXE, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.AXE, player, amount);
             }else if(args[2].equalsIgnoreCase("armor")
                     ||args[2].equalsIgnoreCase("chestplate")
                     ||args[2].equalsIgnoreCase("helmet")
                     ||args[2].equalsIgnoreCase("leggings")
                     ||args[2].equalsIgnoreCase("protection")
                     ||args[2].equalsIgnoreCase("boots")) {
-                PointsCore.playerPoints.removePointsToToolType(Tools.ARMOR, player, amount);
+                pointsCore.playerPoints.removePointsToToolType(Tools.ARMOR, player, amount);
             }
 
 
@@ -120,11 +122,11 @@ public class PointsCoreCommands implements CommandExecutor {
         }
 
         if(args[0].equalsIgnoreCase("multiplier")||args[0].equalsIgnoreCase("multi")) {
-            if(PointsCore.playerPoints.multiplierMap.containsKey(player.getUniqueId())) {
-                PointsCore.playerPoints.multiplierMap.get(player.getUniqueId()).setEndTime(args[2]);
-                PointsCore.playerPoints.multiplierMap.get(player.getUniqueId()).setMultiplier(amount);
+            if(pointsCore.playerPoints.multiplierMap.containsKey(player.getUniqueId())) {
+                pointsCore.playerPoints.multiplierMap.get(player.getUniqueId()).setEndTime(args[2]);
+                pointsCore.playerPoints.multiplierMap.get(player.getUniqueId()).setMultiplier(amount);
             } else{
-                PointsCore.playerPoints.multiplierMap.put(player.getUniqueId(), new CooldownUtil(args[2], amount));
+                pointsCore.playerPoints.multiplierMap.put(player.getUniqueId(), new CooldownUtil(args[2], amount));
             }
             return true;
         }

@@ -31,7 +31,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     private boolean isMySQLEnabled = false;
     private SQLManager sqlManager;
     public static Plugin plugin;
-    public static PlayerPoints playerPoints;
+    public PlayerPoints playerPoints;
     public String server_version;
     public static boolean is1_16 = false;
     public static DebugIntensity serverDebugIntensity;
@@ -69,7 +69,7 @@ public class PointsCore extends JavaPlugin implements Paths {
             HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
             c.setDoOutput(true);
             c.setRequestMethod("POST");
-            c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=83263").getBytes("UTF-8"));
+            c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=pointscore.83263").getBytes("UTF-8"));
             String oldVersion = this.getDescription().getVersion();
             String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
             if(!newVersion.equals(oldVersion)) {
