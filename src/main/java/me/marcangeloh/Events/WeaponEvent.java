@@ -2,7 +2,6 @@ package me.marcangeloh.Events;
 
 import me.marcangeloh.API.Events.PlayerDamageByEntityEvent;
 import me.marcangeloh.API.Events.PlayerDamageEntityEvent;
-import me.marcangeloh.API.Events.PlayerHoeBlockEvent;
 import me.marcangeloh.PointsCore;
 import me.marcangeloh.Util.ConfigurationUtil.ValueUtil;
 import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
@@ -14,6 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.projectiles.ProjectileSource;
+
+import java.util.UUID;
 
 public class WeaponEvent implements Listener {
     ValueUtil valueUtil = new ValueUtil();
@@ -94,6 +95,12 @@ public class WeaponEvent implements Listener {
      * @param toolType The type of tool to add the points to
      */
     private void addPoints(Player player, Double incrementValue, Tools toolType) {
+        UUID uuid = player.getUniqueId();
+        if(PointsCore.playerPoints.multiplierMap.containsKey(uuid)) {
+            if(PointsCore.playerPoints.multiplierMap.get(uuid).isStillValid()) {
+                incrementValue = incrementValue*PointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
+            }
+        }
         if (toolType.equals(Tools.ARMOR)) {
             Message.debugMessage("Added " + incrementValue + " armor points to " + player.getName(), DebugIntensity.INTENSE);
             PointsCore.playerPoints.armorPoints.addPointsToPlayer(player, incrementValue);

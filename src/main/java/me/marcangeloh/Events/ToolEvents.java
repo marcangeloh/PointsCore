@@ -17,6 +17,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.UUID;
+
 public class ToolEvents implements Listener {
     private ValueUtil valueUtil = new ValueUtil();
 
@@ -28,6 +30,12 @@ public class ToolEvents implements Listener {
      * @param toolType the tool used
      */
     private void addPoints(Player player, Double incrementValue, Tools toolType) {
+        UUID uuid = player.getUniqueId();
+        if(PointsCore.playerPoints.multiplierMap.containsKey(uuid)) {
+            if(PointsCore.playerPoints.multiplierMap.get(uuid).isStillValid()) {
+                incrementValue = incrementValue*PointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
+            }
+        }
         if(toolType.equals(Tools.AXE)) {
             Message.debugMessage("Added points to axe value=" + incrementValue, DebugIntensity.INTENSE);
             PointsCore.playerPoints.axePoints.addPointsToPlayer(player, incrementValue);

@@ -2,6 +2,7 @@ package me.marcangeloh.Commands;
 
 import me.marcangeloh.API.PointsUtil.DetailedPoints.Points;
 import me.marcangeloh.PointsCore;
+import me.marcangeloh.Util.GeneralUtil.CooldownUtil;
 import me.marcangeloh.Util.GeneralUtil.Message;
 import me.marcangeloh.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
@@ -112,8 +113,19 @@ public class PointsCoreCommands implements CommandExecutor {
                 PointsCore.playerPoints.removePointsToToolType(Tools.ARMOR, player, amount);
             }
 
-            Message.notifyMessage("Successfully added " + amount+ args[2]+" to "+ args[1], sender);
-            Message.notifyMessage("You have received " + amount+ args[2]+" from "+sender.getName(), player);
+
+            Message.notifyMessage("Successfully removed " + amount+ args[2]+" from "+ args[1], sender);
+            Message.notifyMessage("You have lost " + amount+ args[2]+" from "+sender.getName(), player);
+            return true;
+        }
+
+        if(args[0].equalsIgnoreCase("multiplier")||args[0].equalsIgnoreCase("multi")) {
+            if(PointsCore.playerPoints.multiplierMap.containsKey(player.getUniqueId())) {
+                PointsCore.playerPoints.multiplierMap.get(player.getUniqueId()).setEndTime(args[2]);
+                PointsCore.playerPoints.multiplierMap.get(player.getUniqueId()).setMultiplier(amount);
+            } else{
+                PointsCore.playerPoints.multiplierMap.put(player.getUniqueId(), new CooldownUtil(args[2], amount));
+            }
             return true;
         }
         return false;
@@ -122,6 +134,7 @@ public class PointsCoreCommands implements CommandExecutor {
     private void sendHelpMessage(CommandSender sender) {
         Message.notifyMessage("To use points core you can use the following commands", sender);
         Message.notifyMessage("/points add <player> <type> <amount>", sender);
+        Message.notifyMessage("/points multiplier <player> <duration> <amount>", sender);
         Message.notifyMessage("/points remove <player> <type> <amount>", sender);
         Message.notifyMessage("/points reload", sender);
         Message.notifyMessage("/points help", sender);

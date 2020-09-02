@@ -1,10 +1,13 @@
 package me.marcangeloh.API.PointsUtil;
 
 import me.marcangeloh.API.PointsUtil.DetailedPoints.*;
+import me.marcangeloh.Util.GeneralUtil.CooldownUtil;
 import me.marcangeloh.Util.GeneralUtil.Tools;
 import org.bukkit.entity.Player;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.UUID;
 
 public final class PlayerPoints implements Serializable {
     public ArmorPoints armorPoints = new ArmorPoints();
@@ -15,11 +18,18 @@ public final class PlayerPoints implements Serializable {
     public PickaxePoints pickaxePoints = new PickaxePoints();
     public RangedWeaponPoints rangedWeaponPoints = new RangedWeaponPoints();
     public ShovelPoints shovelPoints = new ShovelPoints();
+    public HashMap<UUID, CooldownUtil> multiplierMap = new HashMap<>();
 
-    public boolean addPointsToToolType(Tools tool, Player player, double amount) {
+    public boolean addPointsToToolType(Tools tool, Player player, double amountNoMultiplier) {
+        double amount = amountNoMultiplier;
+        UUID uuid = player.getUniqueId();
+        if(multiplierMap.containsKey(uuid)) {
+            amount = amount * multiplierMap.get(uuid).getMultiplierAmount();
+        }
+        
         switch (tool) {
             case PICKAXE:
-                pickaxePoints.addPointsToPlayer(player,amount);
+                pickaxePoints.addPointsToPlayer(player, amount);
                 return true;
             case SHOVEL:
                 shovelPoints.addPointsToPlayer(player,amount);

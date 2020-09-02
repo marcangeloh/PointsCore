@@ -15,6 +15,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.util.UUID;
+
 public class ArmorEvent implements Listener {
 
     ValueUtil valueUtil = new ValueUtil();
@@ -57,30 +59,16 @@ public class ArmorEvent implements Listener {
      * @param toolType The type of tool to add the points to
      */
     private void addPoints(Player player, Double incrementValue, Tools toolType) {
+        UUID uuid = player.getUniqueId();
+        if(PointsCore.playerPoints.multiplierMap.containsKey(uuid)) {
+            if(PointsCore.playerPoints.multiplierMap.get(uuid).isStillValid()) {
+                incrementValue = incrementValue*PointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
+            }
+        }
         if (toolType.equals(Tools.ARMOR)) {
             Message.debugMessage("Added " + incrementValue + " armor points to " + player.getName(), DebugIntensity.INTENSE);
             PointsCore.playerPoints.armorPoints.addPointsToPlayer(player, incrementValue);
         }
     }
 
-    /**
-     * A method to handle the incrementation and the call of the
-     * Custom event
-     * @param player The player to increment the points of
-     * @param incrementValue The amount to increment
-     * @param tool The tool to increment the value of
-     * @param entity The entity that received the damage
-     */
-    private void incrementHandler(Player player, double incrementValue, Tools tool, Entity entity) {
-        //Calling the custom event
-        PlayerDamageEntityEvent playerDamageEntityEvent = new PlayerDamageEntityEvent(player, entity, tool);
-        Bukkit.getPluginManager().callEvent(playerDamageEntityEvent);
-
-        if(playerDamageEntityEvent.isCancelled()) {
-            //If the event was cancelled stop adding points to the player
-            return;
-        }
-
-        addPoints(player, incrementValue, tool);
-    }
 }
