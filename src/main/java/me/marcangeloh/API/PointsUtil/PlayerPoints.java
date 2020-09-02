@@ -16,65 +16,65 @@ public final class PlayerPoints implements Serializable {
     public RangedWeaponPoints rangedWeaponPoints = new RangedWeaponPoints();
     public ShovelPoints shovelPoints = new ShovelPoints();
 
-    public void addPointsToToolType(Tools tool, Player player, double amount) {
+    public boolean addPointsToToolType(Tools tool, Player player, double amount) {
         switch (tool) {
             case PICKAXE:
                 pickaxePoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             case SHOVEL:
                 shovelPoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             case AXE:
                 axePoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             case HOE:
                 hoePoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             case ARMOR:
                 armorPoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             case RANGED_WEAPON:
                 rangedWeaponPoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             case FISH_ROD:
                 fishingPoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             case MELEE_WEAPON:
                 meleeWeaponPoints.addPointsToPlayer(player,amount);
-                break;
+                return true;
             default:
-                return;
+                return false;
         }
     }
 
-    public void removePointsToToolType(Tools tool, Player player, double amount) {
+    public boolean removePointsToToolType(Tools tool, Player player, double amount) {
         switch (tool) {
             case PICKAXE:
                 pickaxePoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             case SHOVEL:
                 shovelPoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             case AXE:
                 axePoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             case HOE:
                 hoePoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             case ARMOR:
                 armorPoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             case RANGED_WEAPON:
                 rangedWeaponPoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             case FISH_ROD:
                 fishingPoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             case MELEE_WEAPON:
                 meleeWeaponPoints.removePointsFromPlayer(player,amount);
-                break;
+                return true;
             default:
-                return;
+                return false;
         }
     }
 }
