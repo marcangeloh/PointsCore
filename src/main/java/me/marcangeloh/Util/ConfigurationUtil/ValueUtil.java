@@ -17,43 +17,33 @@ public class ValueUtil implements Paths {
     }
 
     private Tools getToolTypeByVersion(Material tool) {
-        if(PointsCore.is1_16) {
-            if (tool.equals(Material.NETHERITE_AXE)) {
-                return Tools.AXE;
-            } else if(tool.equals(Material.NETHERITE_PICKAXE)) {
-                return Tools.PICKAXE;
-            } else if (tool.equals(Material.NETHERITE_SHOVEL)) {
-                return Tools.SHOVEL;
-            } else if (tool.equals(Material.NETHERITE_HOE)) {
-                return Tools.HOE;
-            } else if(tool.equals(Material.NETHERITE_SWORD)) {
-                return Tools.MELEE_WEAPON;
-            }
-        }
-
         if(tool.equals(Material.DIAMOND_AXE) ||
                 tool.equals(Material.GOLDEN_AXE) ||
                 tool.equals(Material.IRON_AXE) ||
                 tool.equals(Material.STONE_AXE) ||
-                tool.equals(Material.WOODEN_AXE)) {
+                tool.equals(Material.WOODEN_AXE)||
+                tool.equals(Material.NETHERITE_AXE)) {
             return Tools.AXE;
         } else if(tool.equals(Material.DIAMOND_PICKAXE) ||
                 tool.equals(Material.GOLDEN_PICKAXE) ||
                 tool.equals(Material.IRON_PICKAXE) ||
                 tool.equals(Material.STONE_PICKAXE) ||
-                tool.equals(Material.WOODEN_PICKAXE)) {
+                tool.equals(Material.WOODEN_PICKAXE) ||
+                tool.equals(Material.NETHERITE_PICKAXE)) {
             return Tools.PICKAXE;
         } else if(tool.equals(Material.DIAMOND_SHOVEL) ||
                 tool.equals(Material.GOLDEN_SHOVEL) ||
                 tool.equals(Material.IRON_SHOVEL) ||
                 tool.equals(Material.STONE_SHOVEL) ||
-                tool.equals(Material.WOODEN_SHOVEL)) {
+                tool.equals(Material.WOODEN_SHOVEL) ||
+                tool.equals(Material.NETHERITE_SHOVEL)) {
             return Tools.SHOVEL;
         }else if(tool.equals(Material.DIAMOND_HOE) ||
                 tool.equals(Material.GOLDEN_HOE) ||
                 tool.equals(Material.IRON_HOE) ||
                 tool.equals(Material.STONE_HOE) ||
-                tool.equals(Material.WOODEN_HOE)) {
+                tool.equals(Material.WOODEN_HOE) ||
+                tool.equals(Material.NETHERITE_HOE)) {
             return Tools.HOE;
         } else if(tool.equals(Material.FISHING_ROD)) {
             return Tools.FISH_ROD;
@@ -61,7 +51,8 @@ public class ValueUtil implements Paths {
                 tool.equals(Material.GOLDEN_SWORD) ||
                 tool.equals(Material.IRON_SWORD) ||
                 tool.equals(Material.STONE_SWORD) ||
-                tool.equals(Material.WOODEN_SWORD) ) {
+                tool.equals(Material.WOODEN_SWORD) ||
+                tool.equals(Material.NETHERITE_SWORD)) {
             return Tools.MELEE_WEAPON;
         } else if(tool.equals(Material.BOW) || tool.equals(Material.CROSSBOW)
                 || tool.equals(Material.TRIDENT)){

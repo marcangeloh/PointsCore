@@ -60,7 +60,7 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
             return  roundAvoid(pointsCore.playerPoints.meleeWeaponPoints.getPoints(player),decimalPlaces) +symbol;
         }
 
-        // %pickaxe_points%
+        // %pc_pickaxe_points%
         if(s.equals("pickaxe_points")){
             return  roundAvoid(pointsCore.playerPoints.pickaxePoints.getPoints(player),decimalPlaces) +symbol;
         }

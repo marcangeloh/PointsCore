@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.marcangeloh</groupId>
   <artifactId>PointsCore</artifactId>
-  <version>1.1.4</version>
+  <version>1.1.5</version>
   <build>
     <plugins>
       <plugin>
@@ -20,7 +20,7 @@
         <configuration>
           <relocations>
             <relocation>
-              <pattern>org.bstats</pattern>
+              <pattern>org.bstats.Metrics</pattern>
               <shadedPattern>me.marcangeloh</shadedPattern>
             </relocation>
           </relocations>
