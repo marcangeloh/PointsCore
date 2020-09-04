@@ -117,4 +117,34 @@ public final class PlayerPoints implements Serializable {
                 return "N/A";
         }
     }
+
+    public double getGeneralPoints(Player player) {
+        return pickaxePoints.getPoints(player)+shovelPoints.getPoints(player)+axePoints.getPoints(player)
+                +hoePoints.getPoints(player)+armorPoints.getPoints(player)+fishingPoints.getPoints(player)
+                +meleeWeaponPoints.getPoints(player);
+    }
+
+    public void removeFromGeneralPoints(Player player, double amount) {
+        amount = amount/8;
+        removePointsToToolType(Tools.SHOVEL,player,amount);
+        removePointsToToolType(Tools.RANGED_WEAPON,player,amount);
+        removePointsToToolType(Tools.PICKAXE,player,amount);
+        removePointsToToolType(Tools.MELEE_WEAPON,player,amount);
+        removePointsToToolType(Tools.HOE,player,amount);
+        removePointsToToolType(Tools.FISH_ROD,player,amount);
+        removePointsToToolType(Tools.AXE,player,amount);
+        removePointsToToolType(Tools.ARMOR,player,amount);
+    }
+
+    public void addToGeneralPoints(Player player, double amount) {
+        amount = amount/8;
+        addPointsToToolType(Tools.SHOVEL,player,amount);
+        addPointsToToolType(Tools.RANGED_WEAPON,player,amount);
+        addPointsToToolType(Tools.PICKAXE,player,amount);
+        addPointsToToolType(Tools.MELEE_WEAPON,player,amount);
+        addPointsToToolType(Tools.HOE,player,amount);
+        addPointsToToolType(Tools.FISH_ROD,player,amount);
+        addPointsToToolType(Tools.AXE,player,amount);
+        addPointsToToolType(Tools.ARMOR,player,amount);
+    }
 }
