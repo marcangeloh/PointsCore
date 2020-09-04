@@ -47,6 +47,11 @@ public class FishingPoints implements Points {
         return fishingPoints.containsKey(player.getUniqueId().toString());
     }
 
+    @Override
+    public String getPointName() {
+        return "Fishing Points";
+    }
+
     /**
      * Adds the player to the fishingPoints HashMap.
      * @param player The player in Player format to add

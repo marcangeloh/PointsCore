@@ -1,4 +1,4 @@
-package me.marcangeloh.Util.ConfigurationUtil;
+package me.marcangeloh.API.Util.ConfigurationUtil;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.PointsCore;

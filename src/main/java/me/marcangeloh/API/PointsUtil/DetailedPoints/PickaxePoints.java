@@ -150,4 +150,9 @@ public class PickaxePoints implements Points {
         String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
+
+    @Override
+    public String getPointName() {
+        return "Pickaxe Points";
+    }
 }

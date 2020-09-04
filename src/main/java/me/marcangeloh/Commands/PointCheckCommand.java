@@ -1,7 +1,8 @@
 package me.marcangeloh.Commands;
 
 import me.marcangeloh.PointsCore;
-import me.marcangeloh.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -29,7 +30,7 @@ public class PointCheckCommand implements CommandExecutor {
             return true;
         }
 
-        if(args.length == 1) {
+        if(args.length <= 1) {
             Player player = Bukkit.getPlayer(args[0]);
             if(player == null) {
                 Message.errorMessage("Invalid player name please try again.", sender);
@@ -37,10 +38,8 @@ public class PointCheckCommand implements CommandExecutor {
             }
             Message.notifyMessage(player.getDisplayName()+" has:"+pointsToString(player), sender);
             return true;
-        } else {
-            Message.errorMessage("Invalid number of arguments, proper command usage is /pointcheck <playername>", sender);
-            return false;
         }
+        return false;
 
     }
 
@@ -48,14 +47,14 @@ public class PointCheckCommand implements CommandExecutor {
         int decimalPlaces = PointsCore.plugin.getConfig().getInt("Points.PointsDecimalPlaces");
         String symbol = " "+PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
 
-        return "\n" + ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.shovelPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Shovel Points." +
-                "\n" +ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.axePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Axe Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.pickaxePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Pickaxe Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.hoePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Hoe Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.fishingPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Fishing Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.armorPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Armor Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.meleeWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Melee Weapon Points."+
-                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.rangedWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " Ranged Weapon Points.";
+        return "\n" + ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.shovelPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.SHOVEL)+
+                "\n" +ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.axePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.AXE)+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.pickaxePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.PICKAXE)+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.hoePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ "  "+pointsCore.playerPoints.getPointNameFromToolType(Tools.HOE)+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.fishingPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.FISH_ROD)+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.armorPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.ARMOR)+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.meleeWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.MELEE_WEAPON)+
+                "\n"+ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.rangedWeaponPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.RANGED_WEAPON);
     }
 
 

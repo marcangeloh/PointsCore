@@ -1,4 +1,4 @@
-package me.marcangeloh.Util.ConfigurationUtil;
+package me.marcangeloh.API.Util.ConfigurationUtil;
 
 public interface Paths {
 

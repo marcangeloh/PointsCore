@@ -1,4 +1,4 @@
-package me.marcangeloh.Util.GeneralUtil;
+package me.marcangeloh.API.Util.GeneralUtil;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;

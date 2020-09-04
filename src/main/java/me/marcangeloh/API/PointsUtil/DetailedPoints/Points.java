@@ -60,4 +60,6 @@ public interface Points extends Listener {
      */
     boolean removePointsFromPlayer(Player playerInstance, Double points);
 
+    String getPointName();
+
 }

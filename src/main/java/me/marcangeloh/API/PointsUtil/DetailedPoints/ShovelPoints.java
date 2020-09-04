@@ -2,8 +2,8 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
-import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
-import me.marcangeloh.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -64,6 +64,11 @@ public class ShovelPoints implements Points {
         String uuid = player.getUniqueId().toString();
         Message.debugMessage("addPointsToPlayer method executed, with uuid = "+uuid+"\npoints = "+points, DebugIntensity.INTENSE);
         return addPointsToPlayer(uuid, points);
+    }
+
+    @Override
+    public String getPointName() {
+        return "Shovel Points";
     }
 
     /**

@@ -1,9 +1,9 @@
-package me.marcangeloh.Util.ConfigurationUtil;
+package me.marcangeloh.API.Util.ConfigurationUtil;
 
 import me.marcangeloh.PointsCore;
-import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
-import me.marcangeloh.Util.GeneralUtil.Message;
-import me.marcangeloh.Util.GeneralUtil.Tools;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;

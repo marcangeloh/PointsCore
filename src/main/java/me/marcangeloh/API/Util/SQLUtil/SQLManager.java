@@ -1,14 +1,12 @@
-package me.marcangeloh.Util.SQLUtil;
+package me.marcangeloh.API.Util.SQLUtil;
 
-import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.PointsCore;
-import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
-import me.marcangeloh.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.sql.*;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;

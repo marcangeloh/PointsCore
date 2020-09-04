@@ -20,10 +20,11 @@
         <configuration>
           <relocations>
             <relocation>
-              <pattern>org.bstats.Metrics</pattern>
+              <pattern>org.bstats</pattern>
               <shadedPattern>me.marcangeloh</shadedPattern>
             </relocation>
           </relocations>
+          <minimizeJar>true</minimizeJar>
         </configuration>
       </plugin>
     </plugins>

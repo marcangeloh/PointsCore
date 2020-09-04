@@ -1,4 +1,4 @@
-package me.marcangeloh.Util.SQLUtil;
+package me.marcangeloh.API.Util.SQLUtil;
 
 
 public class SQLLoadUtil {

@@ -7,7 +7,7 @@
     <groupId>me.marcangeloh</groupId>
     <artifactId>PointsCore</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -67,6 +67,7 @@
                             <shadedPattern>me.marcangeloh</shadedPattern>
                         </relocation>
                     </relocations>
+                    <minimizeJar>true</minimizeJar>
                 </configuration>
                 <executions>
                     <execution>

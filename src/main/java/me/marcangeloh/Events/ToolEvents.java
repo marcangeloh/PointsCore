@@ -3,10 +3,10 @@ package me.marcangeloh.Events;
 import me.marcangeloh.API.Events.PlayerFishingEvent;
 import me.marcangeloh.API.Events.PlayerHoeBlockEvent;
 import me.marcangeloh.PointsCore;
-import me.marcangeloh.Util.ConfigurationUtil.ValueUtil;
-import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
-import me.marcangeloh.Util.GeneralUtil.Message;
-import me.marcangeloh.Util.GeneralUtil.Tools;
+import me.marcangeloh.API.Util.ConfigurationUtil.ValueUtil;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -36,22 +36,8 @@ public class ToolEvents implements Listener {
                 incrementValue = incrementValue*pointsCore.playerPoints.multiplierMap.get(uuid).getMultiplierAmount();
             }
         }
-        if(toolType.equals(Tools.AXE)) {
-            Message.debugMessage("Added points to axe value=" + incrementValue, DebugIntensity.INTENSE);
-            pointsCore.playerPoints.axePoints.addPointsToPlayer(player, incrementValue);
-        } else if (toolType.equals(Tools.SHOVEL)) {
-            Message.debugMessage("Added points to shovel value=" + incrementValue, DebugIntensity.INTENSE);
-            pointsCore.playerPoints.shovelPoints.addPointsToPlayer(player, incrementValue);
-        } else if (toolType.equals(Tools.PICKAXE)) {
-            Message.debugMessage("Added points to pickaxe value=" + incrementValue, DebugIntensity.INTENSE);
-            pointsCore.playerPoints.pickaxePoints.addPointsToPlayer(player, incrementValue);
-        } else if(toolType.equals(Tools.FISH_ROD)) {
-            Message.debugMessage("Added points to fishing value=" + incrementValue, DebugIntensity.INTENSE);
-            pointsCore.playerPoints.fishingPoints.addPointsToPlayer(player,incrementValue);
-        } else if(toolType.equals(Tools.HOE)) {
-            Message.debugMessage("Added points to hoe value=" + incrementValue, DebugIntensity.INTENSE);
-            pointsCore.playerPoints.hoePoints.addPointsToPlayer(player,incrementValue);
-        }
+        Message.debugMessage("Added points to "+pointsCore.playerPoints.getPointNameFromToolType(toolType)+" value=" + incrementValue, DebugIntensity.INTENSE);
+        pointsCore.playerPoints.addPointsToToolType(toolType,player,incrementValue);
     }
 
     /**

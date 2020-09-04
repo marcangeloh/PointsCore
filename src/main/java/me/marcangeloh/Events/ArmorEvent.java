@@ -1,14 +1,12 @@
 package me.marcangeloh.Events;
 
 import me.marcangeloh.API.Events.PlayerDamageByEntityEvent;
-import me.marcangeloh.API.Events.PlayerDamageEntityEvent;
 import me.marcangeloh.PointsCore;
-import me.marcangeloh.Util.ConfigurationUtil.ValueUtil;
-import me.marcangeloh.Util.GeneralUtil.DebugIntensity;
-import me.marcangeloh.Util.GeneralUtil.Message;
-import me.marcangeloh.Util.GeneralUtil.Tools;
+import me.marcangeloh.API.Util.ConfigurationUtil.ValueUtil;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -68,8 +66,8 @@ public class ArmorEvent implements Listener {
             }
         }
         if (toolType.equals(Tools.ARMOR)) {
-            Message.debugMessage("Added " + incrementValue + " armor points to " + player.getName(), DebugIntensity.INTENSE);
-            pointsCore.playerPoints.armorPoints.addPointsToPlayer(player, incrementValue);
+            Message.debugMessage("Added " + incrementValue + pointsCore.playerPoints.getPointNameFromToolType(toolType)+" to " + player.getName(), DebugIntensity.INTENSE);
+            pointsCore.playerPoints.addPointsToToolType(Tools.ARMOR, player, incrementValue);
         }
     }
 

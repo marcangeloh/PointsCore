@@ -73,6 +73,11 @@ public class ArmorPoints implements Points {
         return addPointsMethod(player, points);
     }
 
+    @Override
+    public String getPointName() {
+        return "Armor Points";
+    }
+
     /**
      * Adds points to the player in the hashmap
      * @param player The player in question

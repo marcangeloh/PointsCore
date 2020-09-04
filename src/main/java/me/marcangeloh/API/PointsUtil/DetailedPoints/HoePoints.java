@@ -94,6 +94,11 @@ public class HoePoints implements Points {
         }
     }
 
+    @Override
+    public String getPointName() {
+        return "Hoe Points";
+    }
+
     /**
      * Remove points from the player
      * @param player The player's name

@@ -1,7 +1,6 @@
 package me.marcangeloh.API.Events;
 
-import me.marcangeloh.Util.GeneralUtil.Tools;
-import org.bukkit.Material;
+import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

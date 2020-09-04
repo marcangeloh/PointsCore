@@ -51,6 +51,10 @@ public class RangedWeaponPoints implements Points {
         return rangedWeaponPoints.get(player);  }
 
 
+    @Override
+    public String getPointName() {
+        return "Ranged Weapon Points";
+    }
 
     /**
      * Adds the player to the rangedWeaponPoints HashMap.

@@ -1,4 +1,4 @@
-package me.marcangeloh.Util.GeneralUtil;
+package me.marcangeloh.API.Util.GeneralUtil;
 
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;

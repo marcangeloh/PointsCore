@@ -1,18 +1,14 @@
 package me.marcangeloh.Commands;
 
-import me.marcangeloh.API.PointsUtil.DetailedPoints.Points;
 import me.marcangeloh.PointsCore;
-import me.marcangeloh.Util.GeneralUtil.CooldownUtil;
-import me.marcangeloh.Util.GeneralUtil.Message;
-import me.marcangeloh.Util.GeneralUtil.Tools;
+import me.marcangeloh.API.Util.GeneralUtil.CooldownUtil;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
+import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import javax.swing.*;
 
 public class PointsCoreCommands implements CommandExecutor {
     PointsCore pointsCore = (PointsCore) PointsCore.plugin;
