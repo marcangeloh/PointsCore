@@ -1,6 +1,7 @@
 package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
+import me.marcangeloh.API.Util.GeneralUtil.*;
 import me.marcangeloh.Commands.PointCheckCommand;
 import me.marcangeloh.Commands.PointsCoreCommands;
 import me.marcangeloh.Events.ArmorEvent;
@@ -8,10 +9,6 @@ import me.marcangeloh.Events.ToolEvents;
 import me.marcangeloh.Events.WeaponEvent;
 import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
-import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
-import me.marcangeloh.API.Util.GeneralUtil.Message;
-import me.marcangeloh.API.Util.GeneralUtil.PlaceholderAPILink;
-import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -65,22 +62,11 @@ public class PointsCore extends JavaPlugin implements Paths {
     }
 
     private void updateChecker() {
-        try {
-            HttpURLConnection c = (HttpURLConnection)new URL("http://www.spigotmc.org/api/general.php").openConnection();
-            c.setDoOutput(true);
-            c.setRequestMethod("POST");
-            c.getOutputStream().write(("key=98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4&resource=pointscore.83263").getBytes("UTF-8"));
-            String oldVersion = this.getDescription().getVersion();
-            String newVersion = new BufferedReader(new InputStreamReader(c.getInputStream())).readLine().replaceAll("[a-zA-Z ]", "");
-            if(!newVersion.equals(oldVersion)) {
-                //there is a new version
-                Message.notifyMessage("A new version is available for download on spigotmc, your version is "+oldVersion +" the newest version is "+newVersion+".", getServer().getConsoleSender());
+        new UpdateChecker(this, 83263).getVersion(version -> {
+            if (!this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                Message.errorMessage("PointsCore has a new update available, "+version, getServer().getConsoleSender());
             }
-        }
-        catch(Exception e) {
-            //update failed, most likely to spigot being down or the server not having internet connection
-            Message.errorMessage("Could not check for latest update! Most likely due to no internet connection or spigot servers being down.", getServer().getConsoleSender());
-        }
+        });
     }
 
     private void performPluginHooks() {

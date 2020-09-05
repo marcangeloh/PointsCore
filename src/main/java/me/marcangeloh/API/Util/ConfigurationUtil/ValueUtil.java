@@ -57,6 +57,32 @@ public class ValueUtil implements Paths {
         } else if(tool.equals(Material.BOW) || tool.equals(Material.CROSSBOW)
                 || tool.equals(Material.TRIDENT)){
             return Tools.RANGED_WEAPON;
+        } else if(tool.equals(Material.CHAINMAIL_BOOTS) ||
+                tool.equals(Material.IRON_BOOTS)||
+                tool.equals(Material.LEATHER_BOOTS)||
+                tool.equals(Material.NETHERITE_BOOTS)||
+                tool.equals(Material.DIAMOND_BOOTS)
+                || tool.equals(Material.GOLDEN_BOOTS)||
+                tool.equals(Material.CHAINMAIL_LEGGINGS) ||
+                tool.equals(Material.IRON_LEGGINGS)||
+                tool.equals(Material.LEATHER_LEGGINGS)||
+                tool.equals(Material.NETHERITE_LEGGINGS)||
+                tool.equals(Material.DIAMOND_LEGGINGS)
+                || tool.equals(Material.GOLDEN_LEGGINGS)||
+                tool.equals(Material.CHAINMAIL_CHESTPLATE) ||
+                tool.equals(Material.IRON_CHESTPLATE)||
+                tool.equals(Material.LEATHER_CHESTPLATE)||
+                tool.equals(Material.NETHERITE_CHESTPLATE)||
+                tool.equals(Material.DIAMOND_CHESTPLATE)
+                || tool.equals(Material.GOLDEN_CHESTPLATE)||
+                tool.equals(Material.CHAINMAIL_HELMET) ||
+                tool.equals(Material.IRON_HELMET)||
+                tool.equals(Material.LEATHER_HELMET)||
+                tool.equals(Material.NETHERITE_HELMET)||
+                tool.equals(Material.DIAMOND_HELMET)
+                || tool.equals(Material.GOLDEN_HELMET)
+                || tool.equals(Material.TURTLE_HELMET)){
+            return Tools.ARMOR;
         } else {
             return Tools.NONE;
         }

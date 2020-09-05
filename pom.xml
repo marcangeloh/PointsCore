@@ -68,6 +68,12 @@
                         </relocation>
                     </relocations>
                     <minimizeJar>true</minimizeJar>
+                    <artifactSet>
+                        <excludes>
+                            <exclude>org.spigotmc</exclude>
+                            <exclude>net.milkbowl</exclude>
+                        </excludes>
+                    </artifactSet>
                 </configuration>
                 <executions>
                     <execution>

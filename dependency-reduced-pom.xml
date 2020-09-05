@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.marcangeloh</groupId>
   <artifactId>PointsCore</artifactId>
-  <version>1.1.5</version>
+  <version>1.1.6</version>
   <build>
     <plugins>
       <plugin>
@@ -25,6 +25,12 @@
             </relocation>
           </relocations>
           <minimizeJar>true</minimizeJar>
+          <artifactSet>
+            <excludes>
+              <exclude>org.spigotmc</exclude>
+              <exclude>net.milkbowl</exclude>
+            </excludes>
+          </artifactSet>
         </configuration>
       </plugin>
     </plugins>
@@ -44,6 +50,12 @@
     </repository>
   </repositories>
   <dependencies>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.16.1-R0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>me.clip</groupId>
       <artifactId>placeholderapi</artifactId>
