@@ -10,16 +10,15 @@ import me.marcangeloh.Events.WeaponEvent;
 import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.API.Util.SQLUtil.SQLManager;
+import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.SQLException;
 
 
@@ -73,6 +72,12 @@ public class PointsCore extends JavaPlugin implements Paths {
         //PlaceholderAPI Hook
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PlaceholderAPILink().register();
+        }
+        if(Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            if(Bukkit.getServer().getPluginManager().getPlugin("PointsCore").isEnabled()) {
+                Bukkit.getServicesManager().register(Economy.class, new EconomySetup(this), this, ServicePriority.Normal);
+                Message.notifyMessage("Economy has been registered to vault.", getServer().getConsoleSender());
+            }
         }
 
     }

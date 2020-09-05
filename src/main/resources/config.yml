@@ -1,6 +1,6 @@
 Points:
   #Available modes are: INTENSE, LIGHT, NONE
-  DebugMode: INTENSE
+  DebugMode: NONE
   #What should be the symbol of the points
   PointsSymbol: "points"
   PointsDecimalPlaces: 10
