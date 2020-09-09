@@ -123,7 +123,7 @@ public class ArmorPoints implements Points {
             armorPoints.replace(player, pointsToAdd - points);
             return true;
         } else {
-            armorPoints.put(player, points);
+            armorPoints.put(player, 0.0);
             return false;
         }
     }

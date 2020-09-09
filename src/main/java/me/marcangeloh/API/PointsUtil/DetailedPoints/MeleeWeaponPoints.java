@@ -115,7 +115,7 @@ public class MeleeWeaponPoints implements Points {
             meleeWeaponPoints.replace(player, pointsToAdd - points);
             return true;
         } else {
-            meleeWeaponPoints.put(player, points);
+            meleeWeaponPoints.put(player, 0.0);
             return false;
         }
     }

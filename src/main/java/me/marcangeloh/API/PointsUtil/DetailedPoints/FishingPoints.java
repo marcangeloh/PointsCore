@@ -120,7 +120,7 @@ public class FishingPoints implements Points {
             fishingPoints.replace(player, pointsToAdd - points);
             return true;
         } else {
-            fishingPoints.put(player, points);
+            fishingPoints.put(player, 0.0);
             return false;
         }
     }
@@ -147,7 +147,7 @@ public class FishingPoints implements Points {
         if(points == null)
             points = 0.0;
 
-        String player = playerInstance.getName();
+        String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
     }
 }

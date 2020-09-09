@@ -136,7 +136,7 @@ public class ShovelPoints implements Points {
             shovelPoints.replace(player, pointsToRemove - points);
             return true;
         } else {
-            shovelPoints.put(player, points);
+            shovelPoints.put(player, 0.0);
             return false;
         }
     }

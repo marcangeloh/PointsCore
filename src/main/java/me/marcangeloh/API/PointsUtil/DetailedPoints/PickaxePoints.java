@@ -120,7 +120,7 @@ public class PickaxePoints implements Points {
             pickaxePoints.replace(uuid, pointsToRemove - points);
             return true;
         } else {
-            pickaxePoints.put(uuid, points);
+            pickaxePoints.put(uuid, 0.0);
             return false;
         }
     }

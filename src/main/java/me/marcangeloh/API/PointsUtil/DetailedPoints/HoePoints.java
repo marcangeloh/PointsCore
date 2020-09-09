@@ -123,7 +123,7 @@ public class HoePoints implements Points {
             return true;
 
         } else {
-            hoePoints.put(player, points);
+            hoePoints.put(player, 0.0);
             return false;
         }
     }

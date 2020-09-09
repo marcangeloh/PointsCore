@@ -126,7 +126,7 @@ public class RangedWeaponPoints implements Points {
             rangedWeaponPoints.replace(player, pointsToAdd - points);
             return true;
         } else {
-            rangedWeaponPoints.put(player, points);
+            rangedWeaponPoints.put(player, 0.0);
             return false;
         }
     }

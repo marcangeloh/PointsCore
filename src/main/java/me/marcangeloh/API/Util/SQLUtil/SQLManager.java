@@ -61,7 +61,7 @@ public class SQLManager {
                 preparedStatement.setDouble(15, pointsCore.playerPoints.pickaxePoints.getPoints(uuid));
                 preparedStatement.setDouble(16, pointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
                 preparedStatement.setDouble(17, pointsCore.playerPoints.shovelPoints.getPoints(uuid));
-                if(!preparedStatement.execute()) {
+                if(preparedStatement.execute()) {
                     Message.debugMessage("An error has occurred during the execution of the mysql save statement.", DebugIntensity.LIGHT);
                 }
                 connection.close();

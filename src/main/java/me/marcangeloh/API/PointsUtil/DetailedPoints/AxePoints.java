@@ -127,7 +127,7 @@ public class AxePoints implements Points {
             axePoints.replace(player, pointsToAdd - points);
             return true;
         } else {
-            axePoints.put(player, points);
+            axePoints.put(player, 0.0);
             return false;
         }
     }
