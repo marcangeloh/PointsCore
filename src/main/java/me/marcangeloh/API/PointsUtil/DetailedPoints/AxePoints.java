@@ -2,6 +2,7 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -73,11 +74,6 @@ public class AxePoints implements Points {
         if(points == null)
             points = 0.0;
         return addPointsMethod(player, points);
-    }
-
-    @Override
-    public String getPointName() {
-        return "Axe Points";
     }
 
     /**
@@ -156,6 +152,11 @@ public class AxePoints implements Points {
 
         String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
+    }
+
+    @Override
+    public String getPointName() {
+        return PointsCore.plugin.getConfig().getString( "Points.PointType.AxePoints.Name");
     }
     
 }

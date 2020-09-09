@@ -4,6 +4,7 @@ import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
 import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
+import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -66,10 +67,7 @@ public class ShovelPoints implements Points {
         return addPointsToPlayer(uuid, points);
     }
 
-    @Override
-    public String getPointName() {
-        return "Shovel Points";
-    }
+
 
     /**
      * Adds the player to the shovelPoints HashMap.
@@ -165,5 +163,10 @@ public class ShovelPoints implements Points {
 
         String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
+    }
+
+    @Override
+    public String getPointName() {
+        return PointsCore.plugin.getConfig().getString( "Points.PointType.ShovelPoints.Name");
     }
 }

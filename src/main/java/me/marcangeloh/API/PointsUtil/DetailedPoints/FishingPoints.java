@@ -2,6 +2,7 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -45,11 +46,6 @@ public class FishingPoints implements Points {
      */
     public boolean containsPlayer(Player player) {
         return fishingPoints.containsKey(player.getUniqueId().toString());
-    }
-
-    @Override
-    public String getPointName() {
-        return "Fishing Points";
     }
 
     /**
@@ -149,5 +145,10 @@ public class FishingPoints implements Points {
 
         String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
+    }
+
+    @Override
+    public String getPointName() {
+        return PointsCore.plugin.getConfig().getString( "Points.PointType.FishingPoints.Name");
     }
 }

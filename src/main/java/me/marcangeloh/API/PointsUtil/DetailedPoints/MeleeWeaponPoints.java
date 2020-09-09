@@ -2,6 +2,7 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -148,6 +149,6 @@ public class MeleeWeaponPoints implements Points {
 
     @Override
     public String getPointName() {
-        return "Melee Weapon Points";
+        return PointsCore.plugin.getConfig().getString( "Points.PointType.MeleeWeaponPoints.Name");
     }
 }

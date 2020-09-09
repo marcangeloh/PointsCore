@@ -2,9 +2,30 @@ Points:
   #Available modes are: INTENSE, LIGHT, NONE
   DebugMode: NONE
   #What should be the symbol of the points
-  PointsSymbol: "points"
+  PointsSymbol: "GP"
+  PointsName: "General Points"
   PointsDecimalPlaces: 10
   #The Values to add to each tool
+  PointType:
+    PickaxePoints:
+      Name: "Pickaxe Points"
+    ShovelPoints:
+      Name: "Shovel Points"
+    RangedWeaponPoints:
+      Name: "Ranged Weapon Points"
+    MeleeWeaponPoints:
+      Name: "Melee Weapon Points"
+    HoePoints:
+      Name: "Hoe Points"
+    FishingPoints:
+      Name: "Fishing Points"
+    AxePoints:
+      Name: "Axe Points"
+    ArmorPoints:
+      Name: "Armor Points"
+  ##
+  ##      INCREMENT SECTION
+  ##
   Increment:
     PickaxeValues: #Per Block Mined
       Stone: 0.01

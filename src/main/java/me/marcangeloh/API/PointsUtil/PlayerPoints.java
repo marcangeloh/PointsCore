@@ -3,6 +3,7 @@ package me.marcangeloh.API.PointsUtil;
 import me.marcangeloh.API.PointsUtil.DetailedPoints.*;
 import me.marcangeloh.API.Util.GeneralUtil.CooldownUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Tools;
+import me.marcangeloh.PointsCore;
 import org.bukkit.entity.Player;
 
 import java.io.*;
@@ -19,6 +20,36 @@ public final class PlayerPoints implements Serializable {
     public RangedWeaponPoints rangedWeaponPoints = new RangedWeaponPoints();
     public ShovelPoints shovelPoints = new ShovelPoints();
     public HashMap<UUID, CooldownUtil> multiplierMap = new HashMap<>();
+
+
+    public String getGeneralPointsSymbol() {
+        return PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
+    }
+    public String getGeneralPointsName() {
+        return PointsCore.plugin.getConfig().getString("Points.PointsName");
+    }
+
+    public String getPointNameFromTool(Tools tool) {
+        switch(tool) {
+            case SHOVEL:
+                return shovelPoints.getPointName();
+            case AXE:
+                return axePoints.getPointName();
+            case ARMOR:
+                return armorPoints.getPointName();
+            case FISH_ROD:
+                return fishingPoints.getPointName();
+            case MELEE_WEAPON:
+                return meleeWeaponPoints.getPointName();
+            case RANGED_WEAPON:
+                return rangedWeaponPoints.getPointName();
+            case HOE:
+                return hoePoints.getPointName();
+            case PICKAXE:
+                return pickaxePoints.getPointName();
+        }
+        return "";
+    }
 
     public boolean addPointsToToolType(Tools tool, Player player, double amountNoMultiplier) {
         double amount = amountNoMultiplier;

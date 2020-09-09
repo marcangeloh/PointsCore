@@ -2,6 +2,7 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,8 +24,8 @@ public class RangedWeaponPoints implements Points {
     @Override
     public double getPoints(Player player) {
         String uuid = player.getUniqueId().toString();
-        if(!rangedWeaponPoints.containsKey(uuid)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player "+player.getName()+" was not found. Adding to the hashmap.");
+        if (!rangedWeaponPoints.containsKey(uuid)) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player " + player.getName() + " was not found. Adding to the hashmap.");
             rangedWeaponPoints.putIfAbsent(uuid, 0.0);
         }
         return rangedWeaponPoints.get(uuid);
@@ -32,11 +33,12 @@ public class RangedWeaponPoints implements Points {
 
     /**
      * Checks if the player is contained in the hashmap
+     *
      * @param player The player to check for
      * @return true if they are false if they aren't
      */
     public boolean containsPlayer(Player player) {
-        if(rangedWeaponPoints.containsKey(player.getUniqueId().toString()))
+        if (rangedWeaponPoints.containsKey(player.getUniqueId().toString()))
             return true;
 
         return false;
@@ -44,17 +46,14 @@ public class RangedWeaponPoints implements Points {
 
     @Override
     public double getPoints(String player) {
-        if(!rangedWeaponPoints.containsKey(player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player with UUID: "+player+" was not found. Adding to the hashmap.");
+        if (!rangedWeaponPoints.containsKey(player)) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player with UUID: " + player + " was not found. Adding to the hashmap.");
             rangedWeaponPoints.putIfAbsent(player, 0.0);
         }
-        return rangedWeaponPoints.get(player);  }
-
-
-    @Override
-    public String getPointName() {
-        return "Ranged Weapon Points";
+        return rangedWeaponPoints.get(player);
     }
+
+
 
     /**
      * Adds the player to the rangedWeaponPoints HashMap.
@@ -155,5 +154,10 @@ public class RangedWeaponPoints implements Points {
 
         String player = playerInstance.getUniqueId().toString();
         return removePointsMethod(player, points);
+    }
+
+    @Override
+    public String getPointName() {
+        return PointsCore.plugin.getConfig().getString( "Points.PointType.RangedWeaponPoints.Name");
     }
 }
