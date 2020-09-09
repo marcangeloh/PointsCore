@@ -124,8 +124,18 @@ public final class PlayerPoints implements Serializable {
                 +meleeWeaponPoints.getPoints(player);
     }
 
-    public void removeFromGeneralPoints(Player player, double oldAmount) {
+    public boolean removeFromGeneralPoints(Player player, double oldAmount) {
         double amount = oldAmount/8;
+        if(amount > getPointsFromToolType(Tools.SHOVEL,player) ||
+                amount > getPointsFromToolType(Tools.RANGED_WEAPON,player) ||
+                amount > getPointsFromToolType(Tools.PICKAXE,player) ||
+                amount > getPointsFromToolType(Tools.MELEE_WEAPON,player) ||
+                amount > getPointsFromToolType(Tools.HOE,player) ||
+                amount > getPointsFromToolType(Tools.FISH_ROD,player) ||
+                amount > getPointsFromToolType(Tools.AXE,player) ||
+                amount > getPointsFromToolType(Tools.ARMOR,player)) {
+            return false;
+        }
         removePointsToToolType(Tools.SHOVEL,player,amount);
         removePointsToToolType(Tools.RANGED_WEAPON,player,amount);
         removePointsToToolType(Tools.PICKAXE,player,amount);
@@ -134,6 +144,7 @@ public final class PlayerPoints implements Serializable {
         removePointsToToolType(Tools.FISH_ROD,player,amount);
         removePointsToToolType(Tools.AXE,player,amount);
         removePointsToToolType(Tools.ARMOR,player,amount);
+        return true;
     }
 
     public void addToGeneralPoints(Player player, double oldAmount) {
