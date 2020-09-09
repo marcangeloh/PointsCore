@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class ArmorPoints implements Points {
     private final HashMap<String, Double> armorPoints;
+    private final HashMap<Player, Double> multiplier = new HashMap<>();
 
     public ArmorPoints() {
         armorPoints = new HashMap<>();
@@ -87,12 +88,19 @@ public class ArmorPoints implements Points {
             return false;
         }
 
+        double multiplierAmount = 1.0;
+        Player player1 = Bukkit.getPlayer(UUID.fromString(player));
+        if(player1 != null) {
+            multiplierAmount = getMultiplier(player1);
+
+        }
+
         if(armorPoints.containsKey(player)) {
-            double pointsToAdd = armorPoints.get(player);
+            double pointsToAdd = armorPoints.get(player) *multiplierAmount;
             armorPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
-            armorPoints.put(player, points);
+            armorPoints.put(player, points*multiplierAmount);
             return false;
         }
     }
@@ -153,5 +161,19 @@ public class ArmorPoints implements Points {
     @Override
     public String getPointName() {
         return PointsCore.plugin.getConfig().getString( "Points.PointType.ArmorPoints.Name");
+    }
+
+    public void setMultiplier(Player player, Double multiplier) {
+        if(this.multiplier.containsKey(player)) {
+            this.multiplier.replace(player, multiplier);
+        }
+        this.multiplier.putIfAbsent(player, multiplier);
+    }
+
+    public Double getMultiplier(Player player) {
+        if(multiplier.containsKey(player)) {
+            return multiplier.get(player);
+        }
+        return 0.0;
     }
 }

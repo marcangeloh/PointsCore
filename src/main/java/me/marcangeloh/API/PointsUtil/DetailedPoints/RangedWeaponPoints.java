@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class RangedWeaponPoints implements Points {
     private final HashMap<String, Double> rangedWeaponPoints;
+    private final HashMap<Player, Double> multiplier = new HashMap<>();
 
     public RangedWeaponPoints() {
         rangedWeaponPoints = new HashMap<>();
@@ -92,13 +93,18 @@ public class RangedWeaponPoints implements Points {
         if(pointsAddedEvent.isCancelled()) {
             return false;
         }
+        double multiplierAmount = 1.0;
+        Player player1 = Bukkit.getPlayer(UUID.fromString(player));
+        if(player1 != null) {
+            multiplierAmount = getMultiplier(player1);
 
+        }
         if(rangedWeaponPoints.containsKey(player)) {
-            double pointsToAdd = rangedWeaponPoints.get(player);
+            double pointsToAdd = rangedWeaponPoints.get(player) *multiplierAmount;
             rangedWeaponPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
-            rangedWeaponPoints.put(player, points);
+            rangedWeaponPoints.put(player, points*multiplierAmount);
             return false;
         }
     }
@@ -159,5 +165,18 @@ public class RangedWeaponPoints implements Points {
     @Override
     public String getPointName() {
         return PointsCore.plugin.getConfig().getString( "Points.PointType.RangedWeaponPoints.Name");
+    }
+    public void setMultiplier(Player player, Double multiplier) {
+        if(this.multiplier.containsKey(player)) {
+            this.multiplier.replace(player, multiplier);
+        }
+        this.multiplier.putIfAbsent(player, multiplier);
+    }
+
+    public Double getMultiplier(Player player) {
+        if(multiplier.containsKey(player)) {
+            return multiplier.get(player);
+        }
+        return 0.0;
     }
 }

@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class PickaxePoints implements Points {
     private final HashMap<String, Double> pickaxePoints;
+    private final HashMap<Player, Double> multiplier = new HashMap<>();
 
     public PickaxePoints() {
         pickaxePoints = new HashMap<>();
@@ -89,12 +90,21 @@ public class PickaxePoints implements Points {
             return false;
         }
 
+        double multiplierAmount = 1.0;
+        Player player1 = Bukkit.getPlayer(UUID.fromString(uuid));
+        if(player1 != null) {
+            if (multiplier.containsKey(player1)) {
+                multiplierAmount = multiplier.get(player1);
+            }
+
+        }
+
         if(pickaxePoints.containsKey(uuid)) {
-            double pointsToAdd = pickaxePoints.get(uuid);
+            double pointsToAdd = pickaxePoints.get(uuid)*multiplierAmount;
             pickaxePoints.replace(uuid, points + pointsToAdd);
             return true;
         } else {
-            pickaxePoints.put(uuid, points);
+            pickaxePoints.put(uuid, points*multiplierAmount);
             return false;
         }
     }
@@ -155,5 +165,19 @@ public class PickaxePoints implements Points {
     @Override
     public String getPointName() {
         return PointsCore.plugin.getConfig().getString( "Points.PointType.PickaxePoints.Name");
+    }
+
+    public void setMultiplier(Player player, Double multiplier) {
+        if(this.multiplier.containsKey(player)) {
+            this.multiplier.replace(player, multiplier);
+        }
+        this.multiplier.putIfAbsent(player, multiplier);
+    }
+
+    public Double getMultiplier(Player player) {
+        if(multiplier.containsKey(player)) {
+            return multiplier.get(player);
+        }
+        return 0.0;
     }
 }

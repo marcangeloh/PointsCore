@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class HoePoints implements Points {
     private final HashMap<String, Double> hoePoints;
+    private final HashMap<Player, Double> multiplier = new HashMap<>();
 
     public HoePoints() {
         hoePoints = new HashMap<>();
@@ -85,12 +86,19 @@ public class HoePoints implements Points {
             return false;
         }
 
+        double multiplierAmount = 1.0;
+        Player player1 = Bukkit.getPlayer(UUID.fromString(player));
+        if(player1 != null) {
+            multiplierAmount = getMultiplier(player1);
+
+        }
+
         if(hoePoints.containsKey(player)) {
-            double pointsToAdd = hoePoints.get(player);
+            double pointsToAdd = hoePoints.get(player) *multiplierAmount;
             hoePoints.replace(player, points + pointsToAdd);
             return true;
         } else {
-            hoePoints.put(player, points);
+            hoePoints.put(player, points*multiplierAmount);
             return false;
         }
     }
@@ -155,4 +163,18 @@ public class HoePoints implements Points {
     public String getPointName() {
         return PointsCore.plugin.getConfig().getString( "Points.PointType.HoePoints.Name");
     }
+    public void setMultiplier(Player player, Double multiplier) {
+        if(this.multiplier.containsKey(player)) {
+            this.multiplier.replace(player, multiplier);
+        }
+        this.multiplier.putIfAbsent(player, multiplier);
+    }
+
+    public Double getMultiplier(Player player) {
+        if(multiplier.containsKey(player)) {
+            return multiplier.get(player);
+        }
+        return 0.0;
+    }
 }
+

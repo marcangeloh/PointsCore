@@ -22,6 +22,57 @@ public final class PlayerPoints implements Serializable {
     public HashMap<UUID, CooldownUtil> multiplierMap = new HashMap<>();
 
 
+    public Double getMultiplierForTool(Player player, Tools tool) {
+        switch (tool) {
+            case PICKAXE:
+                return pickaxePoints.getMultiplier(player);
+            case HOE:
+                return hoePoints.getMultiplier(player);
+            case RANGED_WEAPON:
+                return rangedWeaponPoints.getMultiplier(player);
+            case MELEE_WEAPON:
+                return meleeWeaponPoints.getMultiplier(player);
+            case FISH_ROD:
+                return fishingPoints.getMultiplier(player);
+            case ARMOR:
+                return armorPoints.getMultiplier(player);
+            case AXE:
+                return axePoints.getMultiplier(player);
+            case SHOVEL:
+                return shovelPoints.getMultiplier(player);
+        }
+        return 0.0;
+    }
+
+    public void setMultiplierForTool(Player player, Double amount, Tools tool) {
+        switch (tool) {
+            case PICKAXE:
+                pickaxePoints.setMultiplier(player, amount);
+                return;
+            case HOE:
+                hoePoints.setMultiplier(player, amount);
+                return;
+            case RANGED_WEAPON:
+                rangedWeaponPoints.setMultiplier(player,amount);
+                return;
+            case MELEE_WEAPON:
+                meleeWeaponPoints.setMultiplier(player, amount);
+                return;
+            case FISH_ROD:
+                fishingPoints.setMultiplier(player, amount);
+                return;
+            case ARMOR:
+                armorPoints.setMultiplier(player, amount);
+                return;
+            case AXE:
+                axePoints.setMultiplier(player, amount);
+                return;
+            case SHOVEL:
+                shovelPoints.setMultiplier(player, amount);
+                return;
+        }
+    }
+
     public String getGeneralPointsSymbol() {
         return PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
     }

@@ -13,6 +13,7 @@ import java.util.UUID;
 public class FishingPoints implements Points {
 
     private final HashMap<String, Double> fishingPoints;
+    private final HashMap<Player, Double> multiplier = new HashMap<>();
 
     public FishingPoints() {
         fishingPoints = new HashMap<>();
@@ -84,12 +85,20 @@ public class FishingPoints implements Points {
         if(pointsAddedEvent.isCancelled()) {
             return false;
         }
+
+        double multiplierAmount = 1.0;
+        Player player1 = Bukkit.getPlayer(UUID.fromString(player));
+        if(player1 != null) {
+            multiplierAmount = getMultiplier(player1);
+
+        }
+
         if(fishingPoints.containsKey(player)) {
-            double pointsToAdd = fishingPoints.get(player);
+            double pointsToAdd = fishingPoints.get(player) *multiplierAmount;
             fishingPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
-            fishingPoints.put(player, points);
+            fishingPoints.put(player, points*multiplierAmount);
             return false;
         }
     }
@@ -150,5 +159,19 @@ public class FishingPoints implements Points {
     @Override
     public String getPointName() {
         return PointsCore.plugin.getConfig().getString( "Points.PointType.FishingPoints.Name");
+    }
+
+    public void setMultiplier(Player player, Double multiplier) {
+        if(this.multiplier.containsKey(player)) {
+            this.multiplier.replace(player, multiplier);
+        }
+        this.multiplier.putIfAbsent(player, multiplier);
+    }
+
+    public Double getMultiplier(Player player) {
+        if(multiplier.containsKey(player)) {
+            return multiplier.get(player);
+        }
+        return 0.0;
     }
 }

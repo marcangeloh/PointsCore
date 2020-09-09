@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public class ShovelPoints implements Points {
     private final HashMap<String, Double> shovelPoints;
+    private final HashMap<Player, Double> multiplier = new HashMap<>();
 
     public ShovelPoints() {
         shovelPoints = new HashMap<>();
@@ -98,13 +99,21 @@ public class ShovelPoints implements Points {
         if(pointsAddedEvent.isCancelled()) {
             return false;
         }
+
+        double multiplierAmount = 1.0;
+        Player player1 = Bukkit.getPlayer(UUID.fromString(player));
+        if(player1 != null) {
+            multiplierAmount = getMultiplier(player1);
+
+        }
+
         //Adds point to player
         if(shovelPoints.containsKey(player)) {
-            double pointsToAdd = shovelPoints.get(player);
+            double pointsToAdd = shovelPoints.get(player) * multiplierAmount;
             shovelPoints.replace(player, points + pointsToAdd);
             return true;
         } else {
-            shovelPoints.put(player, points);
+            shovelPoints.put(player, points*multiplierAmount);
             return false;
         }
     }
@@ -168,5 +177,18 @@ public class ShovelPoints implements Points {
     @Override
     public String getPointName() {
         return PointsCore.plugin.getConfig().getString( "Points.PointType.ShovelPoints.Name");
+    }
+    public void setMultiplier(Player player, Double multiplier) {
+        if(this.multiplier.containsKey(player)) {
+            this.multiplier.replace(player, multiplier);
+        }
+        this.multiplier.putIfAbsent(player, multiplier);
+    }
+
+    public Double getMultiplier(Player player) {
+        if(multiplier.containsKey(player)) {
+            return multiplier.get(player);
+        }
+        return 0.0;
     }
 }

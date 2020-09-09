@@ -62,4 +62,8 @@ public interface Points extends Listener {
 
     String getPointName();
 
+    void setMultiplier(Player player, Double multiplier);
+
+    Double getMultiplier(Player player);
+
 }
