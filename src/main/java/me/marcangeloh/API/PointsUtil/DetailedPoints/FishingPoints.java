@@ -2,6 +2,8 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -49,6 +51,39 @@ public class FishingPoints implements Points {
         return fishingPoints.containsKey(player.getUniqueId().toString());
     }
 
+    @Override
+    public boolean setPointsForPlayer(Player player, Double points) {
+        if(points == null)
+            points = 0.0;
+
+        Message.debugMessage("setPointsForPlayer method executed with Player "+player+"\npoints = "+points, DebugIntensity.LIGHT);
+        return setPointsMethod(player.getUniqueId().toString(), points);
+    }
+
+    public boolean setPointsForPlayer(String player, Double points) {
+        if(points == null)
+            points = 0.0;
+
+        Message.debugMessage("setPointsForPlayer method executed with Player "+player+"\npoints = "+points, DebugIntensity.LIGHT);
+        return setPointsMethod(player, points);
+    }
+
+    /**
+     * Sets points of the player in the hashmap
+     * @param player The player in question
+     * @param points The amount of points
+     * @return True if already exists, False if they don't exist
+     */
+    private boolean setPointsMethod(String player, Double points ) {
+        //set point of player
+        if(fishingPoints.containsKey(player)) {
+            fishingPoints.replace(player, points);
+            return true;
+        } else {
+            fishingPoints.put(player, points);
+            return false;
+        }
+    }
     /**
      * Adds the player to the fishingPoints HashMap.
      * @param player The player in Player format to add
@@ -89,8 +124,9 @@ public class FishingPoints implements Points {
         double multiplierAmount = 1.0;
         Player player1 = Bukkit.getPlayer(UUID.fromString(player));
         if(player1 != null) {
-            multiplierAmount = getMultiplier(player1);
-
+            if (multiplier.containsKey(player1)) {
+                multiplierAmount = getMultiplier(player1);
+            }
         }
 
         if(fishingPoints.containsKey(player)) {

@@ -84,5 +84,5 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
         double scale = Math.pow(10, places);
         return Math.round(value * scale) / scale;
     }
-    
+
 }

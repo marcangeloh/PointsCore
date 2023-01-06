@@ -5,6 +5,7 @@ import me.marcangeloh.API.Util.GeneralUtil.*;
 import me.marcangeloh.Commands.PointCheckCommand;
 import me.marcangeloh.Commands.PointsCoreCommands;
 import me.marcangeloh.Events.ArmorEvent;
+import me.marcangeloh.Events.JoinEvent;
 import me.marcangeloh.Events.ToolEvents;
 import me.marcangeloh.Events.WeaponEvent;
 import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
@@ -13,13 +14,13 @@ import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class PointsCore extends JavaPlugin implements Paths {
@@ -88,10 +89,11 @@ public class PointsCore extends JavaPlugin implements Paths {
     private void basicSetup() {
         int pluginId = 8682;
         Metrics metrics = new Metrics(this, pluginId);
-
         plugin = this;
         playerPoints = new PlayerPoints();
         setupVersion();
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
         serverDebugIntensity = getDebugIntensity();
     }
 
@@ -101,20 +103,27 @@ public class PointsCore extends JavaPlugin implements Paths {
         if(!getConfig().getBoolean(pathIsSQLEnabled)) {
             dataManager = new DataManager();
             dataManager.onEnable(plugin);
+            List<Player> players = (List<Player>) Bukkit.getOnlinePlayers();
+            for(Player player: players) {
+                playerPoints = dataManager.loadPlayerFromSaveFile(playerPoints, player);
+            }
+
         } else {
             isMySQLEnabled = true;
             //MySQL Initialization
             try {
                 sqlManager = new SQLManager(getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword),"POINTS",  getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
-                sqlManager.loadData();
+                playerPoints = sqlManager.loadData();
             } catch (SQLException e) {
                 e.printStackTrace();
                 Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
                 isMySQLEnabled = false;
+                savingSetup();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
                 isMySQLEnabled = false;
+                savingSetup();
             }
 
         }
@@ -122,7 +131,6 @@ public class PointsCore extends JavaPlugin implements Paths {
 
     /**
      * To avoid code duplication
-     * @param event the event to register
      */
 
     /**
@@ -132,17 +140,25 @@ public class PointsCore extends JavaPlugin implements Paths {
         getServer().getPluginManager().registerEvents(new WeaponEvent(), this); //Registers the armor points events
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new JoinEvent(), this); // Registers the Join event
     }
 
-
-    public DataManager getDataManager() {
-        return dataManager;
+    public void loadPlayerData(Player player) {
+        if(isMySQLEnabled) {
+            playerPoints = sqlManager.loadPlayerData(player) != null ? sqlManager.loadPlayerData(player) : playerPoints;
+        } else {
+            playerPoints = dataManager.loadPlayerFromSaveFile(playerPoints, player);
+        }
     }
 
-    private void setupDefaultConfig() {
-        getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
+    public void savePlayerData(Player player) {
+        if(isMySQLEnabled) {
+            sqlManager.savePlayerData(player);
+        } else {
+            dataManager.addPlayerToSaveFile(player);
+        }
     }
+
 
     private boolean setupVersion() {
         server_version = "N/A";

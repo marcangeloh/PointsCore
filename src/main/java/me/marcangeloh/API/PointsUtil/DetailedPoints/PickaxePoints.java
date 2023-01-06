@@ -2,6 +2,8 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,7 +27,6 @@ public class PickaxePoints implements Points {
     @Override
     public double getPoints(Player player) {
         if(!pickaxePoints.containsKey(player.getUniqueId().toString())) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player "+player.getName()+" was not found. Adding to the hashmap.");
             pickaxePoints.putIfAbsent(player.getUniqueId().toString(), 0.0);
         }
         return pickaxePoints.get(player.getUniqueId().toString());
@@ -34,7 +35,6 @@ public class PickaxePoints implements Points {
     @Override
     public double getPoints(String player) {
         if(!pickaxePoints.containsKey(player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "The player with UUID: "+player+" was not found. Adding to the hashmap.");
             pickaxePoints.putIfAbsent(player, 0.0);
         }
         return pickaxePoints.get(player);  }
@@ -49,6 +49,40 @@ public class PickaxePoints implements Points {
         return pickaxePoints.containsKey(player.getUniqueId().toString());
     }
 
+
+    @Override
+    public boolean setPointsForPlayer(Player player, Double points) {
+        if(points == null)
+            points = 0.0;
+
+        Message.debugMessage("setPointsForPlayer method executed with Player "+player+"\npoints = "+points, DebugIntensity.LIGHT);
+        return setPointsMethod(player.getUniqueId().toString(), points);
+    }
+
+    public boolean setPointsForPlayer(String player, Double points) {
+        if(points == null)
+            points = 0.0;
+
+        Message.debugMessage("setPointsForPlayer method executed with Player "+player+"\npoints = "+points, DebugIntensity.LIGHT);
+        return setPointsMethod(player, points);
+    }
+
+    /**
+     * Sets points of the player in the hashmap
+     * @param player The player in question
+     * @param points The amount of points
+     * @return True if already exists, False if they don't exist
+     */
+    private boolean setPointsMethod(String player, Double points ) {
+        //set point of player
+        if(pickaxePoints.containsKey(player)) {
+            pickaxePoints.replace(player, points);
+            return true;
+        } else {
+            pickaxePoints.put(player, points);
+            return false;
+        }
+    }
 
     /**
      * Adds the player to the pickaxePoints HashMap.

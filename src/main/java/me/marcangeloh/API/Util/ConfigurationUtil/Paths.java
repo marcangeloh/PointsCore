@@ -99,9 +99,9 @@ public interface Paths {
     String pathMeleeWeaponsValues = pathIncrement + "MeleeWeapons";
     String pathBlaze = ".Blaze";
     String pathBat = ".Bat";
-    String pathBee = ".Bee";
+    String pathPolarBear = ".PolarBear";
     String pathCaveSpider = ".CaveSpider";
-    String pathCat = ".Cat";
+    String pathParrot = ".Parrot";
     String pathCreeper =".Creeper";
     String pathElderGuardian = ".ElderGuardian";
     String pathGuardian = ".Guardian";
@@ -122,7 +122,8 @@ public interface Paths {
     String pathWitherSkeleton = ".WitherSkeleton";
     String pathWitch = ".Witch";
     String pathZombie = ".Zombie";
-    String pathZombiePigman = ".ZombiePigman";
+    String pathZombieHorse = ".ZombieHorse";
+    String pathZombieMan = ".ZombieMan";
     String pathChicken = ".Chicken";
     String pathCow = ".Cow";
     String pathHorse = ".Horse";
@@ -133,6 +134,12 @@ public interface Paths {
     String pathPig = ".Pig";
     String pathFireball = ".Fireball";
     String pathDragonFireball = ".DragonFireball";
+    String pathSpider = ".Spider";
+    String pathCod = ".Cod";
+    String pathPlayer = ".Player";
+    String pathDonkey = ".Donkey";
+    String pathWolf = ".Wolf";
+    String pathSkeletonHorse = ".SkeletonHorse";
     String pathOther = ".Other";
     /**
      * SQL Section

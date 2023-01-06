@@ -1,6 +1,9 @@
 Points:
   #Available modes are: INTENSE, LIGHT, NONE
   DebugMode: NONE
+  #Should it connect to the global server? KEEP THIS FALSE
+  #It is still in development and can break your plugin
+  ConnectGlobal: false
   #What should be the symbol of the points
   PointsSymbol: "GP"
   PointsName: "General Points"
@@ -102,6 +105,12 @@ Points:
       Witch: 0.26
       Zombie: 0.01
       ZombiePigman: 0.005
+      Cod: 0.0005
+      SkeletonHorse: 1.0
+      Wolf: 0.05
+      Donkey: 0.004
+      Spider: 0.04
+      Player: 2
       Chicken: 0.005
       Cow: 0.008
       Horse: 0.01

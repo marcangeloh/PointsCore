@@ -2,6 +2,8 @@ package me.marcangeloh.API.PointsUtil.DetailedPoints;
 
 import me.marcangeloh.API.Events.PointsAddedEvent;
 import me.marcangeloh.API.Events.PointsRemovedEvent;
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -49,6 +51,40 @@ public class MeleeWeaponPoints implements Points {
         return meleeWeaponPoints.containsKey(player.getUniqueId().toString());
     }
 
+    @Override
+    public boolean setPointsForPlayer(Player player, Double points) {
+        if(points == null)
+            points = 0.0;
+
+        Message.debugMessage("setPointsForPlayer method executed with Player "+player+"\npoints = "+points, DebugIntensity.LIGHT);
+        return setPointsMethod(player.getUniqueId().toString(), points);
+    }
+
+    public boolean setPointsForPlayer(String player, Double points) {
+        if(points == null)
+            points = 0.0;
+
+        Message.debugMessage("setPointsForPlayer method executed with Player "+player+"\npoints = "+points, DebugIntensity.LIGHT);
+        return setPointsMethod(player, points);
+    }
+
+    /**
+     * Sets points of the player in the hashmap
+     * @param player The player in question
+     * @param points The amount of points
+     * @return True if already exists, False if they don't exist
+     */
+    private boolean setPointsMethod(String player, Double points ) {
+        //set point of player
+        if(meleeWeaponPoints.containsKey(player)) {
+            meleeWeaponPoints.replace(player, points);
+            return true;
+        } else {
+            meleeWeaponPoints.put(player, points);
+            return false;
+        }
+    }
+
     /**
      * Adds the player to the meleeWeaponPoints HashMap.
      * @param player The player in Player format to add
@@ -56,6 +92,8 @@ public class MeleeWeaponPoints implements Points {
      * @return true if the player already is in the hashmap, false if they aren't.
      */
     public boolean addPointsToPlayer(Player player, Double points) {
+        if(points == null)
+            points = 0.0;
         String uuid = player.getUniqueId().toString();
 
         return addPointsToPlayer(uuid, points);
@@ -82,14 +120,16 @@ public class MeleeWeaponPoints implements Points {
     private boolean addPointsMethod(String player, Double points) {
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
+
         if(pointsAddedEvent.isCancelled()) {
             return false;
         }
         double multiplierAmount = 1.0;
         Player player1 = Bukkit.getPlayer(UUID.fromString(player));
         if(player1 != null) {
-            multiplierAmount = getMultiplier(player1);
-
+            if (multiplier.containsKey(player1)) {
+                multiplierAmount = getMultiplier(player1);
+            }
         }
         if(meleeWeaponPoints.containsKey(player)) {
             double pointsToAdd = meleeWeaponPoints.get(player) *multiplierAmount;

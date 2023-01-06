@@ -107,7 +107,7 @@ public class DataManager {
             e.printStackTrace();
         }
     }
-    public void loadPlayerFromSaveFile(PlayerPoints playerPoints, Player player) {
+    public PlayerPoints loadPlayerFromSaveFile(PlayerPoints playerPoints, Player player) {
         String uuid = player.getUniqueId().toString();
         if(!playerPoints.shovelPoints.containsPlayer(player)) {
             playerPoints.shovelPoints.addPointsToPlayer(player, fileConfig.getDouble(uuid+Paths.pathShovelPoints));
@@ -133,5 +133,6 @@ public class DataManager {
         if(!playerPoints.armorPoints.containsPlayer(player)) {
             playerPoints.armorPoints.addPointsToPlayer(player, fileConfig.getDouble(uuid+ Paths.pathArmorPoints));
         }
+        return playerPoints;
     }
 }

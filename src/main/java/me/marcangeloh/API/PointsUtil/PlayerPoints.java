@@ -4,6 +4,7 @@ import me.marcangeloh.API.PointsUtil.DetailedPoints.*;
 import me.marcangeloh.API.Util.GeneralUtil.CooldownUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import me.marcangeloh.PointsCore;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.io.*;
@@ -44,6 +45,28 @@ public final class PlayerPoints implements Serializable {
         return 0.0;
     }
 
+    public boolean setPointsForToolType(Tools tool, Player player, Double amount) {
+        switch (tool) {
+            case AXE:
+                return axePoints.setPointsForPlayer(player, amount);
+            case HOE:
+                return hoePoints.setPointsForPlayer(player, amount);
+            case ARMOR:
+                return armorPoints.setPointsForPlayer(player,amount);
+            case SHOVEL:
+                return shovelPoints.setPointsForPlayer(player,amount);
+            case PICKAXE:
+                return pickaxePoints.setPointsForPlayer(player,amount);
+            case FISH_ROD:
+                return fishingPoints.setPointsForPlayer(player,amount);
+            case MELEE_WEAPON:
+                return meleeWeaponPoints.setPointsForPlayer(player,amount);
+            case RANGED_WEAPON:
+                return rangedWeaponPoints.setPointsForPlayer(player,amount);
+            default:
+                return false;
+        }
+    }
     public void setMultiplierForTool(Player player, Double amount, Tools tool) {
         switch (tool) {
             case PICKAXE:

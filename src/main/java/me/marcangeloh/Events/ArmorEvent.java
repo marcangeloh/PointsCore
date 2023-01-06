@@ -17,8 +17,8 @@ import java.util.UUID;
 
 public class ArmorEvent implements Listener {
 
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin; 
-    
+    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+
     ValueUtil valueUtil = new ValueUtil();
 
     @EventHandler

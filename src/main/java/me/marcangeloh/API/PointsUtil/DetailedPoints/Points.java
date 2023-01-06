@@ -37,6 +37,14 @@ public interface Points extends Listener {
     boolean addPointsToPlayer(Player player, Double points);
 
     /**
+     * Modifies the hashmap so that the player has the set amount of points
+     * @param player The player to set points for
+     * @param points The amount of points
+     * @return true transaction is successful
+     */
+    boolean setPointsForPlayer(Player player, Double points);
+
+    /**
      * Adds the player to the armorPoints HashMap.
      * @param player The player's name to add
      * @param points Adds this amount of points to the player (if null will be 0)
