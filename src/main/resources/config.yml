@@ -54,16 +54,41 @@ Points:
       Emerald: 1.0
       Iron: 0.125
       Gold: 0.25
+      Copper: 0.1
+      CryingObsidian: 10
+      Blackstone: 0.01
       Prismarine: 0.05
       PrismarineBricks: 0.05
       Brick: 0.1
       Ice: 0.1
+      Deepslate: 0.1
+      Redstone: 0.2
+      Dripstone: 0.1
+      Spawner: 5.00
+      Dropper: 0.1
+      Observer: 0.1
+      Smoker: 0.02
+      Rail: 0.001
+      Furnace: 0.02
+      NetheriteBlock: 7
+      AncientDebris: 3
+      WaxedCopper: 0.1
+      Tuff: 0.1
+      Concrete: 0.1
       Other: 0.01
     ShovelValues: #Per Block Excavated
       Sand: 0.01
       SoulSand: 0.02
       Dirt: 0.01
       Mycelium: 0.5
+      Mud: 0.3
+      Snow: 0.2
+      SoulSoil: 0.7
+      ConcretePowder: 0.2
+      Clay: 0.05
+      MuddyMangroveRoots: 1
+      Farmland: 0.1
+      Podzol: 0.5
       Gravel: 0.25
     AxeValues: #Per Log Broken (Planks are 1/4 of what is written here)
       Oak: 0.01
@@ -72,6 +97,29 @@ Points:
       Jungle: 0.005
       Spruce: 0.015
       Birch: 0.02
+      CraftingTable: 0.03
+      Chest: 0.04
+      Lectern: 0.06
+      SmithingTable: 0.08
+      Loom: 0.1
+      CartographyTable: 0.1
+      FletchingTable: 0.1
+      Barrel: 0.1
+      Jukebox: 0.15
+      Campfire: 0.05
+      Bookshelf: 0.07
+      Banner: 0.02
+      JackLantern: 0.07
+      Pumpkin: 0.02
+      Melon: 0.02
+      Sign: 0.02
+      Noteblock: 0.02
+      MangroveRoots: 0.02
+      Beehive: 1
+      BeeNest: 0.02
+      Composter: 0.5
+      MushroomBlock: 0.5
+      Bamboo: 0.02
     Fishing: #Per Fish Caught
       Salmon: 0.01
       Cod: 0.02
