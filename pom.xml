@@ -7,7 +7,7 @@
     <groupId>me.marcangeloh</groupId>
     <artifactId>PointsCore</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.9</version>
+    <version>1.1.91</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -24,11 +24,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!-- bStats -->
-        <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
         <!-- PlaceholderAPI -->
         <repository>
             <id>placeholderapi</id>
@@ -37,12 +32,6 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-        </dependency>
         <!--This adds the Spigot API artifact to the build -->
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -50,12 +39,11 @@
             <version>1.19.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- bStats -->
         <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>2.1.0</version>
-            <scope>compile</scope>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -76,37 +64,26 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
                 <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>me.marcangeloh</shadedPattern>
-                        </relocation>
-                    </relocations>
-                    <minimizeJar>true</minimizeJar>
-                    <artifactSet>
-                        <!--<includes>
-                            <include>org.marcangeloh</include>
-                        </includes>-->
-                        <excludes>
-                            <exclude>org.spigotmc</exclude>
-                            <exclude>net.milkbowl</exclude>
-                            <exclude>commons-lang</exclude>
-                            <exclude>com.google.guava:guava</exclude>
-                            <exclude>com.google.code.gson</exclude>
-                            <exclude>net.md-5</exclude>
-                            <exclude>org.yaml</exclude>
-                            <exclude>com.github.MilkBowl</exclude>
-                        </excludes>
-                    </artifactSet>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>

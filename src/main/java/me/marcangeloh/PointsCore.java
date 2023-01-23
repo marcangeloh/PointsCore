@@ -12,7 +12,6 @@ import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import net.milkbowl.vault.economy.Economy;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
