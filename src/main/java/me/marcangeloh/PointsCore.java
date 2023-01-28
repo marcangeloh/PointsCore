@@ -31,7 +31,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     public String server_version;
     public static boolean is1_16 = false;
     public static DebugIntensity serverDebugIntensity;
-    public final static String pluginVersion ="1.1.1-SNAPSHOT";
+    public final static String pluginVersion ="1.1.92-SNAPSHOT";
 
 
     public void onDisable() {
