@@ -9,12 +9,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PointsCoreCommands implements CommandExecutor {
     PointsCore pointsCore = (PointsCore) PointsCore.plugin;
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String lbl, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String lbl, String[] args) {
         if(!command.getName().equalsIgnoreCase("points")) {
             return false;
         }
@@ -36,6 +37,7 @@ public class PointsCoreCommands implements CommandExecutor {
 
         if(args[0].equalsIgnoreCase("reload")) {
             PointsCore.plugin.reloadConfig();
+            Message.notifyMessage("Config Reloaded", sender);
             return true;
         }
 
@@ -63,25 +65,48 @@ public class PointsCoreCommands implements CommandExecutor {
 
             if(args[2].equalsIgnoreCase("shovel") ||args[2].equalsIgnoreCase("spade")) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.SHOVEL, player, amount);
-            } else if(args[2].equalsIgnoreCase("ranged") ||args[2].equalsIgnoreCase("rangedweapons")||args[2].equalsIgnoreCase("rw")) {
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" shovel points", sender);
+                Message.notifyMessage("You've received "+amount+" shovel points", sender);
+            } else if(args[2].equalsIgnoreCase("ranged") ||
+                    args[2].equalsIgnoreCase("rangedweapons")||
+                    args[2].equalsIgnoreCase("rw") ||
+                    args[2].equalsIgnoreCase("bow") ||
+                    args[2].equalsIgnoreCase("crossbow") ||
+                    args[2].equalsIgnoreCase("trident")
+            ) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.RANGED_WEAPON, player, amount);
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" ranged points", sender);
+                Message.notifyMessage("You've received "+amount+" ranged points", sender);
             }else if(args[2].equalsIgnoreCase("pick") ||args[2].equalsIgnoreCase("pickaxe")) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.PICKAXE, player, amount);
-            }else if(args[2].equalsIgnoreCase("melee") ||args[2].equalsIgnoreCase("meleeweapons")||args[2].equalsIgnoreCase("mw")) {
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" pickaxe points", sender);
+                Message.notifyMessage("You've received "+amount+" pickaxe points", sender);
+            }else if(args[2].equalsIgnoreCase("melee") ||args[2].equalsIgnoreCase("meleeweapons")||
+                    args[2].equalsIgnoreCase("mw") || args[2].contains("sword")) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.MELEE_WEAPON, player, amount);
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" melee points", sender);
+                Message.notifyMessage("You've received "+amount+" melee points", sender);
             }else if(args[2].equalsIgnoreCase("hoe")) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.HOE, player, amount);
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" hoe points", sender);
+                Message.notifyMessage("You've received "+amount+" hoe points", sender);
             }else if(args[2].equalsIgnoreCase("fishing")||args[2].equalsIgnoreCase("fish")) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.FISH_ROD, player, amount);
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" fishing points", sender);
+                Message.notifyMessage("You've received "+amount+" fishing points", sender);
             }else if(args[2].equalsIgnoreCase("axe")) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.AXE, player, amount);
-            }else if(args[2].equalsIgnoreCase("armor")
-                    ||args[2].equalsIgnoreCase("chestplate")
-                    ||args[2].equalsIgnoreCase("helmet")
-                    ||args[2].equalsIgnoreCase("leggings")
-                    ||args[2].equalsIgnoreCase("protection")
-                    ||args[2].equalsIgnoreCase("boots")) {
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" axe points", sender);
+                Message.notifyMessage("You've received "+amount+" axe points", sender);
+            }else if(args[2].contains("armor")
+                    ||args[2].contains("chest")
+                    ||args[2].contains("helm")
+                    ||args[2].contains("leggin")
+                    ||args[2].contains("protect")
+                    ||args[2].contains("boot")) {
                 pointsCore.playerPoints.addPointsToToolType(Tools.ARMOR, player, amount);
+                Message.notifyMessage("You've given "+player.getDisplayName()+" "+amount+" armor points", sender);
+                Message.notifyMessage("You've received "+amount+" armor points", sender);
             }
 
             return true;
@@ -90,18 +115,32 @@ public class PointsCoreCommands implements CommandExecutor {
 
             if(args[2].equalsIgnoreCase("shovel") ||args[2].equalsIgnoreCase("spade")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.SHOVEL, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" shovel points", sender);
+                Message.notifyMessage("You've lost "+amount+" shovel points", sender);
             } else if(args[2].equalsIgnoreCase("ranged") ||args[2].equalsIgnoreCase("rangedweapons")||args[2].equalsIgnoreCase("rw")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.RANGED_WEAPON, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" ranged points", sender);
+                Message.notifyMessage("You've lost "+amount+" ranged points", sender);
             }else if(args[2].equalsIgnoreCase("pick") ||args[2].equalsIgnoreCase("pickaxe")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.PICKAXE, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" pickaxe points", sender);
+                Message.notifyMessage("You've lost "+amount+" pickaxe points", sender);
             }else if(args[2].equalsIgnoreCase("melee") ||args[2].equalsIgnoreCase("meleeweapons")||args[2].equalsIgnoreCase("mw")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.MELEE_WEAPON, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" melee points", sender);
+                Message.notifyMessage("You've lost "+amount+" melee points", sender);
             }else if(args[2].equalsIgnoreCase("hoe")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.HOE, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" hoe points", sender);
+                Message.notifyMessage("You've lost "+amount+" hoe points", sender);
             }else if(args[2].equalsIgnoreCase("fishing")||args[2].equalsIgnoreCase("fish")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.FISH_ROD, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" fishing points", sender);
+                Message.notifyMessage("You've lost "+amount+" fishing points", sender);
             }else if(args[2].equalsIgnoreCase("axe")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.AXE, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" axe points", sender);
+                Message.notifyMessage("You've lost "+amount+" axe points", sender);
             }else if(args[2].equalsIgnoreCase("armor")
                     ||args[2].equalsIgnoreCase("chestplate")
                     ||args[2].equalsIgnoreCase("helmet")
@@ -109,11 +148,11 @@ public class PointsCoreCommands implements CommandExecutor {
                     ||args[2].equalsIgnoreCase("protection")
                     ||args[2].equalsIgnoreCase("boots")) {
                 pointsCore.playerPoints.removePointsToToolType(Tools.ARMOR, player, amount);
+                Message.notifyMessage("You've removed "+amount+" from "+player.getDisplayName()+" armor points", sender);
+                Message.notifyMessage("You've lost "+amount+" armor points", sender);
             }
 
 
-            Message.notifyMessage("Successfully removed " + amount+ args[2]+" from "+ args[1], sender);
-            Message.notifyMessage("You have lost " + amount+ args[2]+" from "+sender.getName(), player);
             return true;
         }
 
