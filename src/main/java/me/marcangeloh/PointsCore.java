@@ -2,12 +2,10 @@ package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.API.Util.GeneralUtil.*;
+import me.marcangeloh.Commands.Hologram;
 import me.marcangeloh.Commands.PointCheckCommand;
 import me.marcangeloh.Commands.PointsCoreCommands;
-import me.marcangeloh.Events.ArmorEvent;
-import me.marcangeloh.Events.JoinEvent;
-import me.marcangeloh.Events.ToolEvents;
-import me.marcangeloh.Events.WeaponEvent;
+import me.marcangeloh.Events.*;
 import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.API.Util.SQLUtil.SQLManager;
@@ -32,6 +30,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     public static boolean is1_16 = false;
     public static DebugIntensity serverDebugIntensity;
     public final static String pluginVersion ="1.1.92-SNAPSHOT";
+    public static boolean latest = true;
 
 
     public void onDisable() {
@@ -48,6 +47,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         registerEvents();
         performPluginHooks(); //Hooking into other plugins
         getCommand("pointcheck").setExecutor(new PointCheckCommand());
+        getCommand("hologram").setExecutor(new Hologram());
         getCommand("points").setExecutor(new PointsCoreCommands());
         updateChecker();
     }
@@ -64,6 +64,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         new UpdateChecker(this, 83263).getVersion(version -> {
             if (!this.getDescription().getVersion().equalsIgnoreCase(version)) {
                 Message.errorMessage("PointsCore has a new update available, "+version, getServer().getConsoleSender());
+                latest = false;
             }
         });
     }
@@ -92,7 +93,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         playerPoints = new PlayerPoints();
         setupVersion();
         getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
+        saveConfig();
         serverDebugIntensity = getDebugIntensity();
     }
 
@@ -136,6 +137,10 @@ public class PointsCore extends JavaPlugin implements Paths {
      * Registers the events to the server
      */
     private void registerEvents() {
+        getServer().getPluginManager().registerEvents(new LeaveEvent(), this);
+        getServer().getPluginManager().registerEvents(new HologramEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+        getServer().getPluginManager().registerEvents(new ChatFormatter(), this);
         getServer().getPluginManager().registerEvents(new WeaponEvent(), this); //Registers the armor points events
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the tool points events

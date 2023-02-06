@@ -124,8 +124,8 @@ public class ShovelPoints implements Points {
      */
     private boolean addPointsMethod(String player, Double points) {
         //Debugging
-        Bukkit.getServer().getConsoleSender().sendMessage("Giving " + player+ "\n "+points+"Points");
-        //Fires the event
+        Message.debugMessage("Giving: "+player+"\nPoints: "+points, DebugIntensity.INTENSE);
+        // Fires the event
         PointsAddedEvent pointsAddedEvent = new PointsAddedEvent(UUID.fromString(player), points);
         Bukkit.getPluginManager().callEvent(pointsAddedEvent);
         //If the event was cancelled, cancel adding points

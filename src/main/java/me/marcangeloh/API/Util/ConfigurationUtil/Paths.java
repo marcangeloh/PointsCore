@@ -43,6 +43,8 @@ public interface Paths {
     String pathAndesiteValue = pathPickaxeValues + "Andesite";
     String pathSandstoneValue = pathPickaxeValues + "Sandstone";
     String pathChiseledSandstoneValue = pathPickaxeValues + "ChiseledSandstone";
+    String pathRedSandstone = pathPickaxePoints + "RedSandstone";
+    String pathCutCopper = pathPickaxePoints + "CutCopper";
     String pathChiseledRedSandstoneValue = pathPickaxeValues + "ChiseledRedSandstone";
     String pathCutSandstoneValue = pathPickaxeValues + "CutSandstone";
     String pathCutRedSandstoneValue = pathPickaxeValues + "CutRedSandstone";

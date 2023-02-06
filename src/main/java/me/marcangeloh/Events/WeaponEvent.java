@@ -28,6 +28,9 @@ public class WeaponEvent implements Listener {
             Tools tool = valueUtil.getToolType(player.getInventory().getItemInMainHand().getType());
             double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
 
+            if(tool.equals(Tools.RANGED_WEAPON))
+                return;
+
             incrementHandler(player, incrementValue, tool, event.getEntity());
 
         } else if(event.getDamager() instanceof Arrow ) {
@@ -48,7 +51,7 @@ public class WeaponEvent implements Listener {
             double incrementValue = valueUtil.getDamageValues(tool, event.getEntityType());
 
             incrementHandler(player, incrementValue, tool, event.getEntity());
-        /**Armor Event**/
+        /*Armor Event*/
         } else if (event.getEntity() instanceof Player) {
             //Player got damaged by entity
             Player player = (Player) event.getEntity();

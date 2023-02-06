@@ -39,8 +39,9 @@ Points:
       ChiseledSandstone: 0.02
       ChiseledRedSandstone: 0.03
       CutSandstone: 0.03
-      CutRedSandstone: 0.04
-      SmoothSandstone: 0.02
+      RedSandstone: 0.04
+      CutRedSandstone: 0.02
+      SmoothSandstone: 0.04
       SmoothRedSandstone: 0.03
       Netherrack: 0.005
       NetherBrick: 0.02
@@ -55,6 +56,7 @@ Points:
       Iron: 0.125
       Gold: 0.25
       Copper: 0.1
+      CutCopper: 0.06
       CryingObsidian: 10
       Blackstone: 0.01
       Prismarine: 0.05
@@ -258,3 +260,35 @@ Points:
     Database: "database"
     Username: "username"
     Password: "password"
+QuitMessage: ":player: &#17fb04p&#2bf61ae&#40f131a&#54ec47c&#68e75ee&#7de274d &#91dd8bo&#a5d8a1u&#bad3b8t&#cecece."
+CustomJoinMessage: ":player: &#17fb04d&#21f90fr&#2af619o&#34f424p&#3ef22fp&#47ef39e&#51ed44d &#5aea4ei&#64e859n&#6ee664t&#77e36eo &#81e179t&#8bdf84h&#94dc8ee &#9eda99w&#a7d7a3o&#b1d5aer&#bbd3b9l&#c4d0c3d&#cecece."
+CustomDeathMessage:
+  BLOCK_EXPLOSION: ":player: &#17fb04e&#2ef51dx&#45f037p&#5cea50l&#73e569o&#89df82d&#a0d99ce&#b7d4b5d&#cecece."
+  CONTACT: ":player: &#17fb04h&#21f90fu&#2af619g&#34f424g&#3ef22fe&#47ef39d &#51ed44t&#5aea4eh&#64e859e &#6ee664w&#77e36er&#81e179o&#8bdf84n&#94dc8eg &#9eda99b&#a7d7a3l&#b1d5aeo&#bbd3b9c&#c4d0c3k&#cecece."
+  CRAMMING: ":player: &#17fb04g&#28f716o&#38f329t &#49ef3bs&#5aeb4dq&#6ae760u&#7be272i&#8bde85s&#9cda97h&#add6a9e&#bdd2bcd&#cecece."
+  CUSTOM: ":player: &#17fb04d&#28f716i&#38f329e&#49ef3bd &#5aeb4dw&#6ae760i&#7be272e&#8bde85r&#9cda97d&#add6a9l&#bdd2bcy&#cecece."
+  DRAGON_BREATH: ":player: &#17fb04d&#21f90fi&#2af619e&#34f424d &#3ef22fo&#47ef39f &#51ed44a &#5aea4es&#64e859t&#6ee664i&#77e36en&#81e179k&#8bdf84y &#94dc8eb&#9eda99r&#a7d7a3e&#b1d5aea&#bbd3b9t&#c4d0c3h&#cecece."
+  DROWNING: ":player: &#17fb04t&#1dfa0bh&#23f811o&#29f718u&#2ff51fg&#36f426h&#3cf22ct &#42f133t&#48ef3ah&#4eee41e&#54ec47y &#5aeb4ec&#60e955o&#66e85cu&#6ce662l&#73e569d &#79e370b&#7fe276r&#85e07de&#8bdf84a&#91dd8bt&#97dc91h&#9dda98e &#a3d99fi&#a9d7a6n &#b0d6acw&#b6d4b3a&#bcd3bat&#c2d1c1e&#c8d0c7r&#cecece."
+  ENTITY_ATTACK: ":player: &#17fb04g&#26f715o&#36f426t &#45f037b&#54ec47u&#63e858t&#73e569c&#82e17ah&#91dd8be&#a0d99cr&#b0d6ace&#bfd2bdd&#cecece."
+  ENTITY_EXPLOSION: ":player: &#17fb04w&#1ff90ca&#26f715s &#2ef51dc&#36f426r&#3df22ee&#45f037e&#4cee3fp&#54ec47e&#5cea50d &#63e858o&#6be661u&#73e569t &#7ae371o&#82e17af &#89df82t&#91dd8bh&#99db93i&#a0d99cs &#a8d7a4w&#b0d6aco&#b7d4b5r&#bfd2bdl&#c6d0c6d&#cecece."
+  ENTITY_SWEEP_ATTACK: ":player: &#17fb04w&#1ff90ca&#26f715s &#2ef51ds&#36f426w&#3df22ee&#45f037e&#4cee3fp&#54ec47e&#5cea50d &#63e858o&#6be661u&#73e569t &#7ae371o&#82e17af &#89df82t&#91dd8bh&#99db93i&#a0d99cs &#a8d7a4w&#b0d6aco&#b7d4b5r&#bfd2bdl&#c6d0c6d&#cecece."
+  FALL: ":player: &#17fb04f&#28f716e&#38f329l&#49ef3bl &#5aeb4dt&#6ae760o&#7be272o &#8bde85h&#9cda97a&#add6a9r&#bdd2bcd&#cecece."
+  FALLING_BLOCK: ":player: &#17fb04g&#1ff90do&#28f716t &#30f520h&#38f329i&#41f132t &#49ef3bt&#51ed44o&#5aeb4do &#62e957h&#6ae760a&#73e569r&#7be272d &#83e07bo&#8bde85n &#94dc8et&#9cda97h&#a4d8a0e &#add6a9h&#b5d4b2e&#bdd2bca&#c6d0c5d&#cecece."
+  FIRE: ":player: &#17fb04b&#29f718u&#3cf22cr&#4eee41n&#60e955e&#73e569d &#85e07da &#97dc91l&#a9d7a6o&#bcd3bat&#cecece."
+  FIRE_TICK: ":player: &#17fb04t&#21f90fh&#2af619o&#34f424u&#3ef22fg&#47ef39h&#51ed44t &#5aea4eh&#64e859e &#6ee664w&#77e36ea&#81e179s &#8bdf84a &#94dc8ec&#9eda99a&#a7d7a3n&#b1d5aed&#bbd3b9l&#c4d0c3e&#cecece."
+  FLY_INTO_WALL: ":player: &#17fb04f&#25f814l&#33f423e&#41f133w &#4fed42i&#5dea52n&#6be661t&#7ae371o &#88df80a &#96dc90w&#a4d89fa&#b2d5afl&#c0d1bel&#cecece."
+  FREEZE: ":player: &#17fb04b&#24f812e&#31f521c&#3ef12fa&#4bee3em&#58eb4ce &#65e85bi&#73e569c&#80e177e &#8dde86c&#9adb94r&#a7d8a3e&#b4d4b1a&#c1d1c0m&#cecece."
+  HOT_FLOOR: ":player: &#17fb04b&#20f90eu&#29f718r&#32f422n&#3cf22ce&#45f037d &#4eee41h&#57eb4bi&#60e955s &#69e75ff&#73e569e&#7ce273e&#85e07dt &#8ede87t&#97dc91o&#a0d99co &#a9d7a6h&#b3d5b0a&#bcd3bar&#c5d0c4d&#cecece."
+  LAVA: ":player: &#17fb04m&#22f810e&#2df61cl&#37f328t&#42f034e&#4dee3fd &#58eb4bi&#62e857n&#6de663t&#78e36fo &#83e17ba &#8dde87p&#98db93u&#a3d99ed&#aed6aad&#b8d3b6l&#c3d1c2e&#cecece."
+  LIGHTNING: ":player: &#17fb04w&#1dfa0bo&#23f811n &#29f718t&#2ff51eh&#35f425e &#3af22bl&#40f132i&#46ef38g&#4cee3fh&#52ec45t&#58eb4cn&#5eea52i&#64e859n&#6ae75fg &#70e566j&#75e46ca&#7be273c&#81e179k&#87df80p&#8dde86o&#93dd8dt&#99db93. &#9fda9aT&#a5d8a0h&#abd7a7e&#b0d5adn &#b6d4b4d&#bcd2bai&#c2d1c1e&#c8cfc7d&#cecece."
+  MAGIC: ":player: &#17fb04w&#21f90fa&#2bf61as &#36f426i&#40f131n &#4aef3ct&#54ec47h&#5eea53e &#68e75es&#73e569p&#7de274l&#87e07fa&#91dd8bs&#9bdb96h &#a5d8a1z&#b0d6aco&#bad3b8n&#c4d1c3e&#cecece."
+  POISON: ":player: &#17fb04a&#22f810t&#2df61ce &#37f328s&#42f034o&#4dee3fm&#58eb4be&#62e857t&#6de663h&#78e36fi&#83e17bn&#8dde87g &#98db93w&#a3d99er&#aed6aao&#b8d3b6n&#c3d1c2g&#cecece."
+  PROJECTILE: ":player: &#17fb04g&#23f811o&#2ff51ft &#3cf22ch&#48ef3ai&#54ec47t &#60e955i&#6ce662n &#79e370t&#85e07dh&#91dd8be &#9dda98h&#a9d7a6e&#b6d4b3a&#c2d1c1d&#cecece."
+  SONIC_BOOM: ":player: &#17fb04i&#1ef90cs &#26f714n&#2df61co&#34f424w &#3cf22cc&#43f034a&#4aee3dn&#52ed45c&#59eb4de&#60e955l&#68e75dl&#6fe565e&#76e46dd &#7de275b&#85e07dy &#8cde85t&#93dc8dh&#9bdb95e &#a2d99eW&#a9d7a6a&#b1d5aer&#b8d3b6d&#bfd2bee&#c7d0c6n&#cecece."
+  STARVATION: ":player: &#17fb04f&#28f716o&#38f329r&#49ef3bg&#5aeb4do&#6ae760t &#7be272t&#8bde85o &#9cda97e&#add6a9a&#bdd2bct&#cecece."
+  SUFFOCATION: ":player: &#17fb04d&#1ef90ci&#26f714e&#2df61cd &#34f424i&#3cf22cn &#43f034a &#4aee3dh&#52ed45o&#59eb4dl&#60e955e&#68e75d, &#6fe565d&#76e46di&#7de275e&#85e07dd &#8cde85i&#93dc8dn &#9bdb95t&#a2d99eh&#a9d7a6e &#b1d5aew&#b8d3b6a&#bfd2bel&#c7d0c6l&#cecece."
+  SUICIDE: ":player: &#17fb04d&#1dfa0be&#23f811c&#29f718i&#2ff51fd&#36f426e&#3cf22cd &#42f133t&#48ef3ao &#4eee41e&#54ec47n&#5aeb4ed &#60e955t&#66e85ch&#6ce662e&#73e569i&#79e370r &#7fe276m&#85e07di&#8bdf84s&#91dd8be&#97dc91r&#9dda98a&#a3d99fb&#a9d7a6l&#b0d6ace &#b6d4b3l&#bcd3bai&#c2d1c1f&#c8d0c7e&#cecece."
+  THORNS: ":player: &#17fb04h&#25f814i&#33f423t &#41f133t&#4fed42h&#5dea52e&#6be661m&#7ae371s&#88df80e&#96dc90l&#a4d89fv&#b2d5afe&#c0d1bes&#cecece."
+  VOID: ":player: &#17fb04s&#1dfa0au&#22f810r&#28f716f&#2df61ce&#33f423d &#38f329l&#3ef12fi&#43f035f&#49ef3be &#4eed41a&#54ec47n&#5aeb4dd &#5fe954d&#65e85ae&#6ae760a&#70e566t&#75e46ch&#7be272, &#80e178t&#86e07eh&#8bde85e&#91dd8bn &#97dc91c&#9cda97h&#a2d99do&#a7d8a3s&#add6a9e &#b2d5afd&#b8d3b6e&#bdd2bca&#c3d1c2t&#c8cfc8h&#cecece."
+  WITHER: ":player: &#17fb04w&#26f715i&#36f426t&#45f037h&#54ec47e&#63e858r&#73e569e&#82e17ad &#91dd8ba&#a0d99cw&#b0d6aca&#bfd2bdy&#cecece."
+

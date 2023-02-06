@@ -4,6 +4,52 @@ import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.Material;
 
 public class ToolUtil {
+
+    public static Tools getToolTypeFromString(String tool) {
+        switch (tool.toLowerCase()) {
+            case "armor":
+            case "chestplate":
+            case "leggings":
+            case "boots":
+            case "helmet":
+            case "elytra":
+                return Tools.ARMOR;
+            case "shovel":
+            case "spade":
+                return Tools.SHOVEL;
+            case "pickaxe":
+            case "pick":
+                return Tools.PICKAXE;
+            case "hoe":
+            case "till":
+                return Tools.HOE;
+            case "fishing_rod":
+            case "fish_rod":
+            case "fishing":
+            case "fishing rod":
+            case "fish rod":
+            case "fish":
+                return Tools.FISH_ROD;
+            case "axe":
+                return Tools.AXE;
+            case "bow":
+            case "ranged_weapon":
+            case "ranged":
+            case "arrow":
+            case "trident":
+            case "crossbow":
+            case "trid":
+            case "crossb":
+                return Tools.RANGED_WEAPON;
+            case "sword":
+            case "swords":
+            case "melee_weapon":
+                return Tools.MELEE_WEAPON;
+            default:
+                return Tools.NONE;
+        }
+    }
+
     public static Tools getToolTypeForMaterial(Material material) {
         switch (material) {
             case BAMBOO_STAIRS:

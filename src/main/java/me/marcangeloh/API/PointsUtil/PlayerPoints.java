@@ -4,7 +4,6 @@ import me.marcangeloh.API.PointsUtil.DetailedPoints.*;
 import me.marcangeloh.API.Util.GeneralUtil.CooldownUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import me.marcangeloh.PointsCore;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.io.*;

@@ -7,7 +7,7 @@
     <groupId>me.marcangeloh</groupId>
     <artifactId>PointsCore</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.93</version>
+    <version>1.1.95</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -67,6 +67,13 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true
+                </filtering> <!-- replaces, filters, all placeholders in the resources folder (such as ${project.version} in plugin.yml) -->
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

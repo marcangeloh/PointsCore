@@ -118,12 +118,12 @@ public class EconomySetup extends AbstractEconomy {
 
     @Override
     public EconomyResponse createBank(String s, String s1) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "PointsCore does not support bank accounts!");
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "PointsCore does not yet support bank accounts!");
     }
 
     @Override
     public EconomyResponse deleteBank(String s) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "PointsCore does not support bank accounts!");
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, "PointsCore does not yet support bank accounts!");
     }
 
     @Override

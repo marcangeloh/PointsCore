@@ -11,7 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 
 public class ValueUtil implements Paths {
-    private Plugin plugin = PointsCore.plugin;
+    private final Plugin plugin = PointsCore.plugin;
 
     public Tools getToolType(Material tool) {
         return getToolTypeByVersion(tool);
@@ -56,7 +56,8 @@ public class ValueUtil implements Paths {
                 tool.equals(Material.WOODEN_SWORD)) {
             return Tools.MELEE_WEAPON;
         } else if(tool.equals(Material.BOW)
-                || tool.equals(Material.TRIDENT)){
+                || tool.equals(Material.TRIDENT)
+                || tool.equals(Material.CROSSBOW)){
             return Tools.RANGED_WEAPON;
         } else if(tool.equals(Material.CHAINMAIL_BOOTS) ||
                 tool.equals(Material.IRON_BOOTS)||
@@ -94,6 +95,9 @@ public class ValueUtil implements Paths {
         if(tool.equals(Tools.PICKAXE)) {
             switch (material) {
                 case ICE:
+                case PACKED_ICE:
+                case BLUE_ICE:
+                case FROSTED_ICE:
                     return plugin.getConfig().getDouble(pathIceValue);
                 case BRICK:
                 case BRICKS:
@@ -146,18 +150,32 @@ public class ValueUtil implements Paths {
                 case POLISHED_ANDESITE_STAIRS:
                     return plugin.getConfig().getDouble(pathAndesiteValue);
                 case SANDSTONE:
+                case SANDSTONE_SLAB:
+                case SANDSTONE_STAIRS:
+                case SANDSTONE_WALL:
                     return plugin.getConfig().getDouble(pathSandstoneValue);
                 case CHISELED_SANDSTONE:
                     return plugin.getConfig().getDouble(pathChiseledSandstoneValue);
                 case CHISELED_RED_SANDSTONE:
                     return plugin.getConfig().getDouble(pathChiseledRedSandstoneValue);
                 case CUT_SANDSTONE:
+                case CUT_SANDSTONE_SLAB:
                     return plugin.getConfig().getDouble(pathCutSandstoneValue);
                 case CUT_RED_SANDSTONE:
+                case CUT_RED_SANDSTONE_SLAB:
                     return plugin.getConfig().getDouble(pathCutRedSandstoneValue);
                 case SMOOTH_SANDSTONE:
+                case SMOOTH_SANDSTONE_SLAB:
+                case SMOOTH_SANDSTONE_STAIRS:
                     return plugin.getConfig().getDouble(pathSmoothSandstoneValue);
+                case RED_SANDSTONE:
+                case RED_SANDSTONE_SLAB:
+                case RED_SANDSTONE_STAIRS:
+                case RED_SANDSTONE_WALL:
+                    return plugin.getConfig().getDouble(pathRedSandstone);
                 case SMOOTH_RED_SANDSTONE:
+                case SMOOTH_RED_SANDSTONE_SLAB:
+                case SMOOTH_RED_SANDSTONE_STAIRS:
                     return plugin.getConfig().getDouble(pathSmoothRedSandstoneValue);
                 case NETHERRACK:
                     return plugin.getConfig().getDouble(pathNetherrackValue);
@@ -185,10 +203,28 @@ public class ValueUtil implements Paths {
                 case RAW_COPPER:
                 case RAW_COPPER_BLOCK:
                 case DEEPSLATE_COPPER_ORE:
+                case EXPOSED_COPPER:
+                case WEATHERED_COPPER:
                     return plugin.getConfig().getDouble(pathCopperValue);
+                case CUT_COPPER:
+                case CUT_COPPER_SLAB:
+                case CUT_COPPER_STAIRS:
+                case EXPOSED_CUT_COPPER:
+                case EXPOSED_CUT_COPPER_SLAB:
+                case OXIDIZED_CUT_COPPER:
+                case WEATHERED_CUT_COPPER_STAIRS:
+                case WEATHERED_CUT_COPPER:
+                case OXIDIZED_CUT_COPPER_SLAB:
+                case EXPOSED_CUT_COPPER_STAIRS:
+                case WEATHERED_CUT_COPPER_SLAB:
+                case OXIDIZED_CUT_COPPER_STAIRS:
+                    return plugin.getConfig().getDouble(pathCutCopper);
                 case CRYING_OBSIDIAN:
                     return plugin.getConfig().getDouble(pathCryingObsidian);
                 case END_STONE:
+                case END_STONE_BRICK_SLAB:
+                case END_STONE_BRICK_STAIRS:
+                case END_STONE_BRICK_WALL:
                 case END_STONE_BRICKS:
                     return plugin.getConfig().getDouble(pathEndStoneValue);
                 case OBSIDIAN:
@@ -663,6 +699,7 @@ public class ValueUtil implements Paths {
     public double getDamageValues(Tools tool, EntityType type) {
         switch(tool) {
             case MELEE_WEAPON:
+            case AXE:
                 return getConfigValue(pathMeleeWeaponsValues, type);
             case RANGED_WEAPON:
                 return getConfigValue(pathRangedWeaponsValues, type);
