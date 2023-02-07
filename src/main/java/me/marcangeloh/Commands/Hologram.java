@@ -76,7 +76,7 @@ public class Hologram implements CommandExecutor {
 
     private void handleHologramCreate(String[] args, Player player) {
 
-        if(args.length <3) {
+        if(args.length <2) {
             sendHelpMessage(player);
             return;
         }
@@ -86,25 +86,25 @@ public class Hologram implements CommandExecutor {
         int counter = 0;
         for (String arg: args
         ) {
-            if(arg.equalsIgnoreCase(args[0]) && counter == 0) {
+            if(counter == 0) {
+                counter++;
                 continue;
             }
 
-            if(index == 0) {
-                messages.add(messages.get(index) + arg);
-                index++;
+            if(index == 0 && counter ==1) {
+                messages.add(arg);
                 counter++;
                 continue;
             }
 
             if (counter%4 == 0) {
-                messages.add(messages.get(index) + arg);
+                messages.add(arg);
                 index++;
                 counter++;
                 continue;
             }
 
-            messages.set(index, messages.get(index)+ arg);
+            messages.set(index, messages.get(index)+" "+ arg);
             counter++;
 
         }
@@ -115,7 +115,7 @@ public class Hologram implements CommandExecutor {
         for (String message: messages
         ) {
             counter++;
-            messager.hologramAtLocation(player.getLocation().add(0.5, 0.3*counter, 0.5),Message.format(message));
+            messager.hologramAtLocation(player.getLocation().add(0.5, -0.35*counter, 0.5),Message.format(message));
         }
 
         Message.notifyMessage("Hologram created at location\n x: "+player.getLocation().getX()+" | y: "+player.getLocation().getY()+" | z: "+player.getLocation().getZ(), player);

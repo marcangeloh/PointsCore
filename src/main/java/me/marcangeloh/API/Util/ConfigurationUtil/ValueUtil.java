@@ -691,7 +691,7 @@ public class ValueUtil implements Paths {
                     return plugin.getConfig().getDouble(pathFOtherValues);
             }
         } else {
-            Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found.", plugin.getServer().getConsoleSender());
+            //Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found.", plugin.getServer().getConsoleSender());
             return 0.0;
         }
     }
@@ -706,7 +706,7 @@ public class ValueUtil implements Paths {
             case ARMOR:
                 return getConfigValue(pathArmorPointsValues, type);
             default:
-                Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found in weapons.", plugin.getServer().getConsoleSender());
+                //Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found in weapons.", plugin.getServer().getConsoleSender());
                 return 0.0;
         }
     }

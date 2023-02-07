@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,8 +27,6 @@ public class PointsCore extends JavaPlugin implements Paths {
     private SQLManager sqlManager;
     public static Plugin plugin;
     public PlayerPoints playerPoints;
-    public String server_version;
-    public static boolean is1_16 = false;
     public static DebugIntensity serverDebugIntensity;
     public final static String pluginVersion ="1.1.92-SNAPSHOT";
     public static boolean latest = true;
@@ -50,6 +49,20 @@ public class PointsCore extends JavaPlugin implements Paths {
         getCommand("hologram").setExecutor(new Hologram());
         getCommand("points").setExecutor(new PointsCoreCommands());
         updateChecker();
+        saveDataInCaseOfCrash();
+    }
+
+    private void saveDataInCaseOfCrash() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(isMySQLEnabled) {
+                    sqlManager.saveData();
+                } else{
+                    dataManager.saveAll();
+                }
+            }
+        }.runTaskTimer(this,0,20*30);//runs every 30 seconds
     }
 
     public void removePoints(Tools tool, Player player, double amount) {
@@ -74,6 +87,11 @@ public class PointsCore extends JavaPlugin implements Paths {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new PlaceholderAPILink().register();
         }
+
+        if(!getConfig().getBoolean("Points.ConnectWithVault", false)) {
+            return;
+        }
+
         if(Bukkit.getPluginManager().getPlugin("Vault") != null) {
             if(Bukkit.getServer().getPluginManager().getPlugin("PointsCore").isEnabled()) {
                 Bukkit.getServicesManager().register(Economy.class, new EconomySetup(this), this, ServicePriority.Normal);
@@ -91,7 +109,6 @@ public class PointsCore extends JavaPlugin implements Paths {
         Metrics metrics = new Metrics(this, pluginId);
         plugin = this;
         playerPoints = new PlayerPoints();
-        setupVersion();
         getConfig().options().copyDefaults(true);
         saveConfig();
         serverDebugIntensity = getDebugIntensity();
@@ -137,6 +154,7 @@ public class PointsCore extends JavaPlugin implements Paths {
      * Registers the events to the server
      */
     private void registerEvents() {
+        getServer().getPluginManager().registerEvents(new InventoryClick(), this);
         getServer().getPluginManager().registerEvents(new LeaveEvent(), this);
         getServer().getPluginManager().registerEvents(new HologramEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
@@ -163,23 +181,6 @@ public class PointsCore extends JavaPlugin implements Paths {
         }
     }
 
-
-    private boolean setupVersion() {
-        server_version = "N/A";
-
-        try {
-            server_version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
-
-        if(server_version.equalsIgnoreCase("v1_16_R1")) {
-            is1_16 = true;
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Gets the debug intensity for the messages of the server

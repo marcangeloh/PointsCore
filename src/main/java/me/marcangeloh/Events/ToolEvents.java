@@ -1,5 +1,6 @@
 package me.marcangeloh.Events;
 
+import me.marcangeloh.API.Events.PlayerEquipArmorEvent;
 import me.marcangeloh.API.Events.PlayerFishingEvent;
 import me.marcangeloh.API.Events.PlayerHoeBlockEvent;
 import me.marcangeloh.PointsCore;
@@ -86,6 +87,13 @@ public class ToolEvents implements Listener {
             return;
         }
 
+        //if it's a rightclick of an armor item
+        if(new ValueUtil().getToolType(event.getItem().getType()).equals(Tools.ARMOR)) {
+            PlayerEquipArmorEvent playerEquipArmorEvent = new PlayerEquipArmorEvent(event.getPlayer(), event.getItem());
+            Bukkit.getPluginManager().callEvent(playerEquipArmorEvent);
+            return;
+        }
+
         //If it's not a right click
         if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             Message.debugMessage("The action was not a right click!", DebugIntensity.INTENSE);
@@ -164,6 +172,9 @@ public class ToolEvents implements Listener {
 
         double incrementValue = valueUtil.getMaterialValue(tool, material);
         addPoints(player,incrementValue,Tools.FISH_ROD);
+
+
+        
     }
 
 }

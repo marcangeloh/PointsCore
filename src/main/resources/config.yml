@@ -1,4 +1,6 @@
 Points:
+  #set this to true if you would like PointsCore to act as an economy
+  ConnectWithVault: false
   #Available modes are: INTENSE, LIGHT, NONE
   DebugMode: NONE
   #Should it connect to the global server? KEEP THIS FALSE
