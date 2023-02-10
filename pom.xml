@@ -7,7 +7,7 @@
     <groupId>me.marcangeloh</groupId>
     <artifactId>PointsCore</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.95</version>
+    <version>1.1.96</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

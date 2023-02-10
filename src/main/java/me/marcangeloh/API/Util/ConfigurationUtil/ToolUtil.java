@@ -422,7 +422,6 @@ public class ToolUtil {
             case SOUL_SOIL:
             case PODZOL:
             case CLAY:
-            case TUFF:
             case GRASS:
             case GLASS:
             case GLASS_BOTTLE:
@@ -536,6 +535,7 @@ public class ToolUtil {
             case BRICK_SLAB:
             case BRICK_WALL:
             case CAULDRON:
+            case TUFF:
             case COBBLESTONE:
             case COBBLESTONE_SLAB:
             case COBBLESTONE_WALL:
