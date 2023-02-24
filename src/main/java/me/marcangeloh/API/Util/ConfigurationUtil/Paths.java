@@ -174,6 +174,7 @@ public interface Paths {
     String pathWither = ".Wither";
     String pathWitherSkeleton = ".WitherSkeleton";
     String pathWitch = ".Witch";
+    String pathWarden = ".Warden";
     String pathZombie = ".Zombie";
     String pathZombieHorse = ".ZombieHorse";
     String pathZombieMan = ".ZombieMan";

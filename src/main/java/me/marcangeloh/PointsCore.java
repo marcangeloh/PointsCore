@@ -5,6 +5,7 @@ import me.marcangeloh.API.Util.GeneralUtil.*;
 import me.marcangeloh.Commands.Hologram;
 import me.marcangeloh.Commands.PointCheckCommand;
 import me.marcangeloh.Commands.PointsCoreCommands;
+import me.marcangeloh.Commands.RandomTP;
 import me.marcangeloh.Events.*;
 import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
@@ -16,9 +17,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 
 public class PointsCore extends JavaPlugin implements Paths {
@@ -30,7 +33,6 @@ public class PointsCore extends JavaPlugin implements Paths {
     public static DebugIntensity serverDebugIntensity;
     public final static String pluginVersion ="1.1.92-SNAPSHOT";
     public static boolean latest = true;
-
 
     public void onDisable() {
         if(isMySQLEnabled) {
@@ -48,8 +50,10 @@ public class PointsCore extends JavaPlugin implements Paths {
         getCommand("pointcheck").setExecutor(new PointCheckCommand());
         getCommand("hologram").setExecutor(new Hologram());
         getCommand("points").setExecutor(new PointsCoreCommands());
+        getCommand("randomtp").setExecutor(new RandomTP());
         updateChecker();
         saveDataInCaseOfCrash();
+        registerCooldowns();
     }
 
     private void saveDataInCaseOfCrash() {
@@ -163,6 +167,24 @@ public class PointsCore extends JavaPlugin implements Paths {
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new JoinEvent(), this); // Registers the Join event
+    }
+
+    private void registerCooldowns() {
+        new BukkitRunnable(
+
+        ) {
+            @Override
+            public void run() {
+                for(UUID player: RandomTP.cooldown.keySet()) {
+                    if(RandomTP.cooldown.get(player) == 0) {
+                        RandomTP.cooldown.remove(player);
+                        continue;
+                    }
+
+                    RandomTP.cooldown.replace(player, RandomTP.cooldown.get(player) - 1);
+                }
+            }
+        }.runTaskTimer(this, 0, 20 );
     }
 
     public void loadPlayerData(Player player) {

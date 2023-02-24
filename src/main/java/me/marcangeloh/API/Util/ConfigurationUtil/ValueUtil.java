@@ -761,6 +761,14 @@ public class ValueUtil implements Paths {
                 return plugin.getConfig().getDouble(tool+pathWitherSkeleton);
             case WITCH:
                 return plugin.getConfig().getDouble(tool+pathWitch);
+            case BEE:
+                return plugin.getConfig().getDouble(tool+".Bee");
+            case CAT:
+                return plugin.getConfig().getDouble(tool+".Cat");
+            case FOX:
+                return plugin.getConfig().getDouble(tool+".Fox");
+            case WARDEN:
+                return plugin.getConfig().getDouble(tool+pathWarden);
             case ZOMBIE:
                 return plugin.getConfig().getDouble(tool+pathZombie);
             case ZOMBIE_HORSE:

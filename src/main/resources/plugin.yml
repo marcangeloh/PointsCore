@@ -46,3 +46,10 @@ commands:
       description: Removes all holograms in <radius> of player
       default: op
       usage: /hologram delete <radius>
+  randomtp:
+    aliases:
+      - rtp
+      - wild
+    description: Teleports the player to a random location
+    default: true
+    usage: /rtp

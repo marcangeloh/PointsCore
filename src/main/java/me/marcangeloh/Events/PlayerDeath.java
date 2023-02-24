@@ -15,7 +15,8 @@ public class PlayerDeath implements Listener {
         String deathMessage = PointsCore.plugin.getConfig().getString("CustomDeathMessage."+ event.getEntity().getLastDamageCause().getCause(),
                 playerName+ Message.format(" &#17fb04h&#31f521a&#4bee3es &#65e85bd&#80e177i&#9adb94e&#b4d4b1d&#cecece."));
 
-        event.setDeathMessage(Message.format(deathMessage.replaceAll(":player:" , playerName)));
+        if(PointsCore.plugin.getConfig().getBoolean("CustomMessages", true));
+            event.setDeathMessage(Message.format(deathMessage.replaceAll(":player:" , playerName)));
 
     }
 }

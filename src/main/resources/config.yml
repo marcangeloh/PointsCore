@@ -143,6 +143,7 @@ Points:
       Enderman: 0.08
       Endermite: 0.09
       Evoker: 0.1
+      Fox: 0.2
       Ghast: 0.05
       Husk: 0.07
       Illusioner: 0.1
@@ -155,6 +156,7 @@ Points:
       Wither: 1.0
       WitherSkeleton: 0.25
       Witch: 0.26
+      Warden: 1.0
       Zombie: 0.01
       ZombiePigman: 0.005
       Cod: 0.0005
@@ -262,6 +264,22 @@ Points:
     Database: "database"
     Username: "username"
     Password: "password"
+RandomTP:
+  MaxX: 10000 # Setup the Maximum X Boundary for randomTP
+  MaxZ: 10000 # Setup the Maximum Z Boundary for randomTP
+  MinX: -10000 # Setup the Minimum X Boundary for randomTP
+  MinZ: -10000 # Setup the Minimum Z Boundary for randomTP
+  Cooldown: 10 #In Seconds
+  DangerousBlocks:
+    - "LAVA"
+    - "WATER"
+    - "FIRE"
+    - "COBWEB"
+    - "CACTUS"
+TPA: #Settings for TPA/TPAHERE
+  Cooldown: 3 #How long the player can't move before a tpa
+  ConfirmCooldown: 30 #How long the player has to accept the tp request
+CustomMessages: true # Set to false if you don't want to use these custom messages.
 QuitMessage: ":player: &#17fb04p&#2bf61ae&#40f131a&#54ec47c&#68e75ee&#7de274d &#91dd8bo&#a5d8a1u&#bad3b8t&#cecece."
 CustomJoinMessage: ":player: &#17fb04d&#21f90fr&#2af619o&#34f424p&#3ef22fp&#47ef39e&#51ed44d &#5aea4ei&#64e859n&#6ee664t&#77e36eo &#81e179t&#8bdf84h&#94dc8ee &#9eda99w&#a7d7a3o&#b1d5aer&#bbd3b9l&#c4d0c3d&#cecece."
 CustomDeathMessage:
