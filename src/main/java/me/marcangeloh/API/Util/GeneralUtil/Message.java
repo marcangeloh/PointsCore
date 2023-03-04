@@ -94,7 +94,6 @@ public class Message {
             matcher = pattern.matcher(cleaned);
         }
 
-
         return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('§', net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', cleaned)).replaceAll("&", "");
     }
 

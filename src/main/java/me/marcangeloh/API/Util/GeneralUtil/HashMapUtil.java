@@ -1,12 +1,15 @@
 package me.marcangeloh.API.Util.GeneralUtil;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class TeleportUtil {
+public class HashMapUtil {
     public final HashMap<Player, TeleportRequest> teleportMap;
-    public TeleportUtil(){
+    public final HashMap<Player, Player> lastMessaged;
+    public HashMapUtil(){
         teleportMap = new HashMap<>();
+        lastMessaged = new HashMap<>();
     }
 }

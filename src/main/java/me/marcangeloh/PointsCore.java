@@ -18,11 +18,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 
 
 public class PointsCore extends JavaPlugin implements Paths {
@@ -34,7 +32,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     public static DebugIntensity serverDebugIntensity;
     public final static String pluginVersion ="1.1.92-SNAPSHOT";
     public static boolean latest = true;
-    public TeleportUtil teleportUtil;
+    public HashMapUtil hashMapUtil;
 
     public void onDisable() {
         if(isMySQLEnabled) {
@@ -51,7 +49,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         performPluginHooks(); //Hooking into other plugins
         registerCommands();
         updateChecker();
-        MainRunnable mainRunnable = new MainRunnable(isMySQLEnabled, teleportUtil, sqlManager,dataManager);
+        MainRunnable mainRunnable = new MainRunnable(isMySQLEnabled, hashMapUtil, sqlManager,dataManager);
         mainRunnable.run();
     }
 
@@ -60,13 +58,14 @@ public class PointsCore extends JavaPlugin implements Paths {
         getCommand("hologram").setExecutor(new Hologram());
         getCommand("points").setExecutor(new PointsCoreCommands());
         getCommand("randomtp").setExecutor(new RandomTP());
-        getCommand("tpa").setExecutor(new TPA(teleportUtil));
-        getCommand("tpaccept").setExecutor(new TPAConfirmation(teleportUtil));
+        getCommand("tpa").setExecutor(new TPA(hashMapUtil));
+        getCommand("tpaccept").setExecutor(new TPAConfirmation(hashMapUtil));
         getCommand("fly").setExecutor(new Fly());
         getCommand("broadcast").setExecutor(new Broadcast());
         getCommand("god").setExecutor(new God());
         getCommand("heal").setExecutor(new Heal());
         getCommand("vanish").setExecutor(new Vanish());
+        getCommand("message").setExecutor(new MessageCommand(hashMapUtil));
     }
 
     public void removePoints(Tools tool, Player player, double amount) {
@@ -116,7 +115,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         getConfig().options().copyDefaults(true);
         saveConfig();
         serverDebugIntensity = getDebugIntensity();
-        teleportUtil = new TeleportUtil();
+        hashMapUtil = new HashMapUtil();
     }
 
 
@@ -169,7 +168,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new JoinEvent(), this); // Registers the Join event
-        getServer().getPluginManager().registerEvents(new MoveEvent(teleportUtil), this); // Registers the move event, this is used for tpa
+        getServer().getPluginManager().registerEvents(new MoveEvent(hashMapUtil), this); // Registers the move event, this is used for tpa
     }
 
 

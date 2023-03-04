@@ -11,13 +11,13 @@ import java.util.UUID;
 
 public class MainRunnable {
     private boolean isMySQLEnabled;
-    private TeleportUtil teleportUtil;
+    private HashMapUtil hashMapUtil;
     private SQLManager sqlManager;
     private DataManager dataManager;
 
-    public MainRunnable(boolean isMySQLEnabled, TeleportUtil teleportUtil, SQLManager sqlManager, DataManager dataManager) {
+    public MainRunnable(boolean isMySQLEnabled, HashMapUtil hashMapUtil, SQLManager sqlManager, DataManager dataManager) {
         this.isMySQLEnabled = isMySQLEnabled;
-        this.teleportUtil = teleportUtil;
+        this.hashMapUtil = hashMapUtil;
         this.sqlManager = sqlManager;
         this.dataManager = dataManager;
     }
@@ -38,22 +38,22 @@ public class MainRunnable {
             }
 
             private void handleTPACooldowns() {
-                for(Player player: teleportUtil.teleportMap.keySet()) {
-                    TeleportRequest tpRequest = teleportUtil.teleportMap.get(player);
+                for(Player player: hashMapUtil.teleportMap.keySet()) {
+                    TeleportRequest tpRequest = hashMapUtil.teleportMap.get(player);
                     if(tpRequest == null)
                         continue;
 
                     if(tpRequest.cooldown == 0 && !tpRequest.isConfirmed) {
-                        teleportUtil.teleportMap.remove(player);
+                        hashMapUtil.teleportMap.remove(player);
                         continue;
                     }
                     if(tpRequest.cooldown > 0 && !tpRequest.isConfirmed) {
-                        teleportUtil.teleportMap.get(player).cooldown = tpRequest.cooldown - 1;
+                        hashMapUtil.teleportMap.get(player).cooldown = tpRequest.cooldown - 1;
                         continue;
                     }
 
                     if(tpRequest.moveCooldown > 0 && tpRequest.isConfirmed) {
-                        teleportUtil.teleportMap.get(player).moveCooldown = tpRequest.moveCooldown -1;
+                        hashMapUtil.teleportMap.get(player).moveCooldown = tpRequest.moveCooldown -1;
                         if(tpRequest.isInverted) {
                             player.sendTitle(Message.format("&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
                                     Message.format("&7Seconds"), 20, 20, 20);
@@ -69,12 +69,12 @@ public class MainRunnable {
                             tpRequest.player2.teleport(tpRequest.player.getLocation());
                             Message.notifyMessage("You have successfully been teleported to " + tpRequest.player.getDisplayName()+".", tpRequest.player2);
                             Message.notifyMessage(tpRequest.player2.getDisplayName()+" has successfully teleported to you.", tpRequest.player);
-                            teleportUtil.teleportMap.remove(player);
+                            hashMapUtil.teleportMap.remove(player);
                         } else {
                             tpRequest.player.teleport(tpRequest.player2.getLocation());
                             Message.notifyMessage("You have successfully teleported to " + tpRequest.player2.getDisplayName()+".", tpRequest.player);
                             Message.notifyMessage(tpRequest.player.getDisplayName()+" has successfully teleported to you.", tpRequest.player2);
-                            teleportUtil.teleportMap.remove(player);
+                            hashMapUtil.teleportMap.remove(player);
                         }
                     }
                 }

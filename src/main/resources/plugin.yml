@@ -92,3 +92,11 @@ commands:
     description: Vanish into thin air
     default: op
     usage: /vanish <player>
+  message:
+    aliases:
+      - r
+      - msg
+      - reply
+    default: true
+    description: Message or reply to a player
+    usage: /msg <player> <message>

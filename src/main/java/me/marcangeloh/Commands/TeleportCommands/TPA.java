@@ -3,7 +3,7 @@ package me.marcangeloh.Commands.TeleportCommands;
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.API.Util.GeneralUtil.TeleportRequest;
-import me.marcangeloh.API.Util.GeneralUtil.TeleportUtil;
+import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class TPA implements CommandExecutor {
 
-    private TeleportUtil teleportUtil;
-    public TPA(TeleportUtil teleportUtil) {
-        this.teleportUtil = teleportUtil;
+    private HashMapUtil hashMapUtil;
+    public TPA(HashMapUtil hashMapUtil) {
+        this.hashMapUtil = hashMapUtil;
     }
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
@@ -48,7 +48,7 @@ public class TPA implements CommandExecutor {
             return true;
         }
 
-        teleportUtil.teleportMap.put(player2,
+        hashMapUtil.teleportMap.put(player2,
                 new TeleportRequest(player, player2, PointsCore.plugin.getConfig().getInt("TPA.Cooldown", 3),
                 PointsCore.plugin.getConfig().getInt("TPA.NoMoveTime"),
                 false));
@@ -57,7 +57,7 @@ public class TPA implements CommandExecutor {
             Message.notifyMessage("You have requested "+player2.getDisplayName()+" to teleport to you. Type /tpcancel to cancel the request.", player);
             Message.notifyMessage(player.getDisplayName() + " has requested that you teleport to them. " +
                     "\nPlease type /tpaccept to accept, or /tpdeny to deny the request.", player2);
-            teleportUtil.teleportMap.get(player2).isInverted = true;
+            hashMapUtil.teleportMap.get(player2).isInverted = true;
         } else if(command.getName().equalsIgnoreCase("tpa")) {
             Message.notifyMessage("You have requested to teleport to "+player2.getDisplayName()+". Type /tpcancel to cancel the request.", player);
             Message.notifyMessage(player.getDisplayName() + " has requested to teleport to you. " +
