@@ -12,7 +12,11 @@ public class ChatFormatter implements Listener {
         if(event.getMessage().indexOf("/") == 0)
             return;
 
-        if(event.getMessage().contains("&") || event.getMessage().contains("§")) {
+        if(!event.getPlayer().hasPermission("pointscore.chatcolor") && !event.getPlayer().hasPermission("pointscore.*") && !event.getPlayer().hasPermission("*")) {
+            return;
+        }
+
+        if(event.getMessage().contains("&") || event.getMessage().contains("§") || event.getMessage().contains("#")) {
             event.setMessage(Message.format(event.getMessage()));
         }
 

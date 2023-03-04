@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,6 +96,34 @@ public class Message {
 
 
         return net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('§', net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', cleaned)).replaceAll("&", "");
+    }
+
+    public static String formatLinGradient(String str, Color from, Color to) {
+        final double[] red = interpolateLin(from.getRed(), to.getRed(), str.length());
+        final double[] green = interpolateLin(from.getGreen(), to.getGreen(), str.length());
+        final double[] blue = interpolateLin(from.getBlue(), to.getBlue(), str.length());
+
+        final StringBuilder builder = new StringBuilder();
+
+        // create a string that matches the input-string but has
+        // the different color applied to each char
+        for (int i = 0; i < str.length(); i++) {
+            builder.append(net.md_5.bungee.api.ChatColor.of(new Color(
+                            (int) Math.round(red[i]),
+                            (int) Math.round(green[i]),
+                            (int) Math.round(blue[i]))))
+                    .append(str.charAt(i));
+        }
+
+        return builder.toString();
+    }
+
+    private static double[] interpolateLin(double from, double to, int max) {
+        final double[] res = new double[max];
+        for (int i = 0; i < max; i++) {
+            res[i] = from + i * ((to - from) / (max - 1));
+        }
+        return res;
     }
 
     public void hologramAtLocation(org.bukkit.Location location, String text) {

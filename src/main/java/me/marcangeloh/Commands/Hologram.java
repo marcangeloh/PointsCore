@@ -1,22 +1,28 @@
 package me.marcangeloh.Commands;
 
+import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hologram implements CommandExecutor {
+public class Hologram implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             Message.errorMessage("This command can only be used by a player.", sender);
+            return true;
+        }
+        if (!GeneralUtil.hasPermission(sender, "hologram")) {
             return true;
         }
 
@@ -124,7 +130,19 @@ public class Hologram implements CommandExecutor {
     private void sendHelpMessage(Player player) {
         Message.notifyMessage("Holograms use the following commands:\n" +
                 "/hologram create <text>\n" +
-                "/hologram remove <radius>" +
+                "/hologram remove <radius>\n" +
                 "/hologram help",player);
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        List<String> toReturn = new ArrayList<>();
+        if(args.length == 1) {
+            toReturn.add("create");
+            toReturn.add("remove");
+            toReturn.add("help");
+        }
+        return toReturn;
     }
 }

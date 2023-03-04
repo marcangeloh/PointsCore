@@ -1,5 +1,6 @@
-package me.marcangeloh.Commands;
+package me.marcangeloh.Commands.TeleportCommands;
 
+import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
@@ -48,8 +49,7 @@ public class RandomTP implements CommandExecutor {
         Location location = new Location(player.getWorld(), getMax("X"), 180, getMax("Z"));
         location.setY(player.getWorld().getHighestBlockYAt(location));
 
-        if(!player.hasPermission("pointscore.rtp") && !player.hasPermission("pointscore.*")&& !player.hasPermission("*")) {
-            Message.errorMessage("You do not have permission to use this command.", player);
+        if(!GeneralUtil.hasPermission(player,"rtp")) {
             return;
         }
 
@@ -58,7 +58,7 @@ public class RandomTP implements CommandExecutor {
             return;
         }
 
-        if(!player.hasPermission("pointscore.rtp.nocooldown") || player.hasPermission("pointscore.*")|| player.hasPermission("*")) {
+        if(!GeneralUtil.hasPermission(player,"rtp.nocooldown")) {
             if(cooldown.containsKey(player.getUniqueId())) {
                 Message.errorMessage("rtp is still on cooldown for " +cooldown.get(player.getUniqueId()) + " seconds", player);
                 return;

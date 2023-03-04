@@ -1,5 +1,6 @@
-package me.marcangeloh.Commands;
+package me.marcangeloh.Commands.PointCommands;
 
+import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.PointsCore;
 import me.marcangeloh.API.Util.GeneralUtil.CooldownUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
@@ -8,10 +9,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class PointsCoreCommands implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PointsCoreCommands implements TabExecutor {
     PointsCore pointsCore = (PointsCore) PointsCore.plugin;
 
     @Override
@@ -25,7 +31,7 @@ public class PointsCoreCommands implements CommandExecutor {
             return true;
         }
 
-        if(!sender.hasPermission("Points.admin")) {
+        if(!GeneralUtil.hasPermission(sender, "admin")) {
             Message.errorMessage("You do not have permission to execute this command.", sender);
             return true;
         }
@@ -170,10 +176,56 @@ public class PointsCoreCommands implements CommandExecutor {
 
     private void sendHelpMessage(CommandSender sender) {
         Message.notifyMessage("To use points core you can use the following commands", sender);
-        Message.notifyMessage("/points add <player> <type> <amount>", sender);
-        Message.notifyMessage("/points multiplier <player> <duration> <amount>", sender);
-        Message.notifyMessage("/points remove <player> <type> <amount>", sender);
-        Message.notifyMessage("/points reload", sender);
-        Message.notifyMessage("/points help", sender);
+        Message.notifyMessage("/points add <player> <type> <amount> - adds point to player", sender);
+        Message.notifyMessage("/points multiplier <player> <duration> <amount> - Gives a multiplier to the player", sender);
+        Message.notifyMessage("/points remove <player> <type> <amount> - Removes points from the player", sender);
+        Message.notifyMessage("/points reload - Reloads configs", sender);
+        Message.notifyMessage("/points help - Shows this message bar", sender);
+        Message.notifyMessage("/pointcheck | /pc <player> = Checks points of a player", sender);
+        Message.notifyMessage("-----===== Hologram Commands =====-----", sender);
+        Message.notifyMessage("/holo help - more info on holo commands", sender);
+        Message.notifyMessage("-----===== Hologram Commands =====-----", sender);
+
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        List<String> toReturn = new ArrayList<>();
+        if(args.length == 1) {
+            toReturn.add("remove");
+            toReturn.add("add");
+            toReturn.add("multiplier");
+            toReturn.add("reload");
+            toReturn.add("help");
+            return toReturn;
+        } else if (args.length == 2) {
+            if(args[0].equalsIgnoreCase("reload") ||
+                    args[0].equalsIgnoreCase("help"))
+                return null;
+
+            toReturn.clear();
+            Bukkit.getOnlinePlayers().forEach((e) -> {
+                toReturn.add(e.getName());
+            });
+            return toReturn;
+
+        } else if (args.length == 3) {
+            if(args[0].equalsIgnoreCase("remove") ||args[0].equalsIgnoreCase("subtract")||args[0].equalsIgnoreCase("sub")
+                || args[0].equalsIgnoreCase("add") ||args[0].equalsIgnoreCase("increase")||args[0].equalsIgnoreCase("increment") ) {
+
+                toReturn.clear();
+                toReturn.add("armor");
+                toReturn.add("axe");
+                toReturn.add("pickaxe");
+                toReturn.add("shovel");
+                toReturn.add("fishing");
+                toReturn.add("hoe");
+                toReturn.add("melee");
+                toReturn.add("ranged");
+                return toReturn;
+            }
+        }
+        return null;
     }
 }

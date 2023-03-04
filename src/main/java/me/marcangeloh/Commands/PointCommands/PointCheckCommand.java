@@ -1,4 +1,4 @@
-package me.marcangeloh.Commands;
+package me.marcangeloh.Commands.PointCommands;
 
 import me.marcangeloh.PointsCore;
 import me.marcangeloh.API.Util.GeneralUtil.Message;

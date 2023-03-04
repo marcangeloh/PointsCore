@@ -53,3 +53,42 @@ commands:
     description: Teleports the player to a random location
     default: true
     usage: /rtp
+  tpa:
+    aliases:
+      - tpahere
+    description: Teleports the player to another player
+    usage: /tpa <player>
+    default: true
+  tpaccept:
+    aliases:
+      - tpdeny
+      - tpcancel
+    description: Accepts or rejects the teleport request
+    usage: /tpaccept
+    default: true
+  fly:
+    description: Allows the player to fly
+    default: op
+    usage: /fly
+  broadcast:
+    description: Broadcast a nessage to all players
+    aliases:
+      - bc
+    default: op
+    usage: /broadcast <message>
+  god:
+    description: Grants invulnerability
+    aliases:
+      - godmode
+    default: op
+    usage: /god <player>
+  heal:
+    description: Heals the player
+    default: op
+    usage: /heal <player>
+  vanish:
+    aliases:
+      - v
+    description: Vanish into thin air
+    default: op
+    usage: /vanish <player>
