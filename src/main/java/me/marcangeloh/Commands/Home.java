@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -72,10 +73,16 @@ public class Home implements CommandExecutor {
         }
 
         if(label.equalsIgnoreCase("sethome")) {
+            int maxAllowed = getNumberOfHomesAllowed(player);
+            if( maxAllowed< homeUtils.get(player).getPlayerHomes()) {
+                Message.errorMessage("You do not have permission to set more than "+maxAllowed+" houses.",player);
+                return true;
+            }
+
             //Sets the home of the player
             homeUtils.get(player).addPlayerHome(homeName, player.getLocation());
             homeUtils.get(player).savePlayerHomes();
-            Message.notifyMessage("You're houses' location has successfully been set.", player);
+            Message.notifyMessage("Your houses' location has successfully been set.", player);
             return true;
         }
 
@@ -91,4 +98,23 @@ public class Home implements CommandExecutor {
         return false;
     }
 
+
+    public int getNumberOfHomesAllowed(Player player) {
+        PermissionAttachment attachment = player.addAttachment(PointsCore.plugin);
+        int maxHomes = -1;
+
+        if(GeneralUtil.hasPermission(player, ""))
+            return 200;
+
+        for (int i = 1; ; i++) {
+            attachment.setPermission("pointscore.home." + i, true);
+            if (!player.hasPermission("pointscore.home." + i)) {
+                break;
+            }
+            maxHomes = i;
+        }
+
+        player.removeAttachment(attachment);
+        return maxHomes == -1 ? Integer.MAX_VALUE : maxHomes;
+    }
 }

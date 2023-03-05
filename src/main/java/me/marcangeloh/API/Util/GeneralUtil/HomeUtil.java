@@ -43,6 +43,10 @@ public class HomeUtil {
         playerHomesMap.putIfAbsent(homeName, homeLocation);
     }
 
+    public int getPlayerHomes() {
+        return playerHomesMap.keySet().size();
+    }
+
     public Location getHomeLocation(String homeName) {
         if(!playerHomesMap.containsKey(homeName)) {
             return null;
