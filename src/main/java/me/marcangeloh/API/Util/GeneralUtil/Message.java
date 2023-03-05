@@ -1,5 +1,6 @@
 package me.marcangeloh.API.Util.GeneralUtil;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.marcangeloh.PointsCore;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -24,7 +25,7 @@ public class Message {
      * @param sender the person to send a message to
      */
     public static void errorMessage(String message, CommandSender sender) {
-        sender.sendMessage( format(branding) + ChatColor.RED + message);
+        sender.sendMessage( formatNoPAPI(branding) + ChatColor.RED + message);
     }
 
     /**
@@ -33,7 +34,7 @@ public class Message {
      */
     public static void debugMessage(String message, DebugIntensity intensity) {
         if(isDebugIntenseEnough(intensity)) {
-            Bukkit.getConsoleSender().sendMessage(format(branding)+ ChatColor.RED + message);
+            Bukkit.getConsoleSender().sendMessage(formatNoPAPI(branding)+ ChatColor.RED + message);
         }
     }
 
@@ -58,7 +59,7 @@ public class Message {
      * @param sender the player to send it to
      */
     public static void errorMessage(String message, Player sender) {
-        sender.sendMessage(format(branding) + ChatColor.RED + message);
+        sender.sendMessage(format(sender, branding) + ChatColor.RED + message);
     }
 
     /**
@@ -67,7 +68,7 @@ public class Message {
      * @param player The player to send it to
      */
     public static void notifyMessage(String notification, Player player) {
-        player.sendMessage(format(branding) + ChatColor.GOLD + notification);
+        player.sendMessage(format(player,branding) + ChatColor.GOLD + notification);
     }
 
     /**
@@ -76,12 +77,20 @@ public class Message {
      * @param player the player to notify
      */
     public static void notifyMessage(String notification, CommandSender player) {
-        player.sendMessage(format(branding) + ChatColor.GOLD + notification);
+        player.sendMessage(formatNoPAPI(branding) + ChatColor.GOLD + notification);
     }
 
     private static final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
 
-    public static String format(String s) {
+    public static String format(Player player, String s) {
+        if(PointsCore.plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            return formatNoPAPI(PlaceholderAPI.setPlaceholders(player, s));
+        } else {
+            return formatNoPAPI(s);
+        }
+    }
+
+    public static String formatNoPAPI(String s) {
         if(!s.contains("#"))
             return ChatColor.translateAlternateColorCodes('§',ChatColor.translateAlternateColorCodes('&', s));
 
@@ -136,22 +145,22 @@ public class Message {
     }
 
     public void sendHoverableText(Player player, String text, String hover) {
-        TextComponent msg = new TextComponent(format(text));
-        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(hover)).create()));
+        TextComponent msg = new TextComponent(format(player,text));
+        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(player, hover)).create()));
         player.spigot().sendMessage(msg);
     }
 
     public void sendClickableCommandText(Player player, String text, String command, String hover) {
-        TextComponent msg = new TextComponent(format(text));
-        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(hover)).create()));
+        TextComponent msg = new TextComponent(format(player,text));
+        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(player, hover)).create()));
         msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         player.spigot().sendMessage(msg);
     }
 
     public void sendClickableLinkText(Player player, String text, String url, String hover) {
         TextComponent msg = new TextComponent();
-        msg.setText(format(text));
-        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(hover)).create()));
+        msg.setText(format(player,text));
+        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(player, hover)).create()));
         msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         player.spigot().sendMessage(msg);
     }

@@ -3,7 +3,6 @@ package me.marcangeloh.Commands;
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.ArmorStand;
@@ -121,7 +120,7 @@ public class Hologram implements TabExecutor {
         for (String message: messages
         ) {
             counter++;
-            messager.hologramAtLocation(player.getLocation().add(0.5, -0.35*counter, 0.5),Message.format(message));
+            messager.hologramAtLocation(player.getLocation().add(0.5, -0.35*counter, 0.5),Message.formatNoPAPI(message));
         }
 
         Message.notifyMessage("Hologram created at location\n x: "+player.getLocation().getX()+" | y: "+player.getLocation().getY()+" | z: "+player.getLocation().getZ(), player);

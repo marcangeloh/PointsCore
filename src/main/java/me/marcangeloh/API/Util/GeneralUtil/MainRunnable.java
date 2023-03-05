@@ -55,11 +55,11 @@ public class MainRunnable {
                     if(tpRequest.moveCooldown > 0 && tpRequest.isConfirmed) {
                         hashMapUtil.teleportMap.get(player).moveCooldown = tpRequest.moveCooldown -1;
                         if(tpRequest.isInverted) {
-                            player.sendTitle(Message.format("&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
-                                    Message.format("&7Seconds"), 20, 20, 20);
+                            player.sendTitle(Message.format(player, "&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
+                                    Message.format(player,"&7Seconds"), 20, 20, 20);
                         } else {
-                            tpRequest.player.sendTitle(Message.format("&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
-                                    Message.format("&7Seconds"), 20, 20, 20);
+                            tpRequest.player.sendTitle(Message.format(player,"&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
+                                    Message.format(player,"&7Seconds"), 20, 20, 20);
                         }
                         continue;
                     }

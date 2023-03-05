@@ -10,8 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class Broadcast implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
@@ -37,7 +35,7 @@ public class Broadcast implements CommandExecutor {
         for (Player player: Bukkit.getServer().getOnlinePlayers()
              ) {
             //Sends message to them
-            player.sendMessage(Message.format(str));
+            player.sendMessage(Message.format(player, str));
         }
         return true;
     }

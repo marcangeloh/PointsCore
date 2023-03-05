@@ -17,7 +17,7 @@ public class ChatFormatter implements Listener {
         }
 
         if(event.getMessage().contains("&") || event.getMessage().contains("§") || event.getMessage().contains("#")) {
-            event.setMessage(Message.format(event.getMessage()));
+            event.setMessage(Message.format(event.getPlayer(), event.getMessage()));
         }
 
     }

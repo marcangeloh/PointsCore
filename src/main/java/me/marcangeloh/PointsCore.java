@@ -66,6 +66,9 @@ public class PointsCore extends JavaPlugin implements Paths {
         getCommand("heal").setExecutor(new Heal());
         getCommand("vanish").setExecutor(new Vanish());
         getCommand("message").setExecutor(new MessageCommand(hashMapUtil));
+        getCommand("workbench").setExecutor(new WorkbenchCommand());
+        getCommand("feed").setExecutor(new Feed());
+        getCommand("enderchest").setExecutor(new EnderChestCommand());
     }
 
     public void removePoints(Tools tool, Player player, double amount) {

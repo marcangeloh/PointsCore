@@ -12,8 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-
 public class MessageCommand implements CommandExecutor {
 
     HashMapUtil hashMapUtil;
@@ -88,8 +86,8 @@ public class MessageCommand implements CommandExecutor {
         messageReceived = messageReceived.replaceAll(":player:", player.getDisplayName());
 
 
-        player.sendMessage(Message.format(messageSent));
-        msgPlayer.sendMessage(Message.format(messageReceived));
+        player.sendMessage(Message.format(player,messageSent));
+        msgPlayer.sendMessage(Message.format(player,messageReceived));
         return true;
     }
 }

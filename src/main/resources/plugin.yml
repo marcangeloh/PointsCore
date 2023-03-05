@@ -100,3 +100,19 @@ commands:
     default: true
     description: Message or reply to a player
     usage: /msg <player> <message>
+  feed:
+    description: Feeds the player
+    default: op
+    usage: /feed <players>
+  workbench:
+    aliases:
+      - craft
+    description: opens the player workbench
+    default: op
+    usage: /workbench
+  enderchest:
+    aliases:
+      - echest
+    description: opens the players' enderchest
+    default: op
+    usage: /enderchest

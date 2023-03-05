@@ -23,10 +23,10 @@ public class JoinEvent implements Listener {
                         "&7Click &a&nhere&r &7to download the latest version.");
             }
         }
-        if(PointsCore.plugin.getConfig().getBoolean("CustomMessages", true))
-            joinEvent.setJoinMessage(Message.format(PointsCore.plugin.getConfig().getString("CustomJoinMessage", joinEvent.getPlayer().getDisplayName() + " &#17fb04d&#21f90fr&#2af619o&#34f424p&#3ef22fp&#47ef39e&#51ed44d &#5aea4ei&#64e859n&#6ee664t&#77e36eo &#81e179t&#8bdf84h&#94dc8ee &#9eda99w&#a7d7a3o&#b1d5aer&#bbd3b9l&#c4d0c3d&#cecece.").replaceAll(":player:", joinEvent.getPlayer().getDisplayName())));
 
         Player player = joinEvent.getPlayer();
+        if(PointsCore.plugin.getConfig().getBoolean("CustomMessages", true))
+            joinEvent.setJoinMessage(Message.format(player, PointsCore.plugin.getConfig().getString("CustomJoinMessage", player.getDisplayName() + " &#17fb04d&#21f90fr&#2af619o&#34f424p&#3ef22fp&#47ef39e&#51ed44d &#5aea4ei&#64e859n&#6ee664t&#77e36eo &#81e179t&#8bdf84h&#94dc8ee &#9eda99w&#a7d7a3o&#b1d5aer&#bbd3b9l&#c4d0c3d&#cecece.").replaceAll(":player:", player.getDisplayName())));
 
         for(ItemStack armor: player.getInventory().getArmorContents()) {
             if(armor == null)
