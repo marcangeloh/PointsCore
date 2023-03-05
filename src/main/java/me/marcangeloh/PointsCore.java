@@ -1,6 +1,7 @@
 package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
+import me.marcangeloh.API.Util.ConfigurationUtil.WarpsUtil;
 import me.marcangeloh.API.Util.GeneralUtil.*;
 import me.marcangeloh.Commands.*;
 import me.marcangeloh.Commands.PointCommands.PointCheckCommand;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -33,6 +35,9 @@ public class PointsCore extends JavaPlugin implements Paths {
     public final static String pluginVersion ="1.1.92-SNAPSHOT";
     public static boolean latest = true;
     public HashMapUtil hashMapUtil;
+    private WarpsUtil warpManager;
+    private HashMap<Player, TeleportUtil> noMoveTimeHome = new HashMap<>();
+    private HashMap<Player, TeleportUtil> noMoveTimeSpawn = new HashMap<>();
 
     public void onDisable() {
         if(isMySQLEnabled) {
@@ -49,7 +54,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         performPluginHooks(); //Hooking into other plugins
         registerCommands();
         updateChecker();
-        MainRunnable mainRunnable = new MainRunnable(isMySQLEnabled, hashMapUtil, sqlManager,dataManager);
+        MainRunnable mainRunnable = new MainRunnable(isMySQLEnabled, hashMapUtil, sqlManager,dataManager, noMoveTimeHome, noMoveTimeSpawn);
         mainRunnable.run();
     }
 
@@ -69,6 +74,8 @@ public class PointsCore extends JavaPlugin implements Paths {
         getCommand("workbench").setExecutor(new WorkbenchCommand());
         getCommand("feed").setExecutor(new Feed());
         getCommand("enderchest").setExecutor(new EnderChestCommand());
+        getCommand("spawn").setExecutor(new Spawn(noMoveTimeSpawn));
+        getCommand("home").setExecutor(new Home(noMoveTimeHome));
     }
 
     public void removePoints(Tools tool, Player player, double amount) {
@@ -119,10 +126,13 @@ public class PointsCore extends JavaPlugin implements Paths {
         saveConfig();
         serverDebugIntensity = getDebugIntensity();
         hashMapUtil = new HashMapUtil();
+        warpManager = new WarpsUtil();
+
     }
 
 
     private void savingSetup() {
+        warpManager.saveWarps();
 
         //If SQL is not enabled Initiates the data from the config and loads it
         if(!getConfig().getBoolean(pathIsSQLEnabled)) {
@@ -171,7 +181,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new JoinEvent(), this); // Registers the Join event
-        getServer().getPluginManager().registerEvents(new MoveEvent(hashMapUtil), this); // Registers the move event, this is used for tpa
+        getServer().getPluginManager().registerEvents(new MoveEvent(hashMapUtil, noMoveTimeSpawn, noMoveTimeHome), this); // Registers the move event, this is used for tpa
     }
 
 

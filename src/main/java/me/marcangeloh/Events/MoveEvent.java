@@ -2,20 +2,67 @@ package me.marcangeloh.Events;
 
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
+import me.marcangeloh.API.Util.GeneralUtil.TeleportUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.HashMap;
+
 public class MoveEvent implements Listener {
     private HashMapUtil hashMapUtil;
-    public MoveEvent(HashMapUtil hashMapUtil) {
+    private HashMap<Player, TeleportUtil> noMoveSpawn;
+    private HashMap<Player, TeleportUtil> noMoveHome;
+
+    public MoveEvent(HashMapUtil hashMapUtil, HashMap<Player, TeleportUtil> noMoveSpawn, HashMap<Player, TeleportUtil> noMoveHome) {
         this.hashMapUtil = hashMapUtil;
+        this.noMoveSpawn = noMoveSpawn;
+        this.noMoveHome = noMoveHome;
     }
+
     @EventHandler
     public void move(PlayerMoveEvent event) {
         handleTPA(event.getPlayer(), event.getFrom().distance(event.getTo()));
+        handleHome(event.getPlayer(), event.getFrom().distance(event.getTo()));
+        handleSpawn(event.getPlayer(), event.getFrom().distance(event.getTo()));
+    }
+
+    private void handleSpawn(Player player, double distance) {
+        handleTP(player, distance, "Spawn", noMoveSpawn);
+    }
+
+    private void handleHome(Player player, double distance) {
+        handleTP(player, distance, "Home", noMoveHome);
+    }
+
+    private void handleTP(Player player, Double distance, String path,  HashMap<Player, TeleportUtil> noMove) {
+        boolean isContained = false;
+
+        for(Player temp: noMove.keySet()) {
+            if(!temp.equals(player)) {
+                continue;
+            }
+
+            isContained=true;
+        }
+
+        if(!isContained)
+            return;
+
+        if(noMove.get(player).countdownToTp == 0)
+            return;
+
+        noMove.get(player).distance += distance;
+
+        if(noMove.get(player).distance < PointsCore.plugin.getConfig().getDouble(path+".MaxMoveDistance", 1.0)) {
+            return;
+        }
+
+        noMove.remove(player);
+        Message.errorMessage("You've canceled your "+path+" request by moving.", player);
+
     }
 
     public void handleTPA(Player player, double distance) {

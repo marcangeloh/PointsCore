@@ -276,6 +276,12 @@ RandomTP:
     - "FIRE"
     - "COBWEB"
     - "CACTUS"
+Spawn:
+  NoMoveTime: 3
+  MaxMoveDistance: 2.0
+Home:
+  NoMoveTime: 3
+  MaxMoveDistance: 2.0
 TPA: #Settings for TPA/TPAHERE
   Cooldown: 30 #How long the player has to accept the tp request
   NoMoveTime: 3 #How long the player can't move before a tpa

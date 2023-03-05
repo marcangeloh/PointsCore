@@ -2,7 +2,7 @@ package me.marcangeloh.API.Util.GeneralUtil;
 
 import org.bukkit.entity.Player;
 
-public class TeleportRequest {
+public class TPARequest {
 
     public Player player, player2;
     public int cooldown, moveCooldown;
@@ -11,7 +11,7 @@ public class TeleportRequest {
 
     public double distance = 0;
 
-    public TeleportRequest(Player player, Player player2, int cooldown, int moveCooldown, boolean isInverted) {
+    public TPARequest(Player player, Player player2, int cooldown, int moveCooldown, boolean isInverted) {
         this.player = player;
         this.player2 = player2;
         this.cooldown = cooldown;

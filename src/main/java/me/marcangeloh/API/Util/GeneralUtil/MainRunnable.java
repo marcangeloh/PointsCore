@@ -4,22 +4,28 @@ import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import me.marcangeloh.Commands.TeleportCommands.RandomTP;
 import me.marcangeloh.PointsCore;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class MainRunnable {
     private boolean isMySQLEnabled;
     private HashMapUtil hashMapUtil;
+    private HashMap<Player, TeleportUtil> noMoveTimeHome;
+    private HashMap<Player, TeleportUtil> noMoveTimeSpawn;
     private SQLManager sqlManager;
     private DataManager dataManager;
 
-    public MainRunnable(boolean isMySQLEnabled, HashMapUtil hashMapUtil, SQLManager sqlManager, DataManager dataManager) {
+    public MainRunnable(boolean isMySQLEnabled, HashMapUtil hashMapUtil, SQLManager sqlManager, DataManager dataManager, HashMap<Player, TeleportUtil> noMoveTimeHome,HashMap<Player, TeleportUtil> noMoveTimeSpawn ) {
         this.isMySQLEnabled = isMySQLEnabled;
         this.hashMapUtil = hashMapUtil;
         this.sqlManager = sqlManager;
         this.dataManager = dataManager;
+        this.noMoveTimeHome = noMoveTimeHome;
+        this.noMoveTimeSpawn = noMoveTimeSpawn;
     }
 
     private void registerCooldowns() {
@@ -31,15 +37,47 @@ public class MainRunnable {
             public void run() {
                 handleRTPCooldowns();
                 handleTPACooldowns();
+                handleHomeCooldowns();
+                handleSpawnCooldowns();
                 if(counter %60 == 0) {
                     saveDataInCaseOfCrash();
                 }
 
             }
 
+            private void handleHomeCooldowns() {
+                for (Player player: noMoveTimeHome.keySet()) {
+                    if(noMoveTimeHome.get(player).countdownToTp == 0) {
+                        player.teleport(noMoveTimeHome.get(player).locationToTp);
+                        noMoveTimeHome.remove(player);
+                        Message.notifyMessage("You have been teleported home.", player);
+                        continue;
+                    }
+
+                    noMoveTimeHome.get(player).countdownToTp = noMoveTimeHome.get(player).countdownToTp-1;
+                    player.sendTitle(Message.formatLinGradient("Teleporting Home", new java.awt.Color(3,255,0), new java.awt.Color(159,159,159)),
+                            Message.format(player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
+                }
+            }
+
+            private void handleSpawnCooldowns() {
+                for (Player player: noMoveTimeSpawn.keySet()) {
+                    if(noMoveTimeSpawn.get(player).countdownToTp == 0) {
+                        player.teleport(PointsCore.plugin.getConfig().getLocation("Spawn.Location"));
+                        noMoveTimeSpawn.remove(player);
+                        Message.notifyMessage("You have been teleported to spawn.", player);
+                        continue;
+                    }
+
+                    noMoveTimeSpawn.get(player).countdownToTp = noMoveTimeSpawn.get(player).countdownToTp-1;
+                    player.sendTitle(Message.formatLinGradient("Teleporting to Spawn", new java.awt.Color(3,255,0), new java.awt.Color(159,159,159)),
+                            Message.format(player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
+                }
+            }
+
             private void handleTPACooldowns() {
                 for(Player player: hashMapUtil.teleportMap.keySet()) {
-                    TeleportRequest tpRequest = hashMapUtil.teleportMap.get(player);
+                    TPARequest tpRequest = hashMapUtil.teleportMap.get(player);
                     if(tpRequest == null)
                         continue;
 

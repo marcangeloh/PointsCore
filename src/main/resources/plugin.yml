@@ -116,3 +116,16 @@ commands:
     description: opens the players' enderchest
     default: op
     usage: /enderchest
+  spawn:
+    aliases:
+      - setspawn
+    default: op
+    description: Either teleports the player to spawn or sets the spawnpoint
+    usage: /spawn
+  home:
+    aliases:
+      - sethome
+      - delhome
+    default: op
+    description: Either sets the home of the player or teleport to it.
+    usage: /home

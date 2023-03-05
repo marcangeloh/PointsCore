@@ -2,7 +2,7 @@ package me.marcangeloh.Commands.TeleportCommands;
 
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
-import me.marcangeloh.API.Util.GeneralUtil.TeleportRequest;
+import me.marcangeloh.API.Util.GeneralUtil.TPARequest;
 import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public class TPA implements CommandExecutor {
         }
 
         hashMapUtil.teleportMap.put(player2,
-                new TeleportRequest(player, player2, PointsCore.plugin.getConfig().getInt("TPA.Cooldown", 3),
+                new TPARequest(player, player2, PointsCore.plugin.getConfig().getInt("TPA.Cooldown", 3),
                 PointsCore.plugin.getConfig().getInt("TPA.NoMoveTime"),
                 false));
 
