@@ -35,10 +35,6 @@ public class Home implements CommandExecutor {
         }
 
 
-        if(!GeneralUtil.hasPermission(sender, "home")) {
-            return true;
-        }
-
         Player player = (Player) sender;
 
 

@@ -51,7 +51,7 @@ public class Spawn implements CommandExecutor {
             }
 
             Integer noMove = PointsCore.plugin.getConfig().getInt("Spawn.NoMoveTime", 0);
-            if(noMove == 0) {
+            if(noMove == 0 || GeneralUtil.hasPermission(player, "spawn.nocooldown")) {
                 player.teleport(spawn);
                 Message.notifyMessage("You have been teleported to spawn.", player);
             } else {

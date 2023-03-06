@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class SQLManager {
     private Connection connection;
@@ -40,31 +41,32 @@ public class SQLManager {
         createTable();
     }
 
-    public PlayerPoints loadPlayerData(Player player) {
+    public CompletableFuture<PlayerPoints> loadPlayerData(Player player) {
         String query = "SELECT * FROM "+ table +" WHERE "+columnUuid+" = ?;";
-        PreparedStatement statement = null;
         checkSQLConnection();
         PlayerPoints playerPoints = pointsCore.playerPoints;
-        try {
-            statement = connection.prepareStatement(query);
-            statement.setString(1, player.getUniqueId().toString());
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()) {
-                playerPoints.armorPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnArmor));
-                playerPoints.axePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnAxe));
-                playerPoints.fishingPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnFishing));
-                playerPoints.hoePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnHoe));
-                playerPoints.meleeWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnMelee));
-                playerPoints.pickaxePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnPickaxe));
-                playerPoints.rangedWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnRanged));
-                playerPoints.shovelPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnShovel));
+        return CompletableFuture.supplyAsync(() -> {
+                try {
+                PreparedStatement statement = connection.prepareStatement(query);
+                statement.setString(1, player.getUniqueId().toString());
+                ResultSet rs = statement.executeQuery();
+                if(rs.next()) {
+                    playerPoints.armorPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnArmor));
+                    playerPoints.axePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnAxe));
+                    playerPoints.fishingPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnFishing));
+                    playerPoints.hoePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnHoe));
+                    playerPoints.meleeWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnMelee));
+                    playerPoints.pickaxePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnPickaxe));
+                    playerPoints.rangedWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnRanged));
+                    playerPoints.shovelPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnShovel));
+                }
+                connection.close();
+                return playerPoints;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                return null;
             }
-            connection.close();
-            return playerPoints;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
+        });
     }
     public void savePlayerData(Player player) {
         checkSQLConnection();
@@ -80,64 +82,68 @@ public class SQLManager {
     }
 
     private void saveDataStatement(String uuid) {
-        String query = "INSERT INTO " + table + " ("+columnUuid+ ", " +columnArmor + ", "+ columnAxe+", " + columnFishing+", "+ columnHoe+", " +columnMelee+", "+columnPickaxe +", "+ columnRanged+", "+columnShovel+") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE "+ columnArmor + "=? ," + columnAxe +"=? ," + columnFishing+"=? ,"+ columnHoe+"=? ," +columnMelee+"=? ,"+columnPickaxe +"=? ,"+ columnRanged+"=? ,"+columnShovel+"=?;";
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, uuid);
-            preparedStatement.setDouble(2, pointsCore.playerPoints.armorPoints.getPoints(uuid));
-            preparedStatement.setDouble(3, pointsCore.playerPoints.axePoints.getPoints(uuid));
-            preparedStatement.setDouble(4, pointsCore.playerPoints.fishingPoints.getPoints(uuid));
-            preparedStatement.setDouble(5, pointsCore.playerPoints.hoePoints.getPoints(uuid));
-            preparedStatement.setDouble(6, pointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
-            preparedStatement.setDouble(7, pointsCore.playerPoints.pickaxePoints.getPoints(uuid));
-            preparedStatement.setDouble(8, pointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
-            preparedStatement.setDouble(9, pointsCore.playerPoints.shovelPoints.getPoints(uuid));
-            preparedStatement.setDouble(10, pointsCore.playerPoints.armorPoints.getPoints(uuid));
-            preparedStatement.setDouble(11, pointsCore.playerPoints.axePoints.getPoints(uuid));
-            preparedStatement.setDouble(12, pointsCore.playerPoints.fishingPoints.getPoints(uuid));
-            preparedStatement.setDouble(13, pointsCore.playerPoints.hoePoints.getPoints(uuid));
-            preparedStatement.setDouble(14, pointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
-            preparedStatement.setDouble(15, pointsCore.playerPoints.pickaxePoints.getPoints(uuid));
-            preparedStatement.setDouble(16, pointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
-            preparedStatement.setDouble(17, pointsCore.playerPoints.shovelPoints.getPoints(uuid));
-            if(preparedStatement.execute()) {
-                Message.debugMessage("An error has occurred during the execution of the mysql save statement.", DebugIntensity.LIGHT);
+        Bukkit.getScheduler().runTaskAsynchronously(PointsCore.plugin, () -> {
+            String query = "INSERT INTO " + table + " (" + columnUuid + ", " + columnArmor + ", " + columnAxe + ", " + columnFishing + ", " + columnHoe + ", " + columnMelee + ", " + columnPickaxe + ", " + columnRanged + ", " + columnShovel + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE " + columnArmor + "=? ," + columnAxe + "=? ," + columnFishing + "=? ," + columnHoe + "=? ," + columnMelee + "=? ," + columnPickaxe + "=? ," + columnRanged + "=? ," + columnShovel + "=?;";
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, uuid);
+                preparedStatement.setDouble(2, pointsCore.playerPoints.armorPoints.getPoints(uuid));
+                preparedStatement.setDouble(3, pointsCore.playerPoints.axePoints.getPoints(uuid));
+                preparedStatement.setDouble(4, pointsCore.playerPoints.fishingPoints.getPoints(uuid));
+                preparedStatement.setDouble(5, pointsCore.playerPoints.hoePoints.getPoints(uuid));
+                preparedStatement.setDouble(6, pointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(7, pointsCore.playerPoints.pickaxePoints.getPoints(uuid));
+                preparedStatement.setDouble(8, pointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(9, pointsCore.playerPoints.shovelPoints.getPoints(uuid));
+                preparedStatement.setDouble(10, pointsCore.playerPoints.armorPoints.getPoints(uuid));
+                preparedStatement.setDouble(11, pointsCore.playerPoints.axePoints.getPoints(uuid));
+                preparedStatement.setDouble(12, pointsCore.playerPoints.fishingPoints.getPoints(uuid));
+                preparedStatement.setDouble(13, pointsCore.playerPoints.hoePoints.getPoints(uuid));
+                preparedStatement.setDouble(14, pointsCore.playerPoints.meleeWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(15, pointsCore.playerPoints.pickaxePoints.getPoints(uuid));
+                preparedStatement.setDouble(16, pointsCore.playerPoints.rangedWeaponPoints.getPoints(uuid));
+                preparedStatement.setDouble(17, pointsCore.playerPoints.shovelPoints.getPoints(uuid));
+                if (preparedStatement.execute()) {
+                    Message.debugMessage("An error has occurred during the execution of the mysql save statement.", DebugIntensity.LIGHT);
+                }
+                connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                Message.debugMessage("An error has occurred due to an SQL Exception.", DebugIntensity.LIGHT);
             }
-            connection.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            Message.debugMessage("An error has occurred due to an SQL Exception.", DebugIntensity.LIGHT);
-        }
+        });
     }
 
     /**
      * Should only be initiated at the start of the plugin
      */
-    public PlayerPoints loadData() {
+    public CompletableFuture<PlayerPoints> loadData() {
+
         String query = "SELECT * FROM "+ table;
-        PreparedStatement statement = null;
         checkSQLConnection();
         PlayerPoints playerPoints = pointsCore.playerPoints;
-        try {
-            statement = connection.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
+        return CompletableFuture.supplyAsync( () -> {
+            try {
+                PreparedStatement statement = connection.prepareStatement(query);
+                ResultSet rs = statement.executeQuery();
 
-            while (rs.next()) {
-                playerPoints.armorPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnArmor));
-                playerPoints.axePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnAxe));
-                playerPoints.fishingPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnFishing));
-                playerPoints.hoePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnHoe));
-                playerPoints.meleeWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnMelee));
-                playerPoints.pickaxePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnPickaxe));
-                playerPoints.rangedWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnRanged));
-                playerPoints.shovelPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnShovel));
+                while (rs.next()) {
+                    playerPoints.armorPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnArmor));
+                    playerPoints.axePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnAxe));
+                    playerPoints.fishingPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnFishing));
+                    playerPoints.hoePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnHoe));
+                    playerPoints.meleeWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnMelee));
+                    playerPoints.pickaxePoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnPickaxe));
+                    playerPoints.rangedWeaponPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnRanged));
+                    playerPoints.shovelPoints.addPointsToPlayer(rs.getString(columnUuid), rs.getDouble(columnShovel));
+                }
+                connection.close();
+                return playerPoints;
+            } catch (SQLException throwables) {
+                Message.debugMessage("SQL Error Code:" + throwables.getErrorCode() + "\nError Message: " + throwables.getMessage(), DebugIntensity.LIGHT);
+                return null;
             }
-            connection.close();
-            return playerPoints;
-        } catch (SQLException throwables) {
-            Message.debugMessage("SQL Error Code:"+throwables.getErrorCode()+"\nError Message: " +throwables.getMessage(), DebugIntensity.LIGHT);
-            return null;
-        }
+        });
     }
 
     /**

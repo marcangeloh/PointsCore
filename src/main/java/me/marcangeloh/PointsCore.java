@@ -23,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class PointsCore extends JavaPlugin implements Paths {
@@ -148,7 +149,7 @@ public class PointsCore extends JavaPlugin implements Paths {
             //MySQL Initialization
             try {
                 sqlManager = new SQLManager(getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword),"POINTS",  getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
-                playerPoints = sqlManager.loadData();
+                playerPoints = sqlManager.loadData().get();
             } catch (SQLException e) {
                 e.printStackTrace();
                 Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
@@ -159,6 +160,10 @@ public class PointsCore extends JavaPlugin implements Paths {
                 Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
                 isMySQLEnabled = false;
                 savingSetup();
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
         }
@@ -188,7 +193,13 @@ public class PointsCore extends JavaPlugin implements Paths {
 
     public void loadPlayerData(Player player) {
         if(isMySQLEnabled) {
-            playerPoints = sqlManager.loadPlayerData(player) != null ? sqlManager.loadPlayerData(player) : playerPoints;
+            try {
+                playerPoints = sqlManager.loadPlayerData(player).get() != null ? sqlManager.loadPlayerData(player).get() : playerPoints;
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             playerPoints = dataManager.loadPlayerFromSaveFile(playerPoints, player);
         }

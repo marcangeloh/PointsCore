@@ -1,5 +1,6 @@
 package me.marcangeloh.Commands.TeleportCommands;
 
+import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
 import me.marcangeloh.PointsCore;
@@ -31,8 +32,8 @@ public class TPAConfirmation implements CommandExecutor {
             return true;
         }
 
-        if(label.equalsIgnoreCase("tpca")) {
-            Message.notifyMessage("You have denied the tp request.", player);
+        if(label.equalsIgnoreCase("tpcancel")) {
+            Message.notifyMessage("You have canceled the tp request.", player);
             for(Player player1: hashMapUtil.teleportMap.keySet()) {
                 if(!hashMapUtil.teleportMap.get(player1).player.equals(player)) {
                     continue;
@@ -50,14 +51,15 @@ public class TPAConfirmation implements CommandExecutor {
         }
         Player player1 = hashMapUtil.teleportMap.get(player).player;
 
-        if(PointsCore.plugin.getConfig().getInt("TPA.NoMoveTime",3) == 0) {
+        if(PointsCore.plugin.getConfig().getInt("TPA.NoMoveTime",3) == 0 ||
+                GeneralUtil.hasPermission(hashMapUtil.teleportMap.get(player).player, "tpa.nocooldown")) {
 
             if(hashMapUtil.teleportMap.get(player).isInverted) {
-                Message.notifyMessage("You have successfully been teleported.", player1);
+                Message.notifyMessage("You have successfully teleported to "+player.getDisplayName(), player1);
                 player1.teleport(player.getLocation());
                 hashMapUtil.teleportMap.remove(player);
             } else {
-                Message.notifyMessage("You have successfully been teleported.", player);
+                Message.notifyMessage("You have successfully teleported to "+player1.getDisplayName(), player);
                 player.teleport(player1.getLocation());
                 hashMapUtil.teleportMap.remove(player);
             }
