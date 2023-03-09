@@ -42,6 +42,8 @@ public class PointsCore extends JavaPlugin implements Paths {
     private JDA discord;
     private long channelID;
 
+    private DiscordChatHandler discordChatHandler;
+
     private boolean isMySQLEnabled = false;
     private SQLManager sqlManager;
     private PointsCore plugin;
@@ -271,11 +273,12 @@ public class PointsCore extends JavaPlugin implements Paths {
             throw new RuntimeException(e);
         }
 
-        new DiscordChatHandler(this, discord);
+        discordChatHandler = new DiscordChatHandler(this, discord);
+        discord.addEventListener(discordChatHandler);
         Message.debugMessage(" ====== Discord Instance ====== \n"+discord.toString(), DebugIntensity.INTENSE);
         MessageEmbed embed = new EmbedBuilder().setDescription("Server started!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(3, 255, 0)).build();
         TextChannel textChannel = discord.getTextChannelById(channelID);
-        textChannel.sendMessageEmbeds(embed).complete();
+        textChannel.sendMessageEmbeds(embed).queue();
 
     }
 
@@ -288,6 +291,15 @@ public class PointsCore extends JavaPlugin implements Paths {
         }
         MessageEmbed embed = new EmbedBuilder().setDescription("Server Stopped!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(255, 60, 60)).build();
         TextChannel textChannel = discord.getTextChannelById(channelID);
-        textChannel.sendMessageEmbeds(embed).queue();
+        textChannel.sendMessageEmbeds(embed).complete();
+
+        discord.removeEventListener(discordChatHandler);
+        try {
+            discord.shutdown();
+        } catch (IllegalStateException exception) {
+            Message.debugMessage(exception.getMessage(), DebugIntensity.INTENSE);
+        }
+        discordChatHandler = null;
+        discord = null;
     }
 }

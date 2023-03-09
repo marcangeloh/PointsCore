@@ -14,7 +14,6 @@ public class DiscordChatHandler extends ListenerAdapter {
     public DiscordChatHandler(PointsCore pointsCore, JDA jda) {
         this.pointsCore = pointsCore;
         this.jda = jda;
-        this.jda.addEventListener(this);
     }
 
     public void onMessageReceived(MessageReceivedEvent event) {
