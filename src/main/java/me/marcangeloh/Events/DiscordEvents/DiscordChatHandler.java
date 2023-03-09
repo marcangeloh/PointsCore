@@ -19,9 +19,18 @@ public class DiscordChatHandler extends ListenerAdapter {
 
     public void onMessageReceived(MessageReceivedEvent event) {
         if(event.getAuthor().isBot() || event.isWebhookMessage())return;
-
-        String message = event.getMessage().getContentRaw();
         User user = event.getAuthor();
+        if(user == null)
+            return;
+
+        if(user.getDiscriminator().equalsIgnoreCase("0000")) {
+            return;
+        }
+
+        if(event.getChannel().getIdLong() != pointsCore.getConfig().getLong("Discord.ChannelID")) {
+            return;
+        }
+        String message = event.getMessage().getContentRaw();
         Bukkit.broadcastMessage("§a["+user.getName()+"#"+user.getDiscriminator()+"]: §e"+message);
     }
 }

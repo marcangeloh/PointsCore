@@ -286,7 +286,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         if(!getConfig().getBoolean("Discord.Enabled", true)) {
             return;
         }
-        MessageEmbed embed = new EmbedBuilder().setDescription("Server started!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(3, 255, 0)).build();
+        MessageEmbed embed = new EmbedBuilder().setDescription("Server Stopped!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(255, 60, 60)).build();
         TextChannel textChannel = discord.getTextChannelById(channelID);
         textChannel.sendMessageEmbeds(embed).queue();
     }
