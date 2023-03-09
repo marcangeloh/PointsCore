@@ -16,8 +16,9 @@ public class FishingPoints implements Points {
 
     private final HashMap<String, Double> fishingPoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
-
-    public FishingPoints() {
+    private PointsCore pointsCore;
+    public FishingPoints(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
         fishingPoints = new HashMap<>();
     }
 
@@ -194,7 +195,7 @@ public class FishingPoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.FishingPoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.FishingPoints.Name");
     }
 
     public void setMultiplier(Player player, Double multiplier) {

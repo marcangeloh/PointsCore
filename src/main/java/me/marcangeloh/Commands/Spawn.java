@@ -2,7 +2,7 @@ package me.marcangeloh.Commands;
 
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
-import me.marcangeloh.API.Util.GeneralUtil.TeleportUtil;
+import me.marcangeloh.API.Util.TeleportUtil.TeleportUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -19,8 +19,11 @@ public class Spawn implements CommandExecutor {
 
     private HashMap<Player, TeleportUtil> noMoveTime;
 
-    public Spawn(HashMap<Player, TeleportUtil> noMoveTime) {
-        this.spawn = PointsCore.plugin.getConfig().getLocation("Spawn.Location");
+    private PointsCore pointsCore;
+
+    public Spawn(PointsCore pointsCore, HashMap<Player, TeleportUtil> noMoveTime) {
+        this.pointsCore = pointsCore;
+        this.spawn = pointsCore.getConfig().getLocation("Spawn.Location");
         this.noMoveTime = noMoveTime;
     }
 
@@ -50,7 +53,7 @@ public class Spawn implements CommandExecutor {
                 return true;
             }
 
-            Integer noMove = PointsCore.plugin.getConfig().getInt("Spawn.NoMoveTime", 0);
+            Integer noMove = pointsCore.getConfig().getInt("Spawn.NoMoveTime", 0);
             if(noMove == 0 || GeneralUtil.hasPermission(player, "spawn.nocooldown")) {
                 player.teleport(spawn);
                 Message.notifyMessage("You have been teleported to spawn.", player);
@@ -61,8 +64,8 @@ public class Spawn implements CommandExecutor {
         }
 
         if(label.equalsIgnoreCase("setspawn")) {
-            PointsCore.plugin.getConfig().set("Spawn.Location", player.getLocation());
-            PointsCore.plugin.saveConfig();
+            pointsCore.getConfig().set("Spawn.Location", player.getLocation());
+            pointsCore.saveConfig();
             Message.notifyMessage("Spawn position has been set to your location.", player);
             return true;
         }

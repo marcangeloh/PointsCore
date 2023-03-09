@@ -4,14 +4,16 @@ import me.marcangeloh.PointsCore;
 import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.API.Util.GeneralUtil.Tools;
-import org.bukkit.ChatColor;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.plugin.Plugin;
 
 public class ValueUtil implements Paths {
-    private final Plugin plugin = PointsCore.plugin;
+    private PointsCore pointsCore;
+
+    public ValueUtil(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+    }
 
     public Tools getToolType(Material tool) {
         return getToolTypeByVersion(tool);
@@ -98,12 +100,12 @@ public class ValueUtil implements Paths {
                 case PACKED_ICE:
                 case BLUE_ICE:
                 case FROSTED_ICE:
-                    return plugin.getConfig().getDouble(pathIceValue);
+                    return pointsCore.getConfig().getDouble(pathIceValue);
                 case BRICK:
                 case BRICKS:
                 case BRICK_SLAB:
                 case BRICK_STAIRS:
-                    return plugin.getConfig().getDouble(pathBrickValue);
+                    return pointsCore.getConfig().getDouble(pathBrickValue);
                 case QUARTZ:
                 case QUARTZ_BLOCK:
                 case QUARTZ_BRICKS:
@@ -115,7 +117,7 @@ public class ValueUtil implements Paths {
                 case SMOOTH_QUARTZ:
                 case SMOOTH_QUARTZ_SLAB:
                 case SMOOTH_QUARTZ_STAIRS:
-                    return plugin.getConfig().getDouble(pathQuartzValue);
+                    return pointsCore.getConfig().getDouble(pathQuartzValue);
                 case STONE:
                 case STONE_BRICK_SLAB:
                 case STONE_BRICK_STAIRS:
@@ -124,7 +126,7 @@ public class ValueUtil implements Paths {
                 case STONE_SLAB:
                 case STONE_STAIRS:
                 case STONE_BUTTON:
-                    return plugin.getConfig().getDouble(pathStoneValue);
+                    return pointsCore.getConfig().getDouble(pathStoneValue);
                 case DIORITE:
                 case DIORITE_SLAB:
                 case DIORITE_STAIRS:
@@ -132,7 +134,7 @@ public class ValueUtil implements Paths {
                 case POLISHED_DIORITE:
                 case POLISHED_DIORITE_SLAB:
                 case POLISHED_DIORITE_STAIRS:
-                    return plugin.getConfig().getDouble(pathDioriteValue);
+                    return pointsCore.getConfig().getDouble(pathDioriteValue);
                 case GRANITE:
                 case GRANITE_SLAB:
                 case GRANITE_STAIRS:
@@ -140,7 +142,7 @@ public class ValueUtil implements Paths {
                 case POLISHED_GRANITE:
                 case POLISHED_GRANITE_SLAB:
                 case POLISHED_GRANITE_STAIRS:
-                    return plugin.getConfig().getDouble(pathGraniteValue);
+                    return pointsCore.getConfig().getDouble(pathGraniteValue);
                 case ANDESITE:
                 case ANDESITE_SLAB:
                 case ANDESITE_STAIRS:
@@ -148,37 +150,37 @@ public class ValueUtil implements Paths {
                 case POLISHED_ANDESITE:
                 case POLISHED_ANDESITE_SLAB:
                 case POLISHED_ANDESITE_STAIRS:
-                    return plugin.getConfig().getDouble(pathAndesiteValue);
+                    return pointsCore.getConfig().getDouble(pathAndesiteValue);
                 case SANDSTONE:
                 case SANDSTONE_SLAB:
                 case SANDSTONE_STAIRS:
                 case SANDSTONE_WALL:
-                    return plugin.getConfig().getDouble(pathSandstoneValue);
+                    return pointsCore.getConfig().getDouble(pathSandstoneValue);
                 case CHISELED_SANDSTONE:
-                    return plugin.getConfig().getDouble(pathChiseledSandstoneValue);
+                    return pointsCore.getConfig().getDouble(pathChiseledSandstoneValue);
                 case CHISELED_RED_SANDSTONE:
-                    return plugin.getConfig().getDouble(pathChiseledRedSandstoneValue);
+                    return pointsCore.getConfig().getDouble(pathChiseledRedSandstoneValue);
                 case CUT_SANDSTONE:
                 case CUT_SANDSTONE_SLAB:
-                    return plugin.getConfig().getDouble(pathCutSandstoneValue);
+                    return pointsCore.getConfig().getDouble(pathCutSandstoneValue);
                 case CUT_RED_SANDSTONE:
                 case CUT_RED_SANDSTONE_SLAB:
-                    return plugin.getConfig().getDouble(pathCutRedSandstoneValue);
+                    return pointsCore.getConfig().getDouble(pathCutRedSandstoneValue);
                 case SMOOTH_SANDSTONE:
                 case SMOOTH_SANDSTONE_SLAB:
                 case SMOOTH_SANDSTONE_STAIRS:
-                    return plugin.getConfig().getDouble(pathSmoothSandstoneValue);
+                    return pointsCore.getConfig().getDouble(pathSmoothSandstoneValue);
                 case RED_SANDSTONE:
                 case RED_SANDSTONE_SLAB:
                 case RED_SANDSTONE_STAIRS:
                 case RED_SANDSTONE_WALL:
-                    return plugin.getConfig().getDouble(pathRedSandstone);
+                    return pointsCore.getConfig().getDouble(pathRedSandstone);
                 case SMOOTH_RED_SANDSTONE:
                 case SMOOTH_RED_SANDSTONE_SLAB:
                 case SMOOTH_RED_SANDSTONE_STAIRS:
-                    return plugin.getConfig().getDouble(pathSmoothRedSandstoneValue);
+                    return pointsCore.getConfig().getDouble(pathSmoothRedSandstoneValue);
                 case NETHERRACK:
-                    return plugin.getConfig().getDouble(pathNetherrackValue);
+                    return pointsCore.getConfig().getDouble(pathNetherrackValue);
                 case NETHER_BRICK:
                 case NETHER_BRICK_FENCE:
                 case NETHER_BRICK_SLAB:
@@ -187,17 +189,17 @@ public class ValueUtil implements Paths {
                 case CHISELED_NETHER_BRICKS:
                 case CRACKED_NETHER_BRICKS:
                 case NETHER_BRICK_WALL:
-                    return plugin.getConfig().getDouble(pathNetherBrickValue);
+                    return pointsCore.getConfig().getDouble(pathNetherBrickValue);
                 case LAPIS_BLOCK:
                 case LAPIS_LAZULI:
                 case LAPIS_ORE:
                 case DEEPSLATE_LAPIS_ORE:
-                    return plugin.getConfig().getDouble(pathLapisValue);
+                    return pointsCore.getConfig().getDouble(pathLapisValue);
                 case COAL:
                 case COAL_BLOCK:
                 case COAL_ORE:
                 case DEEPSLATE_COAL_ORE:
-                    return plugin.getConfig().getDouble(pathCoalValue);
+                    return pointsCore.getConfig().getDouble(pathCoalValue);
                 case COPPER_ORE:
                 case COPPER_BLOCK:
                 case RAW_COPPER:
@@ -205,7 +207,7 @@ public class ValueUtil implements Paths {
                 case DEEPSLATE_COPPER_ORE:
                 case EXPOSED_COPPER:
                 case WEATHERED_COPPER:
-                    return plugin.getConfig().getDouble(pathCopperValue);
+                    return pointsCore.getConfig().getDouble(pathCopperValue);
                 case CUT_COPPER:
                 case CUT_COPPER_SLAB:
                 case CUT_COPPER_STAIRS:
@@ -218,17 +220,17 @@ public class ValueUtil implements Paths {
                 case EXPOSED_CUT_COPPER_STAIRS:
                 case WEATHERED_CUT_COPPER_SLAB:
                 case OXIDIZED_CUT_COPPER_STAIRS:
-                    return plugin.getConfig().getDouble(pathCutCopper);
+                    return pointsCore.getConfig().getDouble(pathCutCopper);
                 case CRYING_OBSIDIAN:
-                    return plugin.getConfig().getDouble(pathCryingObsidian);
+                    return pointsCore.getConfig().getDouble(pathCryingObsidian);
                 case END_STONE:
                 case END_STONE_BRICK_SLAB:
                 case END_STONE_BRICK_STAIRS:
                 case END_STONE_BRICK_WALL:
                 case END_STONE_BRICKS:
-                    return plugin.getConfig().getDouble(pathEndStoneValue);
+                    return pointsCore.getConfig().getDouble(pathEndStoneValue);
                 case OBSIDIAN:
-                    return plugin.getConfig().getDouble(pathObsidianValue);
+                    return pointsCore.getConfig().getDouble(pathObsidianValue);
                 case BLACKSTONE:
                 case BLACKSTONE_SLAB:
                 case BLACKSTONE_STAIRS:
@@ -238,7 +240,7 @@ public class ValueUtil implements Paths {
                 case CHISELED_POLISHED_BLACKSTONE:
                 case CRACKED_POLISHED_BLACKSTONE_BRICKS:
                 case POLISHED_BLACKSTONE_BRICK_SLAB:
-                    return plugin.getConfig().getDouble(pathBlackstone);
+                    return pointsCore.getConfig().getDouble(pathBlackstone);
                 case TERRACOTTA:
                 case BLACK_GLAZED_TERRACOTTA:
                 case BLACK_TERRACOTTA:
@@ -272,17 +274,17 @@ public class ValueUtil implements Paths {
                 case WHITE_TERRACOTTA:
                 case YELLOW_GLAZED_TERRACOTTA:
                 case YELLOW_TERRACOTTA:
-                    return plugin.getConfig().getDouble(pathTerracottaValue);
+                    return pointsCore.getConfig().getDouble(pathTerracottaValue);
                 case DIAMOND:
                 case DIAMOND_ORE:
                 case DIAMOND_BLOCK:
                 case DEEPSLATE_DIAMOND_ORE:
-                    return plugin.getConfig().getDouble(pathDiamondValue);
+                    return pointsCore.getConfig().getDouble(pathDiamondValue);
                 case EMERALD:
                 case EMERALD_BLOCK:
                 case EMERALD_ORE:
                 case DEEPSLATE_EMERALD_ORE:
-                    return plugin.getConfig().getDouble(pathEmeraldValue);
+                    return pointsCore.getConfig().getDouble(pathEmeraldValue);
                 case IRON_ORE:
                 case IRON_BARS:
                 case RAW_IRON:
@@ -290,26 +292,26 @@ public class ValueUtil implements Paths {
                 case IRON_TRAPDOOR:
                 case RAW_IRON_BLOCK:
                 case DEEPSLATE_IRON_ORE:
-                    return plugin.getConfig().getDouble(pathIronValue);
+                    return pointsCore.getConfig().getDouble(pathIronValue);
                 case GOLD_BLOCK:
                 case NETHER_GOLD_ORE:
                 case DEEPSLATE_GOLD_ORE:
                 case GOLD_ORE:
                 case RAW_GOLD:
                 case RAW_GOLD_BLOCK:
-                    return plugin.getConfig().getDouble(pathGoldValue);
+                    return pointsCore.getConfig().getDouble(pathGoldValue);
                 case REDSTONE_BLOCK:
                 case REDSTONE_ORE:
                 case DEEPSLATE_REDSTONE_ORE:
-                    return plugin.getConfig().getDouble(pathRedstone);
+                    return pointsCore.getConfig().getDouble(pathRedstone);
                 case PRISMARINE:
                 case PRISMARINE_SLAB:
                 case PRISMARINE_STAIRS:
-                    return plugin.getConfig().getDouble(pathPrismarineValue);
+                    return pointsCore.getConfig().getDouble(pathPrismarineValue);
                 case PRISMARINE_BRICKS:
                 case PRISMARINE_BRICK_SLAB:
                 case PRISMARINE_BRICK_STAIRS:
-                    return plugin.getConfig().getDouble(pathPrismarineBrickValue);
+                    return pointsCore.getConfig().getDouble(pathPrismarineBrickValue);
                 case DEEPSLATE:
                 case DEEPSLATE_BRICK_SLAB:
                 case DEEPSLATE_BRICK_STAIRS:
@@ -319,26 +321,26 @@ public class ValueUtil implements Paths {
                 case DEEPSLATE_TILE_STAIRS:
                 case DEEPSLATE_TILE_WALL:
                 case DEEPSLATE_TILES:
-                    return plugin.getConfig().getDouble(pathDeepslate);
+                    return pointsCore.getConfig().getDouble(pathDeepslate);
                 case SPAWNER:
-                    return plugin.getConfig().getDouble(pathSpawner);
+                    return pointsCore.getConfig().getDouble(pathSpawner);
                 case DROPPER:
-                    return plugin.getConfig().getDouble(pathDropper);
+                    return pointsCore.getConfig().getDouble(pathDropper);
                 case OBSERVER:
-                    return plugin.getConfig().getDouble(pathObserver);
+                    return pointsCore.getConfig().getDouble(pathObserver);
                 case SMOKER:
-                    return plugin.getConfig().getDouble(pathSmoker);
+                    return pointsCore.getConfig().getDouble(pathSmoker);
                 case FURNACE:
-                    return plugin.getConfig().getDouble(pathFurnace);
+                    return pointsCore.getConfig().getDouble(pathFurnace);
                 case RAIL:
                 case ACTIVATOR_RAIL:
                 case DETECTOR_RAIL:
                 case POWERED_RAIL:
-                    return plugin.getConfig().getDouble(pathRail);
+                    return pointsCore.getConfig().getDouble(pathRail);
                 case NETHERITE_BLOCK:
-                    return plugin.getConfig().getDouble(pathNetheriteBlock);
+                    return pointsCore.getConfig().getDouble(pathNetheriteBlock);
                 case ANCIENT_DEBRIS:
-                    return plugin.getConfig().getDouble(pathAncientDebris);
+                    return pointsCore.getConfig().getDouble(pathAncientDebris);
                 case WAXED_COPPER_BLOCK:
                 case WAXED_CUT_COPPER:
                 case WAXED_CUT_COPPER_SLAB:
@@ -355,18 +357,18 @@ public class ValueUtil implements Paths {
                 case WAXED_WEATHERED_CUT_COPPER:
                 case WAXED_WEATHERED_CUT_COPPER_SLAB:
                 case WAXED_WEATHERED_CUT_COPPER_STAIRS:
-                    return plugin.getConfig().getDouble(pathWaxedCopper);
+                    return pointsCore.getConfig().getDouble(pathWaxedCopper);
                 case DRIPSTONE_BLOCK:
                 case POINTED_DRIPSTONE:
-                    return plugin.getConfig().getDouble(pathDripstone);
+                    return pointsCore.getConfig().getDouble(pathDripstone);
                 case MUD_BRICK_SLAB:
                 case MUD_BRICK_STAIRS:
                 case MUD_BRICKS:
                 case MUD_BRICK_WALL:
                 case BRICK_WALL:
-                    return plugin.getConfig().getDouble(pathBricks);
+                    return pointsCore.getConfig().getDouble(pathBricks);
                 case TUFF:
-                    return plugin.getConfig().getDouble(pathTuff);
+                    return pointsCore.getConfig().getDouble(pathTuff);
                 case BLACK_CONCRETE:
                 case BLUE_CONCRETE:
                 case CYAN_CONCRETE:
@@ -383,31 +385,31 @@ public class ValueUtil implements Paths {
                 case RED_CONCRETE:
                 case WHITE_CONCRETE:
                 case YELLOW_CONCRETE:
-                    return plugin.getConfig().getDouble(pathConcrete);
+                    return pointsCore.getConfig().getDouble(pathConcrete);
                 default:
-                    return plugin.getConfig().getDouble(pathPOtherValue);
+                    return pointsCore.getConfig().getDouble(pathPOtherValue);
             }
         } else if(tool.equals(Tools.SHOVEL)) {
             switch (material) {
                 case DIRT:
                 case GRASS:
                 case GRASS_BLOCK:
-                    return plugin.getConfig().getDouble(pathDirt);
+                    return pointsCore.getConfig().getDouble(pathDirt);
                 case SAND:
                 case RED_SAND:
-                    return plugin.getConfig().getDouble(pathSand);
+                    return pointsCore.getConfig().getDouble(pathSand);
                 case SOUL_SAND:
-                    return plugin.getConfig().getDouble(pathSoulSand);
+                    return pointsCore.getConfig().getDouble(pathSoulSand);
                 case MYCELIUM:
-                    return plugin.getConfig().getDouble(pathMycelium);
+                    return pointsCore.getConfig().getDouble(pathMycelium);
                 case GRAVEL:
-                    return plugin.getConfig().getDouble(pathGravel);
+                    return pointsCore.getConfig().getDouble(pathGravel);
                 case MUD:
-                    return plugin.getConfig().getDouble(pathMud);
+                    return pointsCore.getConfig().getDouble(pathMud);
                 case SNOW:
-                    return plugin.getConfig().getDouble(pathSnow);
+                    return pointsCore.getConfig().getDouble(pathSnow);
                 case SOUL_SOIL:
-                    return plugin.getConfig().getDouble(pathSoulSoil);
+                    return pointsCore.getConfig().getDouble(pathSoulSoil);
                 case BLACK_CONCRETE_POWDER:
                 case BLUE_CONCRETE_POWDER:
                 case BROWN_CONCRETE_POWDER:
@@ -424,17 +426,17 @@ public class ValueUtil implements Paths {
                 case RED_CONCRETE_POWDER:
                 case WHITE_CONCRETE_POWDER:
                 case YELLOW_CONCRETE_POWDER:
-                    return plugin.getConfig().getDouble(pathConcretePowder);
+                    return pointsCore.getConfig().getDouble(pathConcretePowder);
                 case CLAY:
-                    return plugin.getConfig().getDouble(pathClay);
+                    return pointsCore.getConfig().getDouble(pathClay);
                 case MUDDY_MANGROVE_ROOTS:
-                    return plugin.getConfig().getDouble(pathMuddyMangroveRoots);
+                    return pointsCore.getConfig().getDouble(pathMuddyMangroveRoots);
                 case FARMLAND:
-                    return plugin.getConfig().getDouble(pathFarmland);
+                    return pointsCore.getConfig().getDouble(pathFarmland);
                 case PODZOL:
-                    return plugin.getConfig().getDouble(pathPodzol);
+                    return pointsCore.getConfig().getDouble(pathPodzol);
                 default:
-                    return plugin.getConfig().getDouble(pathSOtherValue);
+                    return pointsCore.getConfig().getDouble(pathSOtherValue);
             }
         } else if(tool.equals(Tools.AXE)) {
             switch (material) {
@@ -452,7 +454,7 @@ public class ValueUtil implements Paths {
                 case ACACIA_SLAB:
                 case ACACIA_STAIRS:
                 case ACACIA_TRAPDOOR:
-                    return plugin.getConfig().getDouble(pathAcaciaValues);
+                    return pointsCore.getConfig().getDouble(pathAcaciaValues);
                 case DARK_OAK_LOG:
                 case DARK_OAK_WOOD:
                 case STRIPPED_DARK_OAK_LOG:
@@ -469,7 +471,7 @@ public class ValueUtil implements Paths {
                 case DARK_OAK_TRAPDOOR:
                 case DARK_OAK_LEAVES:
                 case DARK_OAK_SAPLING:
-                    return plugin.getConfig().getDouble(pathDarkOakValues);
+                    return pointsCore.getConfig().getDouble(pathDarkOakValues);
                 case OAK_WOOD:
                 case STRIPPED_OAK_LOG:
                 case OAK_LOG:
@@ -484,7 +486,7 @@ public class ValueUtil implements Paths {
                 case OAK_SLAB:
                 case OAK_STAIRS:
                 case OAK_TRAPDOOR:
-                    return plugin.getConfig().getDouble(pathOakValues);
+                    return pointsCore.getConfig().getDouble(pathOakValues);
                 case JUNGLE_LOG:
                 case STRIPPED_JUNGLE_LOG:
                 case JUNGLE_WOOD:
@@ -499,7 +501,7 @@ public class ValueUtil implements Paths {
                 case JUNGLE_SLAB:
                 case JUNGLE_STAIRS:
                 case JUNGLE_TRAPDOOR:
-                    return plugin.getConfig().getDouble(pathJungleValues);
+                    return pointsCore.getConfig().getDouble(pathJungleValues);
                 case SPRUCE_WOOD:
                 case SPRUCE_LOG:
                 case STRIPPED_SPRUCE_LOG:
@@ -514,7 +516,7 @@ public class ValueUtil implements Paths {
                 case SPRUCE_SLAB:
                 case SPRUCE_STAIRS:
                 case SPRUCE_TRAPDOOR:
-                    return plugin.getConfig().getDouble(pathSpruceValues);
+                    return pointsCore.getConfig().getDouble(pathSpruceValues);
                 case BIRCH_WOOD:
                 case BIRCH_LOG:
                 case STRIPPED_BIRCH_WOOD:
@@ -529,30 +531,30 @@ public class ValueUtil implements Paths {
                 case BIRCH_SLAB:
                 case BIRCH_STAIRS:
                 case BIRCH_TRAPDOOR:
-                    return plugin.getConfig().getDouble(pathBirchValues);
+                    return pointsCore.getConfig().getDouble(pathBirchValues);
                 case CHEST:
-                    return plugin.getConfig().getDouble(pathChest);
+                    return pointsCore.getConfig().getDouble(pathChest);
                 case LECTERN:
-                    return plugin.getConfig().getDouble(pathLectern);
+                    return pointsCore.getConfig().getDouble(pathLectern);
                 case CRAFTING_TABLE:
-                    return plugin.getConfig().getDouble(pathCraftingTable);
+                    return pointsCore.getConfig().getDouble(pathCraftingTable);
                 case SMITHING_TABLE:
-                    return plugin.getConfig().getDouble(pathSmithingTable);
+                    return pointsCore.getConfig().getDouble(pathSmithingTable);
                 case LOOM:
-                    return plugin.getConfig().getDouble(pathLoom);
+                    return pointsCore.getConfig().getDouble(pathLoom);
                 case CARTOGRAPHY_TABLE:
-                    return plugin.getConfig().getDouble(pathCartographyTable);
+                    return pointsCore.getConfig().getDouble(pathCartographyTable);
                 case FLETCHING_TABLE:
-                    return plugin.getConfig().getDouble(pathFletchingTable);
+                    return pointsCore.getConfig().getDouble(pathFletchingTable);
                 case BARREL:
-                    return plugin.getConfig().getDouble(pathBarrel);
+                    return pointsCore.getConfig().getDouble(pathBarrel);
                 case JUKEBOX:
-                    return plugin.getConfig().getDouble(pathJukebox);
+                    return pointsCore.getConfig().getDouble(pathJukebox);
                 case CAMPFIRE:
                 case SOUL_CAMPFIRE:
-                    return plugin.getConfig().getDouble(pathCampfire);
+                    return pointsCore.getConfig().getDouble(pathCampfire);
                 case BOOKSHELF:
-                    return plugin.getConfig().getDouble(pathBookshelf);
+                    return pointsCore.getConfig().getDouble(pathBookshelf);
                 case BLACK_BANNER:
                 case BLACK_WALL_BANNER:
                 case BLUE_BANNER:
@@ -591,13 +593,13 @@ public class ValueUtil implements Paths {
                 case WHITE_WALL_BANNER:
                 case YELLOW_BANNER:
                 case YELLOW_WALL_BANNER:
-                    return plugin.getConfig().getDouble(pathBanner);
+                    return pointsCore.getConfig().getDouble(pathBanner);
                 case JACK_O_LANTERN:
-                    return plugin.getConfig().getDouble(pathJackLantern);
+                    return pointsCore.getConfig().getDouble(pathJackLantern);
                 case PUMPKIN:
-                    return plugin.getConfig().getDouble(pathPumpkin);
+                    return pointsCore.getConfig().getDouble(pathPumpkin);
                 case MELON:
-                    return plugin.getConfig().getDouble(pathMelon);
+                    return pointsCore.getConfig().getDouble(pathMelon);
                 case SPRUCE_SIGN:
                 case SPRUCE_HANGING_SIGN:
                 case SPRUCE_WALL_HANGING_SIGN:
@@ -638,17 +640,17 @@ public class ValueUtil implements Paths {
                 case WARPED_SIGN:
                 case WARPED_WALL_HANGING_SIGN:
                 case WARPED_WALL_SIGN:
-                    return plugin.getConfig().getDouble(pathSign);
+                    return pointsCore.getConfig().getDouble(pathSign);
                 case NOTE_BLOCK:
-                    return plugin.getConfig().getDouble(pathNoteblock);
+                    return pointsCore.getConfig().getDouble(pathNoteblock);
                 case MANGROVE_ROOTS:
-                    return plugin.getConfig().getDouble(pathMangroveRoots);
+                    return pointsCore.getConfig().getDouble(pathMangroveRoots);
                 case BEEHIVE:
-                    return plugin.getConfig().getDouble(pathBeehive);
+                    return pointsCore.getConfig().getDouble(pathBeehive);
                 case BEE_NEST:
-                    return plugin.getConfig().getDouble(pathBeeNest);
+                    return pointsCore.getConfig().getDouble(pathBeeNest);
                 case COMPOSTER:
-                    return plugin.getConfig().getDouble(pathComposter);
+                    return pointsCore.getConfig().getDouble(pathComposter);
                 case BAMBOO:
                 case BAMBOO_BLOCK:
                 case BAMBOO_BUTTON:
@@ -665,33 +667,33 @@ public class ValueUtil implements Paths {
                 case BAMBOO_SLAB:
                 case BAMBOO_STAIRS:
                 case BAMBOO_TRAPDOOR:
-                    return plugin.getConfig().getDouble(pathBamboo);
+                    return pointsCore.getConfig().getDouble(pathBamboo);
                 default:
-                    return plugin.getConfig().getDouble(pathAOtherValue);
+                    return pointsCore.getConfig().getDouble(pathAOtherValue);
             }
         } else if (tool.equals(Tools.HOE)) {
             if(material.equals(Material.COARSE_DIRT)) {
-                return plugin.getConfig().getDouble(pathCoarse);
+                return pointsCore.getConfig().getDouble(pathCoarse);
             } else if(material.equals(Material.DIRT) || material.equals(Material.GRASS_BLOCK)){
-                return plugin.getConfig().getDouble(pathHoe);
+                return pointsCore.getConfig().getDouble(pathHoe);
             } else {
                 return 0.0;
             }
         } else if(tool.equals(Tools.FISH_ROD)) {
             switch(material) {
                 case SALMON:
-                    return plugin.getConfig().getDouble(pathSalmonValues);
+                    return pointsCore.getConfig().getDouble(pathSalmonValues);
                 case TROPICAL_FISH:
-                    return plugin.getConfig().getDouble(pathTropicalFishValues);
+                    return pointsCore.getConfig().getDouble(pathTropicalFishValues);
                 case COD:
-                    return plugin.getConfig().getDouble(pathCodValues);
+                    return pointsCore.getConfig().getDouble(pathCodValues);
                 case PUFFERFISH:
-                    return plugin.getConfig().getDouble(pathPufferfishValues);
+                    return pointsCore.getConfig().getDouble(pathPufferfishValues);
                 default:
-                    return plugin.getConfig().getDouble(pathFOtherValues);
+                    return pointsCore.getConfig().getDouble(pathFOtherValues);
             }
         } else {
-            //Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found.", plugin.getServer().getConsoleSender());
+            //Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found.", pointsCore.getServer().getConsoleSender());
             return 0.0;
         }
     }
@@ -706,7 +708,7 @@ public class ValueUtil implements Paths {
             case ARMOR:
                 return getConfigValue(pathArmorPointsValues, type);
             default:
-                //Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found in weapons.", plugin.getServer().getConsoleSender());
+                //Message.errorMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "PointsCore: " + ChatColor.RED + "An error has occurred due to the tool type not being found in weapons.", pointsCore.getServer().getConsoleSender());
                 return 0.0;
         }
     }
@@ -714,104 +716,104 @@ public class ValueUtil implements Paths {
     private double getConfigValue(String tool, EntityType entity) {
         switch(entity) {
             case BAT:
-                return plugin.getConfig().getDouble(tool + pathBat);
+                return pointsCore.getConfig().getDouble(tool + pathBat);
             case POLAR_BEAR:
-                return plugin.getConfig().getDouble(tool+pathPolarBear);
+                return pointsCore.getConfig().getDouble(tool+pathPolarBear);
             case BLAZE:
-                return plugin.getConfig().getDouble(tool+pathBlaze);
+                return pointsCore.getConfig().getDouble(tool+pathBlaze);
             case CAVE_SPIDER:
-                return plugin.getConfig().getDouble(tool+pathCaveSpider);
+                return pointsCore.getConfig().getDouble(tool+pathCaveSpider);
             case PARROT:
-                return plugin.getConfig().getDouble(tool+pathParrot);
+                return pointsCore.getConfig().getDouble(tool+pathParrot);
             case CREEPER:
-                return plugin.getConfig().getDouble(tool+pathCreeper);
+                return pointsCore.getConfig().getDouble(tool+pathCreeper);
             case ELDER_GUARDIAN:
-                return plugin.getConfig().getDouble(tool+pathElderGuardian);
+                return pointsCore.getConfig().getDouble(tool+pathElderGuardian);
             case GUARDIAN:
-                return plugin.getConfig().getDouble(tool+pathGuardian);
+                return pointsCore.getConfig().getDouble(tool+pathGuardian);
             case ENDER_DRAGON:
-                return plugin.getConfig().getDouble(tool+pathEnderDragon);
+                return pointsCore.getConfig().getDouble(tool+pathEnderDragon);
             case ENDERMAN:
-                return plugin.getConfig().getDouble(tool+pathEnderman);
+                return pointsCore.getConfig().getDouble(tool+pathEnderman);
             case ENDERMITE:
-                return plugin.getConfig().getDouble(tool+pathEndermite);
+                return pointsCore.getConfig().getDouble(tool+pathEndermite);
             case EVOKER:
-                return plugin.getConfig().getDouble(tool+pathEvoker);
+                return pointsCore.getConfig().getDouble(tool+pathEvoker);
             case GHAST:
-                return plugin.getConfig().getDouble(tool+pathGhast);
+                return pointsCore.getConfig().getDouble(tool+pathGhast);
             case HUSK:
-                return plugin.getConfig().getDouble(tool+pathHusk);
+                return pointsCore.getConfig().getDouble(tool+pathHusk);
             case ILLUSIONER:
-                return plugin.getConfig().getDouble(tool+pathIllusioner);
+                return pointsCore.getConfig().getDouble(tool+pathIllusioner);
             case MAGMA_CUBE:
-                return plugin.getConfig().getDouble(tool+pathMagmaCube);
+                return pointsCore.getConfig().getDouble(tool+pathMagmaCube);
             case PHANTOM:
-                return plugin.getConfig().getDouble(tool+pathPhantom);
+                return pointsCore.getConfig().getDouble(tool+pathPhantom);
             case STRAY:
-                return plugin.getConfig().getDouble(tool+pathStray);
+                return pointsCore.getConfig().getDouble(tool+pathStray);
             case SLIME:
-                return plugin.getConfig().getDouble(tool+pathSlime);
+                return pointsCore.getConfig().getDouble(tool+pathSlime);
             case VEX:
-                return plugin.getConfig().getDouble(tool+pathVex);
+                return pointsCore.getConfig().getDouble(tool+pathVex);
             case VINDICATOR:
-                return plugin.getConfig().getDouble(tool+pathVindicator);
+                return pointsCore.getConfig().getDouble(tool+pathVindicator);
             case WITHER:
-                return plugin.getConfig().getDouble(tool+pathWither);
+                return pointsCore.getConfig().getDouble(tool+pathWither);
             case WITHER_SKELETON:
-                return plugin.getConfig().getDouble(tool+pathWitherSkeleton);
+                return pointsCore.getConfig().getDouble(tool+pathWitherSkeleton);
             case WITCH:
-                return plugin.getConfig().getDouble(tool+pathWitch);
+                return pointsCore.getConfig().getDouble(tool+pathWitch);
             case BEE:
-                return plugin.getConfig().getDouble(tool+".Bee");
+                return pointsCore.getConfig().getDouble(tool+".Bee");
             case CAT:
-                return plugin.getConfig().getDouble(tool+".Cat");
+                return pointsCore.getConfig().getDouble(tool+".Cat");
             case FOX:
-                return plugin.getConfig().getDouble(tool+".Fox");
+                return pointsCore.getConfig().getDouble(tool+".Fox");
             case WARDEN:
-                return plugin.getConfig().getDouble(tool+pathWarden);
+                return pointsCore.getConfig().getDouble(tool+pathWarden);
             case ZOMBIE:
-                return plugin.getConfig().getDouble(tool+pathZombie);
+                return pointsCore.getConfig().getDouble(tool+pathZombie);
             case ZOMBIE_HORSE:
-                return plugin.getConfig().getDouble(tool+pathZombieHorse);
+                return pointsCore.getConfig().getDouble(tool+pathZombieHorse);
             case ZOMBIFIED_PIGLIN:
-                return plugin.getConfig().getDouble(tool+pathZombieMan);
+                return pointsCore.getConfig().getDouble(tool+pathZombieMan);
             case CHICKEN:
-                return plugin.getConfig().getDouble(tool+pathChicken);
+                return pointsCore.getConfig().getDouble(tool+pathChicken);
             case COW:
-                return plugin.getConfig().getDouble(tool+pathCow);
+                return pointsCore.getConfig().getDouble(tool+pathCow);
             case HORSE:
-                return plugin.getConfig().getDouble(tool+pathHorse);
+                return pointsCore.getConfig().getDouble(tool+pathHorse);
             case LLAMA:
-                return plugin.getConfig().getDouble(tool+pathLlama);
+                return pointsCore.getConfig().getDouble(tool+pathLlama);
             case COD:
-                return plugin.getConfig().getDouble(tool+pathCod);
+                return pointsCore.getConfig().getDouble(tool+pathCod);
             case MULE:
             case DONKEY:
-                return plugin.getConfig().getDouble(tool+pathDonkey);
+                return pointsCore.getConfig().getDouble(tool+pathDonkey);
             case WOLF:
-                return plugin.getConfig().getDouble(tool+pathWolf);
+                return pointsCore.getConfig().getDouble(tool+pathWolf);
             case SKELETON_HORSE:
-                return plugin.getConfig().getDouble(tool+pathSkeletonHorse);
+                return pointsCore.getConfig().getDouble(tool+pathSkeletonHorse);
             case PLAYER:
-                return plugin.getConfig().getDouble(tool+pathPlayer);
+                return pointsCore.getConfig().getDouble(tool+pathPlayer);
             case MUSHROOM_COW:
-                return plugin.getConfig().getDouble(tool+pathMushroomCow);
+                return pointsCore.getConfig().getDouble(tool+pathMushroomCow);
             case SHEEP:
-                return plugin.getConfig().getDouble(tool+pathSheep);
+                return pointsCore.getConfig().getDouble(tool+pathSheep);
             case PIG:
-                return plugin.getConfig().getDouble(tool+pathPig);
+                return pointsCore.getConfig().getDouble(tool+pathPig);
             case TURTLE:
-                return plugin.getConfig().getDouble(tool+pathTurtle);
+                return pointsCore.getConfig().getDouble(tool+pathTurtle);
             case FIREBALL:
             case SMALL_FIREBALL:
-                return  plugin.getConfig().getDouble(tool+pathFireball );
+                return  pointsCore.getConfig().getDouble(tool+pathFireball );
             case DRAGON_FIREBALL:
-                return  plugin.getConfig().getDouble(tool+pathDragonFireball );
+                return  pointsCore.getConfig().getDouble(tool+pathDragonFireball );
             case SPIDER:
-                return plugin.getConfig().getDouble(tool+pathSpider);
+                return pointsCore.getConfig().getDouble(tool+pathSpider);
             default:
                 Message.debugMessage("There is a missing entity in getConfigValue() =>  ValueUtil, the missing entity is:\n"+entity.name(), DebugIntensity.LIGHT);
-                return plugin.getConfig().getDouble(tool+pathOther);
+                return pointsCore.getConfig().getDouble(tool+pathOther);
         }
     }
 }

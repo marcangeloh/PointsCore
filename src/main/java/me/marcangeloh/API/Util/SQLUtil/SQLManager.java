@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 public class SQLManager {
     private Connection connection;
     private final String username, password, table, host, database;
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    PointsCore pointsCore;
 
     String columnUuid = "UUID",
             columnArmor = "ARMOR_POINTS",
@@ -31,7 +31,8 @@ public class SQLManager {
             columnRanged = "RANGED_WEAPON_POINTS",
             columnShovel = "SHOVEL_POINTS";
 
-    public SQLManager(String username, String password, String table, String host, String database) throws SQLException, ClassNotFoundException {
+    public SQLManager(PointsCore pointsCore, String username, String password, String table, String host, String database) throws SQLException, ClassNotFoundException {
+        this.pointsCore= pointsCore;
         this.username = username;
         this.password = password;
         this.table = table;
@@ -82,7 +83,7 @@ public class SQLManager {
     }
 
     private void saveDataStatement(String uuid) {
-        Bukkit.getScheduler().runTaskAsynchronously(PointsCore.plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(pointsCore, () -> {
             String query = "INSERT INTO " + table + " (" + columnUuid + ", " + columnArmor + ", " + columnAxe + ", " + columnFishing + ", " + columnHoe + ", " + columnMelee + ", " + columnPickaxe + ", " + columnRanged + ", " + columnShovel + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE " + columnArmor + "=? ," + columnAxe + "=? ," + columnFishing + "=? ," + columnHoe + "=? ," + columnMelee + "=? ," + columnPickaxe + "=? ," + columnRanged + "=? ," + columnShovel + "=?;";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -248,7 +249,7 @@ public class SQLManager {
                 return;
             }
 
-            /*if(PointsCore.plugin.getConfig().getBoolean("Points.ConnectGlobal",true)) {
+            /*if(pointsCore.getConfig().getBoolean("Points.ConnectGlobal",true)) {
                 HandleSSH handle = new HandleSSH();
                 return;
             }*/

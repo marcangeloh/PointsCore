@@ -2,8 +2,8 @@ package me.marcangeloh.Commands.TeleportCommands;
 
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
-import me.marcangeloh.API.Util.GeneralUtil.TPARequest;
-import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
+import me.marcangeloh.API.Util.TeleportUtil.TPARequest;
+import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -16,7 +16,9 @@ import org.jetbrains.annotations.NotNull;
 public class TPA implements CommandExecutor {
 
     private HashMapUtil hashMapUtil;
-    public TPA(HashMapUtil hashMapUtil) {
+    private PointsCore pointsCore;
+    public TPA(PointsCore pointsCore, HashMapUtil hashMapUtil) {
+        this.pointsCore = pointsCore;
         this.hashMapUtil = hashMapUtil;
     }
     @Override
@@ -49,8 +51,8 @@ public class TPA implements CommandExecutor {
         }
 
         hashMapUtil.teleportMap.put(player2,
-                new TPARequest(player, player2, PointsCore.plugin.getConfig().getInt("TPA.Cooldown", 3),
-                PointsCore.plugin.getConfig().getInt("TPA.NoMoveTime"),
+                new TPARequest(player, player2, pointsCore.getConfig().getInt("TPA.Cooldown", 3),
+                pointsCore.getConfig().getInt("TPA.NoMoveTime"),
                 false));
 
         if(s.equalsIgnoreCase("tpahere")) {

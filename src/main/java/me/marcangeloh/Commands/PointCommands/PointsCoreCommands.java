@@ -18,7 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PointsCoreCommands implements TabExecutor {
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    public PointsCoreCommands(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+    }
+
+    PointsCore pointsCore;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String lbl, String[] args) {
@@ -42,7 +46,7 @@ public class PointsCoreCommands implements TabExecutor {
         }
 
         if(args[0].equalsIgnoreCase("reload")) {
-            PointsCore.plugin.reloadConfig();
+            pointsCore.reloadConfig();
             Message.notifyMessage("Config Reloaded", sender);
             return true;
         }

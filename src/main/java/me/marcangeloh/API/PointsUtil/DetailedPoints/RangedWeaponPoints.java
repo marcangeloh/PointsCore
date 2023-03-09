@@ -15,8 +15,9 @@ import java.util.UUID;
 public class RangedWeaponPoints implements Points {
     private final HashMap<String, Double> rangedWeaponPoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
-
-    public RangedWeaponPoints() {
+    private PointsCore pointsCore;
+    public RangedWeaponPoints(PointsCore pointsCore) {
+        this.pointsCore=pointsCore;
         rangedWeaponPoints = new HashMap<>();
     }
 
@@ -202,7 +203,7 @@ public class RangedWeaponPoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.RangedWeaponPoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.RangedWeaponPoints.Name");
     }
     public void setMultiplier(Player player, Double multiplier) {
         if(this.multiplier.containsKey(player)) {

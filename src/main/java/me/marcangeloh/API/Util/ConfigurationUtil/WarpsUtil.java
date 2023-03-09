@@ -1,5 +1,7 @@
 package me.marcangeloh.API.Util.ConfigurationUtil;
 
+import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
+import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,8 +19,11 @@ public class WarpsUtil {
     private final YamlConfiguration warpsConfig;
     private final Map<String, Location> warps;
 
-    public WarpsUtil() {
-        this.warpsFile = new File(PointsCore.plugin.getDataFolder(), "warps.yml");
+    private PointsCore pointsCore;
+
+    public WarpsUtil(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+        this.warpsFile = new File(pointsCore.getDataFolder(), "warps.yml");
         this.warpsConfig = YamlConfiguration.loadConfiguration(warpsFile);
         this.warps = new HashMap<>();
 
@@ -52,8 +57,7 @@ public class WarpsUtil {
         try {
             warpsConfig.save(warpsFile);
         } catch (IOException e) {
-            PointsCore.plugin.getLogger().severe("Failed to save warps.yml");
-            e.printStackTrace();
+            Message.debugMessage("Failed to save warps.yml", DebugIntensity.LIGHT);
         }
     }
 

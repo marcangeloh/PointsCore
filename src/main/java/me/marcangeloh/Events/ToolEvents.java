@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -21,8 +22,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.UUID;
 
 public class ToolEvents implements Listener {
-    private ValueUtil valueUtil = new ValueUtil();
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    private ValueUtil valueUtil;
+
+    public ToolEvents(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+        this.valueUtil = new ValueUtil(pointsCore);
+    }
+
+    PointsCore pointsCore;
 
     /**
      * Adds the points to the proper tool
@@ -46,7 +53,7 @@ public class ToolEvents implements Listener {
      * Upon calling this event adds the respective amount of points to the player
      * @param event PlayerInteractEvent is triggered when a player breaks a bock
      */
-    @EventHandler
+    @EventHandler(priority=EventPriority.LOW)
     public void blockBreak(BlockBreakEvent event) {
         Material tool = event.getPlayer().getInventory().getItemInMainHand().getType(),
             blockBroken = event.getBlock().getType();
@@ -73,7 +80,7 @@ public class ToolEvents implements Listener {
      * Upon calling this event adds the respective amount of points to the player
      * @param event PlayerInteractEvent is triggered when a player interacts with a bock
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void blockHoe(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
@@ -88,7 +95,7 @@ public class ToolEvents implements Listener {
         }
 
         //if it's a rightclick of an armor item
-        if(new ValueUtil().getToolType(event.getItem().getType()).equals(Tools.ARMOR)) {
+        if(valueUtil.getToolType(event.getItem().getType()).equals(Tools.ARMOR)) {
             PlayerEquipArmorEvent playerEquipArmorEvent = new PlayerEquipArmorEvent(event.getPlayer(), event.getItem());
             Bukkit.getPluginManager().callEvent(playerEquipArmorEvent);
             return;
@@ -133,7 +140,7 @@ public class ToolEvents implements Listener {
      * Upon calling this event adds the respective amount of points to the player
      * @param event PlayerFishingEvent is triggered when a player goes to fish a fish
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void fishFished(PlayerFishEvent event) {
 
         if(event.getCaught() == null) {

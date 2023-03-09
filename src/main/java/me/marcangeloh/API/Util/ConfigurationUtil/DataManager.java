@@ -19,10 +19,11 @@ public class DataManager {
 
     private File playerFiles;
     private FileConfiguration fileConfig;
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    PointsCore pointsCore;
 
-    public void onEnable(Plugin plugin) {
-        playerFiles = new File(plugin.getDataFolder(), "data.yml");
+    public void onEnable(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+        playerFiles = new File(pointsCore.getDataFolder(), "data.yml");
         if (!playerFiles.exists()) {
             try {
                 playerFiles.createNewFile();

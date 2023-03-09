@@ -10,12 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EconomySetup extends AbstractEconomy {
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    PointsCore pointsCore;
 
     public EconomySetup(PointsCore pointsCore) {
-        if (this.pointsCore == null) {
-            this.pointsCore = pointsCore;
-        }
+        this.pointsCore = pointsCore;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class EconomySetup extends AbstractEconomy {
 
     @Override
     public boolean hasBankSupport() {
-        return PointsCore.plugin != null;
+        return pointsCore != null;
     }
 
     @Override

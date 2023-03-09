@@ -1,3 +1,10 @@
+Discord:
+  Enabled: true
+  # Check out this link if you don't know how to get a bot token
+  # https://discordjs.guide/preparations/setting-up-a-bot-application.html#setting-up-a-bot-application
+  # Also please make sure to toggle Bot -> MESSAGE CONTENT INTENT -> on
+  BotToken: ""
+  ChannelID: 0000000000000000000
 Points:
   #set this to true if you would like PointsCore to act as an economy
   ConnectWithVault: false

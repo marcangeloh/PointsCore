@@ -1,11 +1,12 @@
 package me.marcangeloh.Events;
 
 import me.marcangeloh.API.Util.GeneralUtil.Message;
-import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
-import me.marcangeloh.API.Util.GeneralUtil.TeleportUtil;
+import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
+import me.marcangeloh.API.Util.TeleportUtil.TeleportUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -15,14 +16,15 @@ public class MoveEvent implements Listener {
     private HashMapUtil hashMapUtil;
     private HashMap<Player, TeleportUtil> noMoveSpawn;
     private HashMap<Player, TeleportUtil> noMoveHome;
-
-    public MoveEvent(HashMapUtil hashMapUtil, HashMap<Player, TeleportUtil> noMoveSpawn, HashMap<Player, TeleportUtil> noMoveHome) {
-        this.hashMapUtil = hashMapUtil;
+    private PointsCore pointsCore;
+    public MoveEvent(PointsCore pointsCore, HashMap<Player, TeleportUtil> noMoveSpawn, HashMap<Player,TeleportUtil> noMoveHome) {
+        this.pointsCore = pointsCore;
+        this.hashMapUtil = pointsCore.hashMapUtil;
         this.noMoveSpawn = noMoveSpawn;
         this.noMoveHome = noMoveHome;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void move(PlayerMoveEvent event) {
         handleTPA(event.getPlayer(), event.getFrom().distance(event.getTo()));
         handleHome(event.getPlayer(), event.getFrom().distance(event.getTo()));
@@ -56,7 +58,7 @@ public class MoveEvent implements Listener {
 
         noMove.get(player).distance += distance;
 
-        if(noMove.get(player).distance < PointsCore.plugin.getConfig().getDouble(path+".MaxMoveDistance", 1.0)) {
+        if(noMove.get(player).distance < pointsCore.getConfig().getDouble(path+".MaxMoveDistance", 1.0)) {
             return;
         }
 
@@ -93,7 +95,7 @@ public class MoveEvent implements Listener {
 
         hashMapUtil.teleportMap.get(player).distance += distance;
 
-        if(hashMapUtil.teleportMap.get(player).distance < PointsCore.plugin.getConfig().getDouble("TPA.MaxMoveDistance",1.0)) {
+        if(hashMapUtil.teleportMap.get(player).distance < pointsCore.getConfig().getDouble("TPA.MaxMoveDistance",1.0)) {
             return;
         }
 

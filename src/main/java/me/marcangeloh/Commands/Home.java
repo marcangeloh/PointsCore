@@ -1,9 +1,9 @@
 package me.marcangeloh.Commands;
 
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
-import me.marcangeloh.API.Util.GeneralUtil.HomeUtil;
+import me.marcangeloh.API.Util.TeleportUtil.HomeUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
-import me.marcangeloh.API.Util.GeneralUtil.TeleportUtil;
+import me.marcangeloh.API.Util.TeleportUtil.TeleportUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,8 +17,9 @@ import java.util.HashMap;
 public class Home implements CommandExecutor {
 
     HashMap<Player, TeleportUtil> noMoveTime;
-
-    public Home(HashMap<Player, TeleportUtil> noMoveTime) {
+    private PointsCore pointsCore;
+    public Home(PointsCore pointsCore, HashMap<Player, TeleportUtil> noMoveTime) {
+        this.pointsCore = pointsCore;
         this.noMoveTime = noMoveTime;
     }
 
@@ -39,7 +40,7 @@ public class Home implements CommandExecutor {
 
 
         if(!homeUtils.containsKey(player)) {
-            homeUtils.putIfAbsent(player, new HomeUtil(player));
+            homeUtils.putIfAbsent(player, new HomeUtil(pointsCore, player));
         }
 
         String homeName;
@@ -57,7 +58,7 @@ public class Home implements CommandExecutor {
                 return true;
             }
 
-            Integer noMove = PointsCore.plugin.getConfig().getInt("Home.NoMoveTime", 0);
+            Integer noMove = pointsCore.getConfig().getInt("Home.NoMoveTime", 0);
             if(noMove == 0) {
                 player.teleport(homeUtils.get(player).getHomeLocation(homeName));
                 Message.notifyMessage("Successfully teleported you home!", player);
@@ -96,7 +97,7 @@ public class Home implements CommandExecutor {
 
 
     public int getNumberOfHomesAllowed(Player player) {
-        PermissionAttachment attachment = player.addAttachment(PointsCore.plugin);
+        PermissionAttachment attachment = player.addAttachment(pointsCore);
         int maxHomes = -1;
 
         if(GeneralUtil.hasPermission(player, ""))

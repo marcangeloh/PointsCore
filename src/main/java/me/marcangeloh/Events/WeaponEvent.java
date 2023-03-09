@@ -10,6 +10,7 @@ import me.marcangeloh.API.Util.GeneralUtil.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.projectiles.ProjectileSource;
@@ -17,10 +18,16 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.UUID;
 
 public class WeaponEvent implements Listener {
-    ValueUtil valueUtil = new ValueUtil();
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    ValueUtil valueUtil;
 
-    @EventHandler
+    public WeaponEvent(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+        valueUtil = new ValueUtil(pointsCore);
+    }
+
+    PointsCore pointsCore;
+
+    @EventHandler(priority = EventPriority.LOW)
     public void entityDamageEvent(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) {
             //Player damaged entity

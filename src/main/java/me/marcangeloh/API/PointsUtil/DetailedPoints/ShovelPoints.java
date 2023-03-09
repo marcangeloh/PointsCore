@@ -15,8 +15,9 @@ import java.util.UUID;
 public class ShovelPoints implements Points {
     private final HashMap<String, Double> shovelPoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
-
-    public ShovelPoints() {
+    private PointsCore pointsCore;
+    public ShovelPoints(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
         shovelPoints = new HashMap<>();
     }
 
@@ -210,7 +211,7 @@ public class ShovelPoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.ShovelPoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.ShovelPoints.Name");
     }
     public void setMultiplier(Player player, Double multiplier) {
         if(this.multiplier.containsKey(player)) {

@@ -1,4 +1,4 @@
-package me.marcangeloh.API.Util.GeneralUtil;
+package me.marcangeloh.API.Util.TeleportUtil;
 
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
@@ -19,9 +19,9 @@ public class HomeUtil {
     private File file;
     private FileConfiguration fileConfig;
 
-    public HomeUtil(Player player) {
+    public HomeUtil(PointsCore pointsCore, Player player) {
         this.player = player;
-        file = new File(PointsCore.plugin.getDataFolder(), "homes.yml");
+        file = new File(pointsCore.getDataFolder(), "homes.yml");
         if (!file.exists()) {
             try {
                 file.createNewFile();

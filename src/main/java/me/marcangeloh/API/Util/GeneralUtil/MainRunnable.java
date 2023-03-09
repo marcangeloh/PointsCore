@@ -2,9 +2,11 @@ package me.marcangeloh.API.Util.GeneralUtil;
 
 import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.SQLUtil.SQLManager;
+import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
+import me.marcangeloh.API.Util.TeleportUtil.TPARequest;
+import me.marcangeloh.API.Util.TeleportUtil.TeleportUtil;
 import me.marcangeloh.Commands.TeleportCommands.RandomTP;
 import me.marcangeloh.PointsCore;
-import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,8 +20,10 @@ public class MainRunnable {
     private HashMap<Player, TeleportUtil> noMoveTimeSpawn;
     private SQLManager sqlManager;
     private DataManager dataManager;
+    private PointsCore pointsCore;
 
-    public MainRunnable(boolean isMySQLEnabled, HashMapUtil hashMapUtil, SQLManager sqlManager, DataManager dataManager, HashMap<Player, TeleportUtil> noMoveTimeHome,HashMap<Player, TeleportUtil> noMoveTimeSpawn ) {
+    public MainRunnable(PointsCore pointsCore, boolean isMySQLEnabled, HashMapUtil hashMapUtil, SQLManager sqlManager, DataManager dataManager, HashMap<Player, TeleportUtil> noMoveTimeHome,HashMap<Player, TeleportUtil> noMoveTimeSpawn ) {
+        this.pointsCore = pointsCore;
         this.isMySQLEnabled = isMySQLEnabled;
         this.hashMapUtil = hashMapUtil;
         this.sqlManager = sqlManager;
@@ -56,14 +60,14 @@ public class MainRunnable {
 
                     noMoveTimeHome.get(player).countdownToTp = noMoveTimeHome.get(player).countdownToTp-1;
                     player.sendTitle(Message.formatLinGradient("Teleporting Home", new java.awt.Color(3,255,0), new java.awt.Color(159,159,159)),
-                            Message.format(player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
+                            Message.format(pointsCore, player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
                 }
             }
 
             private void handleSpawnCooldowns() {
                 for (Player player: noMoveTimeSpawn.keySet()) {
                     if(noMoveTimeSpawn.get(player).countdownToTp == 0) {
-                        player.teleport(PointsCore.plugin.getConfig().getLocation("Spawn.Location"));
+                        player.teleport(pointsCore.getConfig().getLocation("Spawn.Location"));
                         noMoveTimeSpawn.remove(player);
                         Message.notifyMessage("You have been teleported to spawn.", player);
                         continue;
@@ -71,7 +75,7 @@ public class MainRunnable {
 
                     noMoveTimeSpawn.get(player).countdownToTp = noMoveTimeSpawn.get(player).countdownToTp-1;
                     player.sendTitle(Message.formatLinGradient("Teleporting to Spawn", new java.awt.Color(3,255,0), new java.awt.Color(159,159,159)),
-                            Message.format(player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
+                            Message.format(pointsCore, player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
                 }
             }
 
@@ -93,11 +97,11 @@ public class MainRunnable {
                     if(tpRequest.moveCooldown > 0 && tpRequest.isConfirmed) {
                         hashMapUtil.teleportMap.get(player).moveCooldown = tpRequest.moveCooldown -1;
                         if(tpRequest.isInverted) {
-                            player.sendTitle(Message.format(player, "&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
-                                    Message.format(player,"&7Seconds"), 20, 20, 20);
+                            player.sendTitle(Message.format(pointsCore,player, "&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
+                                    Message.format(pointsCore,player,"&7Seconds"), 20, 20, 20);
                         } else {
-                            tpRequest.player.sendTitle(Message.format(player,"&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
-                                    Message.format(player,"&7Seconds"), 20, 20, 20);
+                            tpRequest.player.sendTitle(Message.format(pointsCore,player,"&#2dfb0bT&#3cf31ee&#4beb31l&#5ae343e&#69db56p&#78d469o&#87cc7cr&#96c48et &#a5bca1i&#b4b4b4n " + tpRequest.moveCooldown),
+                                    Message.format(pointsCore,player,"&7Seconds"), 20, 20, 20);
                         }
                         continue;
                     }
@@ -136,7 +140,7 @@ public class MainRunnable {
                     dataManager.saveAll();
                 }
             }
-        }.runTaskTimer(PointsCore.plugin, 0, 20 );
+        }.runTaskTimer(pointsCore, 0, 20 );
     }
 
     public void run() {

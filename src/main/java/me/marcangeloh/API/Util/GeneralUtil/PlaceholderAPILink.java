@@ -1,11 +1,18 @@
 package me.marcangeloh.API.Util.GeneralUtil;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.marcangeloh.PointsCore;
 import org.bukkit.entity.Player;
 
 public class PlaceholderAPILink extends PlaceholderExpansion {
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    PointsCore pointsCore;
+    private final String pluginVersion;
+
+    public PlaceholderAPILink(PointsCore pointsCore, String pluginVersion) {
+        this.pointsCore = pointsCore;
+        this.pluginVersion = pluginVersion;
+    }
 
     @Override
     public String getIdentifier() {
@@ -24,7 +31,7 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return PointsCore.pluginVersion;
+        return pluginVersion;
     }
 
     @Override
@@ -33,8 +40,8 @@ public class PlaceholderAPILink extends PlaceholderExpansion {
         if(player == null){
             return "";
         }
-        int decimalPlaces = PointsCore.plugin.getConfig().getInt("Points.PointsDecimalPlaces");
-        String symbol = " "+PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
+        int decimalPlaces = pointsCore.getConfig().getInt("Points.PointsDecimalPlaces");
+        String symbol = " "+pointsCore.getConfig().getString("Points.PointsSymbol");
         // %armor_points%
         if(s.equals("armor_points")){
             return roundAvoid(pointsCore.playerPoints.armorPoints.getPoints(player),decimalPlaces) +symbol;

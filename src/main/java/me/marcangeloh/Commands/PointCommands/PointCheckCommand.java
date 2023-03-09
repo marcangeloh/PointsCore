@@ -11,7 +11,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class PointCheckCommand implements CommandExecutor {
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    public PointCheckCommand(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+    }
+
+    PointsCore pointsCore;
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String lbl, String[] args) {
         if(args.length == 0 && !(sender instanceof  Player)) {
@@ -44,8 +48,8 @@ public class PointCheckCommand implements CommandExecutor {
     }
 
     private String pointsToString(Player player) {
-        int decimalPlaces = PointsCore.plugin.getConfig().getInt("Points.PointsDecimalPlaces");
-        String symbol = " "+PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
+        int decimalPlaces = pointsCore.getConfig().getInt("Points.PointsDecimalPlaces");
+        String symbol = " "+pointsCore.getConfig().getString("Points.PointsSymbol");
 
         return "\n" + ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.shovelPoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.SHOVEL)+
                 "\n" +ChatColor.DARK_GREEN + roundAvoid(pointsCore.playerPoints.axePoints.getPoints(player),decimalPlaces) +symbol+ ChatColor.GOLD+ " "+pointsCore.playerPoints.getPointNameFromToolType(Tools.AXE)+

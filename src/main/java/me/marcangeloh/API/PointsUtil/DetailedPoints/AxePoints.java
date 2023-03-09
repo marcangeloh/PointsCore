@@ -17,7 +17,9 @@ public class AxePoints implements Points {
     private final HashMap<String, Double> axePoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
 
-    public AxePoints() {
+    private PointsCore pointsCore;
+    public AxePoints(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
         axePoints = new HashMap<>();
     }
     public HashMap<String, Double> getAxePoints() {
@@ -201,7 +203,7 @@ public class AxePoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.AxePoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.AxePoints.Name");
     }
 
     public void setMultiplier(Player player, Double multiplier) {

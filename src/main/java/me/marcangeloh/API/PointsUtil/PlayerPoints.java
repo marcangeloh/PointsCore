@@ -11,14 +11,27 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public final class PlayerPoints implements Serializable {
-    public ArmorPoints armorPoints = new ArmorPoints();
-    public AxePoints axePoints = new AxePoints();
-    public FishingPoints fishingPoints = new FishingPoints();
-    public HoePoints hoePoints = new HoePoints();
-    public MeleeWeaponPoints meleeWeaponPoints = new MeleeWeaponPoints();
-    public PickaxePoints pickaxePoints = new PickaxePoints();
-    public RangedWeaponPoints rangedWeaponPoints = new RangedWeaponPoints();
-    public ShovelPoints shovelPoints = new ShovelPoints();
+    public PlayerPoints(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+        armorPoints = new ArmorPoints(pointsCore);
+        axePoints = new AxePoints(pointsCore);
+        fishingPoints = new FishingPoints(pointsCore);
+        hoePoints = new HoePoints(pointsCore);
+        meleeWeaponPoints = new MeleeWeaponPoints(pointsCore);
+        pickaxePoints = new PickaxePoints(pointsCore);
+        rangedWeaponPoints = new RangedWeaponPoints(pointsCore);
+        shovelPoints = new ShovelPoints(pointsCore);
+    }
+
+    private PointsCore pointsCore;
+    public ArmorPoints armorPoints;
+    public AxePoints axePoints;
+    public FishingPoints fishingPoints;
+    public HoePoints hoePoints;
+    public MeleeWeaponPoints meleeWeaponPoints;
+    public PickaxePoints pickaxePoints;
+    public RangedWeaponPoints rangedWeaponPoints;
+    public ShovelPoints shovelPoints;
     public HashMap<UUID, CooldownUtil> multiplierMap = new HashMap<>();
 
 
@@ -96,10 +109,10 @@ public final class PlayerPoints implements Serializable {
     }
 
     public String getGeneralPointsSymbol() {
-        return PointsCore.plugin.getConfig().getString("Points.PointsSymbol");
+        return pointsCore.getConfig().getString("Points.PointsSymbol");
     }
     public String getGeneralPointsName() {
-        return PointsCore.plugin.getConfig().getString("Points.PointsName");
+        return pointsCore.getConfig().getString("Points.PointsName");
     }
 
     public String getPointNameFromTool(Tools tool) {

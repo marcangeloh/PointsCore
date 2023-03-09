@@ -15,8 +15,9 @@ import java.util.UUID;
 public class PickaxePoints implements Points {
     private final HashMap<String, Double> pickaxePoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
-
-    public PickaxePoints() {
+    private PointsCore pointsCore;
+    public PickaxePoints(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
         pickaxePoints = new HashMap<>();
     }
 
@@ -198,7 +199,7 @@ public class PickaxePoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.PickaxePoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.PickaxePoints.Name");
     }
 
     public void setMultiplier(Player player, Double multiplier) {

@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.awt.*;
 import java.util.regex.Matcher;
@@ -59,7 +60,8 @@ public class Message {
      * @param sender the player to send it to
      */
     public static void errorMessage(String message, Player sender) {
-        sender.sendMessage(format(sender, branding) + ChatColor.RED + message);
+        PointsCore pointsCore = JavaPlugin.getPlugin(PointsCore.class);
+        sender.sendMessage(format(pointsCore, sender, branding) + ChatColor.RED + message);
     }
 
     /**
@@ -68,7 +70,8 @@ public class Message {
      * @param player The player to send it to
      */
     public static void notifyMessage(String notification, Player player) {
-        player.sendMessage(format(player,branding) + ChatColor.GOLD + notification);
+        PointsCore pointsCore = JavaPlugin.getPlugin(PointsCore.class);
+        player.sendMessage(format(pointsCore,player,branding) + ChatColor.GOLD + notification);
     }
 
     /**
@@ -82,8 +85,8 @@ public class Message {
 
     private static final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
 
-    public static String format(Player player, String s) {
-        if(PointsCore.plugin.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+    public static String format(PointsCore pointsCore, Player player, String s) {
+        if(pointsCore.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             return formatNoPAPI(PlaceholderAPI.setPlaceholders(player, s));
         } else {
             return formatNoPAPI(s);
@@ -145,22 +148,26 @@ public class Message {
     }
 
     public void sendHoverableText(Player player, String text, String hover) {
-        TextComponent msg = new TextComponent(format(player,text));
-        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(player, hover)).create()));
+        PointsCore pointsCore = JavaPlugin.getPlugin(PointsCore.class);
+        TextComponent msg = new TextComponent(format(pointsCore,player,text));
+        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(pointsCore,player, hover)).create()));
         player.spigot().sendMessage(msg);
     }
 
     public void sendClickableCommandText(Player player, String text, String command, String hover) {
-        TextComponent msg = new TextComponent(format(player,text));
-        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(player, hover)).create()));
+        PointsCore pointsCore = JavaPlugin.getPlugin(PointsCore.class);
+        TextComponent msg = new TextComponent(format(pointsCore,player,text));
+        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(pointsCore,player, hover)).create()));
         msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         player.spigot().sendMessage(msg);
     }
 
     public void sendClickableLinkText(Player player, String text, String url, String hover) {
         TextComponent msg = new TextComponent();
-        msg.setText(format(player,text));
-        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(player, hover)).create()));
+        PointsCore pointsCore = JavaPlugin.getPlugin(PointsCore.class);
+
+        msg.setText(format(pointsCore,player,text));
+        msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(format(pointsCore,player, hover)).create()));
         msg.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         player.spigot().sendMessage(msg);
     }

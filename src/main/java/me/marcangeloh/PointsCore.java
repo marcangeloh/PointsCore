@@ -3,6 +3,8 @@ package me.marcangeloh;
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
 import me.marcangeloh.API.Util.ConfigurationUtil.WarpsUtil;
 import me.marcangeloh.API.Util.GeneralUtil.*;
+import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
+import me.marcangeloh.API.Util.TeleportUtil.TeleportUtil;
 import me.marcangeloh.Commands.*;
 import me.marcangeloh.Commands.PointCommands.PointCheckCommand;
 import me.marcangeloh.Commands.PointCommands.PointsCoreCommands;
@@ -13,6 +15,12 @@ import me.marcangeloh.Events.*;
 import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
 import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.API.Util.SQLUtil.SQLManager;
+import me.marcangeloh.Events.DiscordEvents.DiscordChatHandler;
+import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,6 +28,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.awt.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -28,19 +38,23 @@ import java.util.concurrent.ExecutionException;
 
 public class PointsCore extends JavaPlugin implements Paths {
     private DataManager dataManager;
+    private String botToken;
+    private JDA discord;
+    private long channelID;
+
     private boolean isMySQLEnabled = false;
     private SQLManager sqlManager;
-    public static Plugin plugin;
+    private PointsCore plugin;
     public PlayerPoints playerPoints;
     public static DebugIntensity serverDebugIntensity;
-    public final static String pluginVersion ="1.1.92-SNAPSHOT";
-    public static boolean latest = true;
+    private final String pluginVersion ="1.1.92-SNAPSHOT";
+    private boolean latest = true;
     public HashMapUtil hashMapUtil;
     private WarpsUtil warpManager;
     private HashMap<Player, TeleportUtil> noMoveTimeHome = new HashMap<>();
     private HashMap<Player, TeleportUtil> noMoveTimeSpawn = new HashMap<>();
-
     public void onDisable() {
+        handleDiscordDisable();
         if(isMySQLEnabled) {
             sqlManager.saveData();
         } else{
@@ -55,28 +69,28 @@ public class PointsCore extends JavaPlugin implements Paths {
         performPluginHooks(); //Hooking into other plugins
         registerCommands();
         updateChecker();
-        MainRunnable mainRunnable = new MainRunnable(isMySQLEnabled, hashMapUtil, sqlManager,dataManager, noMoveTimeHome, noMoveTimeSpawn);
+        MainRunnable mainRunnable = new MainRunnable(plugin, isMySQLEnabled, hashMapUtil, sqlManager,dataManager, noMoveTimeHome, noMoveTimeSpawn);
         mainRunnable.run();
     }
 
     private void registerCommands() {
-        getCommand("pointcheck").setExecutor(new PointCheckCommand());
+        getCommand("pointcheck").setExecutor(new PointCheckCommand(plugin));
         getCommand("hologram").setExecutor(new Hologram());
-        getCommand("points").setExecutor(new PointsCoreCommands());
-        getCommand("randomtp").setExecutor(new RandomTP());
-        getCommand("tpa").setExecutor(new TPA(hashMapUtil));
-        getCommand("tpaccept").setExecutor(new TPAConfirmation(hashMapUtil));
+        getCommand("points").setExecutor(new PointsCoreCommands(plugin));
+        getCommand("randomtp").setExecutor(new RandomTP(plugin));
+        getCommand("tpa").setExecutor(new TPA(plugin, hashMapUtil));
+        getCommand("tpaccept").setExecutor(new TPAConfirmation(plugin, hashMapUtil));
         getCommand("fly").setExecutor(new Fly());
-        getCommand("broadcast").setExecutor(new Broadcast());
+        getCommand("broadcast").setExecutor(new Broadcast(plugin));
         getCommand("god").setExecutor(new God());
         getCommand("heal").setExecutor(new Heal());
         getCommand("vanish").setExecutor(new Vanish());
-        getCommand("message").setExecutor(new MessageCommand(hashMapUtil));
+        getCommand("message").setExecutor(new MessageCommand(plugin, hashMapUtil));
         getCommand("workbench").setExecutor(new WorkbenchCommand());
         getCommand("feed").setExecutor(new Feed());
         getCommand("enderchest").setExecutor(new EnderChestCommand());
-        getCommand("spawn").setExecutor(new Spawn(noMoveTimeSpawn));
-        getCommand("home").setExecutor(new Home(noMoveTimeHome));
+        getCommand("spawn").setExecutor(new Spawn(plugin, noMoveTimeSpawn));
+        getCommand("home").setExecutor(new Home(plugin, noMoveTimeHome));
     }
 
     public void removePoints(Tools tool, Player player, double amount) {
@@ -99,7 +113,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     private void performPluginHooks() {
         //PlaceholderAPI Hook
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new PlaceholderAPILink().register();
+            new PlaceholderAPILink(plugin, pluginVersion).register();
         }
 
         if(!getConfig().getBoolean("Points.ConnectWithVault", false)) {
@@ -119,16 +133,16 @@ public class PointsCore extends JavaPlugin implements Paths {
      * Handles the basic setup for the server
      */
     private void basicSetup() {
-        int pluginId = 8682;
-        Metrics metrics = new Metrics(this, pluginId);
         plugin = this;
-        playerPoints = new PlayerPoints();
+        int pluginId = 8682;
+        Metrics metrics = new Metrics(plugin, pluginId);
+        playerPoints = new PlayerPoints(plugin);
         getConfig().options().copyDefaults(true);
         saveConfig();
         serverDebugIntensity = getDebugIntensity();
         hashMapUtil = new HashMapUtil();
-        warpManager = new WarpsUtil();
-
+        warpManager = new WarpsUtil(plugin);
+        handleDiscordEnable();
     }
 
 
@@ -148,7 +162,7 @@ public class PointsCore extends JavaPlugin implements Paths {
             isMySQLEnabled = true;
             //MySQL Initialization
             try {
-                sqlManager = new SQLManager(getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword),"POINTS",  getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
+                sqlManager = new SQLManager(plugin, getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword),"POINTS",  getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
                 playerPoints = sqlManager.loadData().get();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -178,15 +192,15 @@ public class PointsCore extends JavaPlugin implements Paths {
      */
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new InventoryClick(), this);
-        getServer().getPluginManager().registerEvents(new LeaveEvent(), this);
+        getServer().getPluginManager().registerEvents(new LeaveEvent(plugin,discord), this);
         getServer().getPluginManager().registerEvents(new HologramEvent(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
-        getServer().getPluginManager().registerEvents(new ChatFormatter(), this);
-        getServer().getPluginManager().registerEvents(new WeaponEvent(), this); //Registers the armor points events
-        getServer().getPluginManager().registerEvents(new ToolEvents(), this); //Registers the tool points events
-        getServer().getPluginManager().registerEvents(new ArmorEvent(), this); //Registers the tool points events
-        getServer().getPluginManager().registerEvents(new JoinEvent(), this); // Registers the Join event
-        getServer().getPluginManager().registerEvents(new MoveEvent(hashMapUtil, noMoveTimeSpawn, noMoveTimeHome), this); // Registers the move event, this is used for tpa
+        getServer().getPluginManager().registerEvents(new PlayerDeath(plugin, discord), this);
+        getServer().getPluginManager().registerEvents(new ChatFormatter(plugin, discord), this);
+        getServer().getPluginManager().registerEvents(new WeaponEvent(plugin), this); //Registers the armor points events
+        getServer().getPluginManager().registerEvents(new ToolEvents(plugin), this); //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new ArmorEvent(plugin), this); //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new JoinEvent(plugin, discord, latest), this); // Registers the Join event
+        getServer().getPluginManager().registerEvents(new MoveEvent(plugin, noMoveTimeSpawn, noMoveTimeHome), this); // Registers the move event, this is used for tpa
     }
 
 
@@ -232,5 +246,48 @@ public class PointsCore extends JavaPlugin implements Paths {
             return DebugIntensity.NONE;
 
         }
+    }
+
+    private void handleDiscordEnable() {
+        botToken = getConfig().getString("Discord.BotToken", null);
+        channelID = getConfig().getLong("Discord.ChannelID", 0);
+        if(channelID == 0)
+            return;
+
+        if(botToken == null)
+            return;
+
+        if(!getConfig().getBoolean("Discord.Enabled", true)) {
+            return;
+        }
+        discord = JDABuilder.createLight(botToken)
+                .setStatus(OnlineStatus.DO_NOT_DISTURB)
+                .setActivity(Activity.watching("Minecraft Chat"))
+                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+                .build();
+        try {
+            discord.awaitReady();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        new DiscordChatHandler(this, discord);
+        Message.debugMessage(" ====== Discord Instance ====== \n"+discord.toString(), DebugIntensity.INTENSE);
+        MessageEmbed embed = new EmbedBuilder().setDescription("Server started!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(3, 255, 0)).build();
+        TextChannel textChannel = discord.getTextChannelById(channelID);
+        textChannel.sendMessageEmbeds(embed).complete();
+
+    }
+
+    private void handleDiscordDisable() {
+        if(botToken == null)
+            return;
+
+        if(!getConfig().getBoolean("Discord.Enabled", true)) {
+            return;
+        }
+        MessageEmbed embed = new EmbedBuilder().setDescription("Server started!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(3, 255, 0)).build();
+        TextChannel textChannel = discord.getTextChannelById(channelID);
+        textChannel.sendMessageEmbeds(embed).queue();
     }
 }

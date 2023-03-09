@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 
@@ -17,11 +18,16 @@ import java.util.UUID;
 
 public class ArmorEvent implements Listener {
 
-    PointsCore pointsCore = (PointsCore) PointsCore.plugin;
+    public ArmorEvent(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+        this.valueUtil = new ValueUtil(pointsCore);
+    }
 
-    ValueUtil valueUtil = new ValueUtil();
+    PointsCore pointsCore;
 
-    @EventHandler
+    ValueUtil valueUtil;
+
+    @EventHandler(priority = EventPriority.LOW)
     public void playerDamagedEvent(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             EntityType entityType;

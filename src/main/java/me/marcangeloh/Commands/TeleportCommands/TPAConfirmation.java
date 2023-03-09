@@ -2,7 +2,7 @@ package me.marcangeloh.Commands.TeleportCommands;
 
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
-import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
+import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
 import me.marcangeloh.PointsCore;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,7 +12,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class TPAConfirmation implements CommandExecutor {
     private HashMapUtil hashMapUtil;
-    public TPAConfirmation(HashMapUtil hashMapUtil) {
+    private PointsCore pointsCore;
+    public TPAConfirmation(PointsCore pointsCore, HashMapUtil hashMapUtil) {
+        this.pointsCore = pointsCore;
         this.hashMapUtil = hashMapUtil;
     }
     @Override
@@ -51,7 +53,7 @@ public class TPAConfirmation implements CommandExecutor {
         }
         Player player1 = hashMapUtil.teleportMap.get(player).player;
 
-        if(PointsCore.plugin.getConfig().getInt("TPA.NoMoveTime",3) == 0 ||
+        if(pointsCore.getConfig().getInt("TPA.NoMoveTime",3) == 0 ||
                 GeneralUtil.hasPermission(hashMapUtil.teleportMap.get(player).player, "tpa.nocooldown")) {
 
             if(hashMapUtil.teleportMap.get(player).isInverted) {

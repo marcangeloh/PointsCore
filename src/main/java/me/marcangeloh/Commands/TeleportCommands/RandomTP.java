@@ -18,6 +18,12 @@ import java.util.Random;
 import java.util.UUID;
 
 public class RandomTP implements CommandExecutor {
+    private PointsCore pointsCore;
+
+    public RandomTP(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+    }
+
     public static HashMap<UUID, Integer> cooldown = new HashMap<UUID, Integer>();
     public boolean onCommand( CommandSender sender, Command command, String s, String[] args) {
         if(!command.getName().equalsIgnoreCase("rtp") && !command.getName().equalsIgnoreCase("randomtp") && !command.getName().equalsIgnoreCase("wild"))
@@ -63,14 +69,14 @@ public class RandomTP implements CommandExecutor {
                 Message.errorMessage("rtp is still on cooldown for " +cooldown.get(player.getUniqueId()) + " seconds", player);
                 return;
             }
-            cooldown.put(player.getUniqueId(), PointsCore.plugin.getConfig().getInt("RandomTP.Cooldown", 10));
+            cooldown.put(player.getUniqueId(), pointsCore.getConfig().getInt("RandomTP.Cooldown", 10));
         }
         player.teleport(location);
         Message.notifyMessage("You were successfuly teleported to the wild.", player);
     }
 
     private boolean isLocationSafe(Location location) {
-        ArrayList<String> badBlocks = (ArrayList<String>) PointsCore.plugin.getConfig().getStringList("RandomTP.DangerousBlocks");
+        ArrayList<String> badBlocks = (ArrayList<String>) pointsCore.getConfig().getStringList("RandomTP.DangerousBlocks");
 
         int x = location.getBlockX();
         int y = location.getBlockY();
@@ -94,8 +100,8 @@ public class RandomTP implements CommandExecutor {
 
     private int getMax(String type) {
         Random random = new Random();
-        int max = PointsCore.plugin.getConfig().getInt("RandomTP.Max"+type);
-        int min = PointsCore.plugin.getConfig().getInt("RandomTP.Min"+type);
+        int max = pointsCore.getConfig().getInt("RandomTP.Max"+type);
+        int min = pointsCore.getConfig().getInt("RandomTP.Min"+type);
         return random.nextInt(max - min) + min;
     }
 }

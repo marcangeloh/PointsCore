@@ -15,8 +15,9 @@ import java.util.UUID;
 public class HoePoints implements Points {
     private final HashMap<String, Double> hoePoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
-
-    public HoePoints() {
+    private PointsCore pointsCore;
+    public HoePoints(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
         hoePoints = new HashMap<>();
     }
 
@@ -198,7 +199,7 @@ public class HoePoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.HoePoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.HoePoints.Name");
     }
     public void setMultiplier(Player player, Double multiplier) {
         if(this.multiplier.containsKey(player)) {

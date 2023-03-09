@@ -15,8 +15,10 @@ import java.util.UUID;
 public class ArmorPoints implements Points {
     private final HashMap<String, Double> armorPoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
-
-    public ArmorPoints() {
+    private PointsCore pointsCore;
+    public ArmorPoints(PointsCore pointsCore)
+    {
+        this.pointsCore = pointsCore;
         armorPoints = new HashMap<>();
     }
     public HashMap<String, Double> getArmorPoints() {
@@ -196,7 +198,7 @@ public class ArmorPoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.ArmorPoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.ArmorPoints.Name");
     }
 
     public void setMultiplier(Player player, Double multiplier) {

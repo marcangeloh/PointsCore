@@ -1,4 +1,4 @@
-package me.marcangeloh.API.Util.GeneralUtil;
+package me.marcangeloh.API.Util.TeleportUtil;
 
 import org.bukkit.entity.Player;
 

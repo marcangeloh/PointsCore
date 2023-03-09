@@ -1,5 +1,6 @@
-package me.marcangeloh.API.Util.GeneralUtil;
+package me.marcangeloh.API.Util.TeleportUtil;
 
+import me.marcangeloh.API.Util.TeleportUtil.TPARequest;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

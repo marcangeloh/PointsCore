@@ -2,7 +2,7 @@ package me.marcangeloh.Commands;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.marcangeloh.API.Util.GeneralUtil.GeneralUtil;
-import me.marcangeloh.API.Util.GeneralUtil.HashMapUtil;
+import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import org.bukkit.Bukkit;
@@ -15,8 +15,11 @@ import org.jetbrains.annotations.NotNull;
 public class MessageCommand implements CommandExecutor {
 
     HashMapUtil hashMapUtil;
+    private PointsCore pointsCore;
 
-    public MessageCommand(HashMapUtil hashMapUtil) {
+
+    public MessageCommand(PointsCore pointsCore, HashMapUtil hashMapUtil) {
+        this.pointsCore = pointsCore;
         this.hashMapUtil = hashMapUtil;
     }
 
@@ -75,8 +78,8 @@ public class MessageCommand implements CommandExecutor {
         }
 
         builder = builder.replaceFirst(" ", "");
-        String messageSent = PointsCore.plugin.getConfig().getString("MSG.PrefixSent","&e[You -> :player:]&r ") + builder;
-        String messageReceived = PointsCore.plugin.getConfig().getString("MSG.PrefixReceived", "&e[:player: -> You]&r ") + builder;
+        String messageSent = pointsCore.getConfig().getString("MSG.PrefixSent","&e[You -> :player:]&r ") + builder;
+        String messageReceived = pointsCore.getConfig().getString("MSG.PrefixReceived", "&e[:player: -> You]&r ") + builder;
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             messageSent = PlaceholderAPI.setPlaceholders(player, messageSent);
@@ -86,8 +89,8 @@ public class MessageCommand implements CommandExecutor {
         messageReceived = messageReceived.replaceAll(":player:", player.getDisplayName());
 
 
-        player.sendMessage(Message.format(player,messageSent));
-        msgPlayer.sendMessage(Message.format(player,messageReceived));
+        player.sendMessage(Message.format(pointsCore,player,messageSent));
+        msgPlayer.sendMessage(Message.format(pointsCore,player,messageReceived));
         return true;
     }
 }

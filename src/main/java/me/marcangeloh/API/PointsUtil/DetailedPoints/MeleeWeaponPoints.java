@@ -15,8 +15,9 @@ import java.util.UUID;
 public class MeleeWeaponPoints implements Points {
     private final HashMap<String, Double> meleeWeaponPoints;
     private final HashMap<Player, Double> multiplier = new HashMap<>();
-
-    public MeleeWeaponPoints() {
+    private PointsCore pointsCore;
+    public MeleeWeaponPoints(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
         meleeWeaponPoints = new HashMap<>();
     }
 
@@ -196,7 +197,7 @@ public class MeleeWeaponPoints implements Points {
 
     @Override
     public String getPointName() {
-        return PointsCore.plugin.getConfig().getString( "Points.PointType.MeleeWeaponPoints.Name");
+        return pointsCore.getConfig().getString( "Points.PointType.MeleeWeaponPoints.Name");
     }
 
     public void setMultiplier(Player player, Double multiplier) {

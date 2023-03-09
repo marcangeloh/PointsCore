@@ -11,6 +11,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class Broadcast implements CommandExecutor {
+    PointsCore pointsCore;
+
+    public Broadcast(PointsCore pointsCore) {
+        this.pointsCore = pointsCore;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if(!command.getName().equalsIgnoreCase("broadcast") && !command.getName().equalsIgnoreCase("bc")) {
@@ -29,13 +35,13 @@ public class Broadcast implements CommandExecutor {
         }
 
         //Handles the Brocast prefix
-        str = PointsCore.plugin.getConfig().getString("Broadcast.Prefix") + str.replaceFirst(" ", "");
+        str = pointsCore.getConfig().getString("Broadcast.Prefix") + str.replaceFirst(" ", "");
 
         //Gets All players from the server
         for (Player player: Bukkit.getServer().getOnlinePlayers()
              ) {
             //Sends message to them
-            player.sendMessage(Message.format(player, str));
+            player.sendMessage(Message.format(pointsCore,player, str));
         }
         return true;
     }
