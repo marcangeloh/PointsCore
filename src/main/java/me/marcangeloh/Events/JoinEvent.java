@@ -24,10 +24,12 @@ public class JoinEvent implements Listener {
     PointsCore pointsCore;
     JDA discord;
     private final boolean latest;
-    public JoinEvent(PointsCore pointsCore, JDA discordWebhook, boolean latest) {
+    private int joinCooldown;
+    public JoinEvent(PointsCore pointsCore, JDA discordWebhook, boolean latest, int joinCooldown) {
         this.pointsCore = pointsCore;
         this.discord = discordWebhook;
         this.latest = latest;
+        this.joinCooldown = joinCooldown;
     }
 
     @EventHandler(priority = EventPriority.LOW)
@@ -42,6 +44,13 @@ public class JoinEvent implements Listener {
         }
 
         Player player = joinEvent.getPlayer();
+
+        if(!Bukkit.getOfflinePlayer(player.getUniqueId()).hasPlayedBefore()) {
+            //First login
+            joinCooldown = 30;
+        }
+
+
         if(pointsCore.getConfig().getBoolean("CustomMessages", true))
             joinEvent.setJoinMessage(Message.format(pointsCore,player, pointsCore.getConfig().getString("CustomJoinMessage", player.getDisplayName() + " &#17fb04d&#21f90fr&#2af619o&#34f424p&#3ef22fp&#47ef39e&#51ed44d &#5aea4ei&#64e859n&#6ee664t&#77e36eo &#81e179t&#8bdf84h&#94dc8ee &#9eda99w&#a7d7a3o&#b1d5aer&#bbd3b9l&#c4d0c3d&#cecece.").replaceAll(":player:", player.getDisplayName())));
 

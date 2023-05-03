@@ -54,7 +54,9 @@ public class PointsCore extends JavaPlugin implements Paths {
     public HashMapUtil hashMapUtil;
     private WarpsUtil warpManager;
     private HashMap<Player, TeleportUtil> noMoveTimeHome = new HashMap<>();
+    private HashMap<Player, Integer> chatPointsCooldown = new HashMap<>();
     private HashMap<Player, TeleportUtil> noMoveTimeSpawn = new HashMap<>();
+    private int joinCooldown = 0;
     public void onDisable() {
         handleDiscordDisable();
         if(isMySQLEnabled) {
@@ -71,7 +73,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         performPluginHooks(); //Hooking into other plugins
         registerCommands();
         updateChecker();
-        MainRunnable mainRunnable = new MainRunnable(plugin, isMySQLEnabled, hashMapUtil, sqlManager,dataManager, noMoveTimeHome, noMoveTimeSpawn);
+        MainRunnable mainRunnable = new MainRunnable(plugin, isMySQLEnabled, hashMapUtil, sqlManager,dataManager, noMoveTimeHome, noMoveTimeSpawn, chatPointsCooldown,joinCooldown);
         mainRunnable.run();
     }
 
@@ -197,11 +199,11 @@ public class PointsCore extends JavaPlugin implements Paths {
         getServer().getPluginManager().registerEvents(new LeaveEvent(plugin,discord), this);
         getServer().getPluginManager().registerEvents(new HologramEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(plugin, discord), this);
-        getServer().getPluginManager().registerEvents(new ChatFormatter(plugin, discord), this);
+        getServer().getPluginManager().registerEvents(new ChatFormatter(plugin, discord, chatPointsCooldown), this);
         getServer().getPluginManager().registerEvents(new WeaponEvent(plugin), this); //Registers the armor points events
         getServer().getPluginManager().registerEvents(new ToolEvents(plugin), this); //Registers the tool points events
         getServer().getPluginManager().registerEvents(new ArmorEvent(plugin), this); //Registers the tool points events
-        getServer().getPluginManager().registerEvents(new JoinEvent(plugin, discord, latest), this); // Registers the Join event
+        getServer().getPluginManager().registerEvents(new JoinEvent(plugin, discord, latest, joinCooldown), this); // Registers the Join event
         getServer().getPluginManager().registerEvents(new MoveEvent(plugin, noMoveTimeSpawn, noMoveTimeHome), this); // Registers the move event, this is used for tpa
     }
 

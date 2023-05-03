@@ -10,6 +10,7 @@ import me.marcangeloh.PointsCore;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -18,18 +19,22 @@ public class MainRunnable {
     private HashMapUtil hashMapUtil;
     private HashMap<Player, TeleportUtil> noMoveTimeHome;
     private HashMap<Player, TeleportUtil> noMoveTimeSpawn;
+    private HashMap<Player, Integer> chatPointsCooldown;
+    private int newPlayerCooldown;
     private SQLManager sqlManager;
     private DataManager dataManager;
     private PointsCore pointsCore;
 
-    public MainRunnable(PointsCore pointsCore, boolean isMySQLEnabled, HashMapUtil hashMapUtil, SQLManager sqlManager, DataManager dataManager, HashMap<Player, TeleportUtil> noMoveTimeHome,HashMap<Player, TeleportUtil> noMoveTimeSpawn ) {
+    public MainRunnable(PointsCore pointsCore, boolean isMySQLEnabled, HashMapUtil hashMapUtil, SQLManager sqlManager, DataManager dataManager, HashMap<Player, TeleportUtil> noMoveTimeHome,HashMap<Player, TeleportUtil> noMoveTimeSpawn, HashMap<Player, Integer> chatPointsCooldown, int newPlayerCooldown) {
         this.pointsCore = pointsCore;
         this.isMySQLEnabled = isMySQLEnabled;
         this.hashMapUtil = hashMapUtil;
         this.sqlManager = sqlManager;
         this.dataManager = dataManager;
         this.noMoveTimeHome = noMoveTimeHome;
+        this.chatPointsCooldown = chatPointsCooldown;
         this.noMoveTimeSpawn = noMoveTimeSpawn;
+        this.newPlayerCooldown = newPlayerCooldown;
     }
 
     private void registerCooldowns() {
@@ -43,10 +48,19 @@ public class MainRunnable {
                 handleTPACooldowns();
                 handleHomeCooldowns();
                 handleSpawnCooldowns();
+                handleChatCooldowns();
+                handleNewPlayerCooldowns();
                 if(counter %60 == 0) {
                     saveDataInCaseOfCrash();
                 }
 
+            }
+
+            private void handleNewPlayerCooldowns() {
+                if(newPlayerCooldown <= 0)
+                    return;
+
+                newPlayerCooldown -= 1;
             }
 
             private void handleHomeCooldowns() {
@@ -59,7 +73,7 @@ public class MainRunnable {
                     }
 
                     noMoveTimeHome.get(player).countdownToTp = noMoveTimeHome.get(player).countdownToTp-1;
-                    player.sendTitle(Message.formatLinGradient("Teleporting Home", new java.awt.Color(3,255,0), new java.awt.Color(159,159,159)),
+                    player.sendTitle(Message.formatLinGradient("Teleporting Home", new Color(3,255,0), new Color(159,159,159)),
                             Message.format(pointsCore, player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
                 }
             }
@@ -74,7 +88,7 @@ public class MainRunnable {
                     }
 
                     noMoveTimeSpawn.get(player).countdownToTp = noMoveTimeSpawn.get(player).countdownToTp-1;
-                    player.sendTitle(Message.formatLinGradient("Teleporting to Spawn", new java.awt.Color(3,255,0), new java.awt.Color(159,159,159)),
+                    player.sendTitle(Message.formatLinGradient("Teleporting to Spawn", new Color(3,255,0), new Color(159,159,159)),
                             Message.format(pointsCore, player,noMoveTimeHome.get(player).countdownToTp + " &7Seconds"), 20, 20, 20);
                 }
             }
@@ -130,6 +144,17 @@ public class MainRunnable {
                     }
 
                     RandomTP.cooldown.replace(player, RandomTP.cooldown.get(player) - 1);
+                }
+            }
+
+            private void handleChatCooldowns() {
+                for(Player player: chatPointsCooldown.keySet()) {
+                    if(chatPointsCooldown.get(player) == 0) {
+                        chatPointsCooldown.remove(player);
+                        continue;
+                    }
+
+                    chatPointsCooldown.replace(player, chatPointsCooldown.get(player) - 1);
                 }
             }
 
