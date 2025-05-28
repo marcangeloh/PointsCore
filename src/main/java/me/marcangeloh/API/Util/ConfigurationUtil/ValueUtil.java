@@ -1,15 +1,14 @@
 package me.marcangeloh.API.Util.ConfigurationUtil;
 
-import me.marcangeloh.PointsCore;
 import me.marcangeloh.API.Util.GeneralUtil.DebugIntensity;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.API.Util.GeneralUtil.Tools;
-
+import me.marcangeloh.PointsCore;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
 public class ValueUtil implements Paths {
-    private PointsCore pointsCore;
+    private final PointsCore pointsCore;
 
     public ValueUtil(PointsCore pointsCore) {
         this.pointsCore = pointsCore;
@@ -392,7 +391,10 @@ public class ValueUtil implements Paths {
         } else if(tool.equals(Tools.SHOVEL)) {
             switch (material) {
                 case DIRT:
-                case GRASS:
+                case SHORT_GRASS:
+                case SHORT_DRY_GRASS:
+                case TALL_DRY_GRASS:
+                case TALL_GRASS:
                 case GRASS_BLOCK:
                     return pointsCore.getConfig().getDouble(pathDirt);
                 case SAND:
@@ -796,7 +798,7 @@ public class ValueUtil implements Paths {
                 return pointsCore.getConfig().getDouble(tool+pathSkeletonHorse);
             case PLAYER:
                 return pointsCore.getConfig().getDouble(tool+pathPlayer);
-            case MUSHROOM_COW:
+            case MOOSHROOM:
                 return pointsCore.getConfig().getDouble(tool+pathMushroomCow);
             case SHEEP:
                 return pointsCore.getConfig().getDouble(tool+pathSheep);
@@ -815,5 +817,9 @@ public class ValueUtil implements Paths {
                 Message.debugMessage("There is a missing entity in getConfigValue() =>  ValueUtil, the missing entity is:\n"+entity.name(), DebugIntensity.LIGHT);
                 return pointsCore.getConfig().getDouble(tool+pathOther);
         }
+    }
+
+    public double getMessageValue(String message) {
+        return pointsCore.getConfig().getDouble("Points.PointType.Chat");
     }
 }

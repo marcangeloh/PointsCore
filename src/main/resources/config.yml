@@ -35,6 +35,9 @@ Points:
       Name: "Axe Points"
     ArmorPoints:
       Name: "Armor Points"
+    ChatPoints:
+      Name: "Chat Points"
+
   ##
   ##      INCREMENT SECTION
   ##
@@ -264,6 +267,7 @@ Points:
       DragonFireball: 1.0
       Other: 0.01
     Tools: 0.1 #per block broken/fish fished
+    Chat: 0.5
   #SQL DB settings
   SQL:
     Enabled: false

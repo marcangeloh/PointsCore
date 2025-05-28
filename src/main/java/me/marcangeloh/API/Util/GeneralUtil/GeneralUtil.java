@@ -9,7 +9,7 @@ public class GeneralUtil {
 
     public static void spawnRedstoneParticle(Location location, int amount, int r, int g, int b, float size) {
         Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(r, g, b), size);
-        location.getWorld().spawnParticle(Particle.REDSTONE, location, amount, dustOptions);
+        location.getWorld().spawnParticle(Particle.DUST, location, amount, dustOptions);
     }
 
     public static boolean hasPermission(CommandSender sender, String permission) {

@@ -1,8 +1,11 @@
 package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
+import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
+import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.API.Util.ConfigurationUtil.WarpsUtil;
 import me.marcangeloh.API.Util.GeneralUtil.*;
+import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
 import me.marcangeloh.API.Util.TeleportUtil.TeleportUtil;
 import me.marcangeloh.Commands.*;
@@ -12,11 +15,11 @@ import me.marcangeloh.Commands.TeleportCommands.RandomTP;
 import me.marcangeloh.Commands.TeleportCommands.TPA;
 import me.marcangeloh.Commands.TeleportCommands.TPAConfirmation;
 import me.marcangeloh.Events.*;
-import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
-import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
-import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import me.marcangeloh.Events.DiscordEvents.DiscordChatHandler;
-import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -24,12 +27,10 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.awt.*;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -53,10 +54,10 @@ public class PointsCore extends JavaPlugin implements Paths {
     private boolean latest = true;
     public HashMapUtil hashMapUtil;
     private WarpsUtil warpManager;
-    private HashMap<Player, TeleportUtil> noMoveTimeHome = new HashMap<>();
-    private HashMap<Player, Integer> chatPointsCooldown = new HashMap<>();
-    private HashMap<Player, TeleportUtil> noMoveTimeSpawn = new HashMap<>();
-    private int joinCooldown = 0;
+    private final HashMap<Player, TeleportUtil> noMoveTimeHome = new HashMap<>();
+    private final HashMap<Player, Integer> chatPointsCooldown = new HashMap<>();
+    private final HashMap<Player, TeleportUtil> noMoveTimeSpawn = new HashMap<>();
+    private final int joinCooldown = 0;
     public void onDisable() {
         handleDiscordDisable();
         if(isMySQLEnabled) {
@@ -199,12 +200,17 @@ public class PointsCore extends JavaPlugin implements Paths {
         getServer().getPluginManager().registerEvents(new LeaveEvent(plugin,discord), this);
         getServer().getPluginManager().registerEvents(new HologramEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(plugin, discord), this);
-        getServer().getPluginManager().registerEvents(new ChatFormatter(plugin, discord, chatPointsCooldown), this);
-        getServer().getPluginManager().registerEvents(new WeaponEvent(plugin), this); //Registers the armor points events
-        getServer().getPluginManager().registerEvents(new ToolEvents(plugin), this); //Registers the tool points events
-        getServer().getPluginManager().registerEvents(new ArmorEvent(plugin), this); //Registers the tool points events
-        getServer().getPluginManager().registerEvents(new JoinEvent(plugin, discord, latest, joinCooldown), this); // Registers the Join event
-        getServer().getPluginManager().registerEvents(new MoveEvent(plugin, noMoveTimeSpawn, noMoveTimeHome), this); // Registers the move event, this is used for tpa
+        getServer().getPluginManager().registerEvents(new ChatFormatter(plugin, discord, chatPointsCooldown, joinCooldown), this);
+        //Registers the armor points events
+        getServer().getPluginManager().registerEvents(new WeaponEvent(plugin), this);
+        //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new ToolEvents(plugin), this);
+        //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new ArmorEvent(plugin), this);
+        // Registers the Join event
+        getServer().getPluginManager().registerEvents(new JoinEvent(plugin, discord, latest, joinCooldown), this);
+        // Registers the move event, this is used for tpa
+        getServer().getPluginManager().registerEvents(new MoveEvent(plugin, noMoveTimeSpawn, noMoveTimeHome), this);
     }
 
 
