@@ -1,8 +1,11 @@
 package me.marcangeloh;
 
 import me.marcangeloh.API.PointsUtil.PlayerPoints;
+import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
+import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
 import me.marcangeloh.API.Util.ConfigurationUtil.WarpsUtil;
 import me.marcangeloh.API.Util.GeneralUtil.*;
+import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import me.marcangeloh.API.Util.TeleportUtil.HashMapUtil;
 import me.marcangeloh.API.Util.TeleportUtil.TeleportUtil;
 import me.marcangeloh.Commands.*;
@@ -12,11 +15,11 @@ import me.marcangeloh.Commands.TeleportCommands.RandomTP;
 import me.marcangeloh.Commands.TeleportCommands.TPA;
 import me.marcangeloh.Commands.TeleportCommands.TPAConfirmation;
 import me.marcangeloh.Events.*;
-import me.marcangeloh.API.Util.ConfigurationUtil.DataManager;
-import me.marcangeloh.API.Util.ConfigurationUtil.Paths;
-import me.marcangeloh.API.Util.SQLUtil.SQLManager;
 import me.marcangeloh.Events.DiscordEvents.DiscordChatHandler;
-import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -24,15 +27,15 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.awt.*;
-import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
@@ -49,14 +52,13 @@ public class PointsCore extends JavaPlugin implements Paths {
     private PointsCore plugin;
     public PlayerPoints playerPoints;
     public static DebugIntensity serverDebugIntensity;
-    private final String pluginVersion ="1.1.92-SNAPSHOT";
     private boolean latest = true;
     public HashMapUtil hashMapUtil;
     private WarpsUtil warpManager;
-    private HashMap<Player, TeleportUtil> noMoveTimeHome = new HashMap<>();
-    private HashMap<Player, Integer> chatPointsCooldown = new HashMap<>();
-    private HashMap<Player, TeleportUtil> noMoveTimeSpawn = new HashMap<>();
-    private int joinCooldown = 0;
+    private final HashMap<Player, TeleportUtil> noMoveTimeHome = new HashMap<>();
+    private final HashMap<Player, Integer> chatPointsCooldown = new HashMap<>();
+    private final HashMap<Player, TeleportUtil> noMoveTimeSpawn = new HashMap<>();
+    private final int joinCooldown = 0;
     public void onDisable() {
         handleDiscordDisable();
         if(isMySQLEnabled) {
@@ -78,23 +80,23 @@ public class PointsCore extends JavaPlugin implements Paths {
     }
 
     private void registerCommands() {
-        getCommand("pointcheck").setExecutor(new PointCheckCommand(plugin));
-        getCommand("hologram").setExecutor(new Hologram());
-        getCommand("points").setExecutor(new PointsCoreCommands(plugin));
-        getCommand("randomtp").setExecutor(new RandomTP(plugin));
-        getCommand("tpa").setExecutor(new TPA(plugin, hashMapUtil));
-        getCommand("tpaccept").setExecutor(new TPAConfirmation(plugin, hashMapUtil));
-        getCommand("fly").setExecutor(new Fly());
-        getCommand("broadcast").setExecutor(new Broadcast(plugin));
-        getCommand("god").setExecutor(new God());
-        getCommand("heal").setExecutor(new Heal());
-        getCommand("vanish").setExecutor(new Vanish());
-        getCommand("message").setExecutor(new MessageCommand(plugin, hashMapUtil));
-        getCommand("workbench").setExecutor(new WorkbenchCommand());
-        getCommand("feed").setExecutor(new Feed());
-        getCommand("enderchest").setExecutor(new EnderChestCommand());
-        getCommand("spawn").setExecutor(new Spawn(plugin, noMoveTimeSpawn));
-        getCommand("home").setExecutor(new Home(plugin, noMoveTimeHome));
+        Objects.requireNonNull(getCommand("pointcheck")).setExecutor(new PointCheckCommand(plugin));
+        Objects.requireNonNull(getCommand("hologram")).setExecutor(new Hologram());
+        Objects.requireNonNull(getCommand("points")).setExecutor(new PointsCoreCommands(plugin));
+        Objects.requireNonNull(getCommand("randomtp")).setExecutor(new RandomTP(plugin));
+        Objects.requireNonNull(getCommand("tpa")).setExecutor(new TPA(plugin, hashMapUtil));
+        Objects.requireNonNull(getCommand("tpaccept")).setExecutor(new TPAConfirmation(plugin, hashMapUtil));
+        Objects.requireNonNull(getCommand("fly")).setExecutor(new Fly());
+        Objects.requireNonNull(getCommand("broadcast")).setExecutor(new Broadcast(plugin));
+        Objects.requireNonNull(getCommand("god")).setExecutor(new God());
+        Objects.requireNonNull(getCommand("heal")).setExecutor(new Heal());
+        Objects.requireNonNull(getCommand("vanish")).setExecutor(new Vanish());
+        Objects.requireNonNull(getCommand("message")).setExecutor(new MessageCommand(plugin, hashMapUtil));
+        Objects.requireNonNull(getCommand("workbench")).setExecutor(new WorkbenchCommand());
+        Objects.requireNonNull(getCommand("feed")).setExecutor(new Feed());
+        Objects.requireNonNull(getCommand("enderchest")).setExecutor(new EnderChestCommand());
+        Objects.requireNonNull(getCommand("spawn")).setExecutor(new Spawn(plugin, noMoveTimeSpawn));
+        Objects.requireNonNull(getCommand("home")).setExecutor(new Home(plugin, noMoveTimeHome));
     }
 
     public void removePoints(Tools tool, Player player, double amount) {
@@ -117,6 +119,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     private void performPluginHooks() {
         //PlaceholderAPI Hook
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            String pluginVersion = "1.2.6";
             new PlaceholderAPILink(plugin, pluginVersion).register();
         }
 
@@ -125,7 +128,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         }
 
         if(Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            if(Bukkit.getServer().getPluginManager().getPlugin("PointsCore").isEnabled()) {
+            if(Objects.requireNonNull(Bukkit.getServer().getPluginManager().getPlugin("PointsCore")).isEnabled()) {
                 Bukkit.getServicesManager().register(Economy.class, new EconomySetup(this), this, ServicePriority.Normal);
                 Message.notifyMessage("Economy has been registered to vault.", getServer().getConsoleSender());
             }
@@ -139,7 +142,7 @@ public class PointsCore extends JavaPlugin implements Paths {
     private void basicSetup() {
         plugin = this;
         int pluginId = 8682;
-        Metrics metrics = new Metrics(plugin, pluginId);
+        new Metrics(plugin, pluginId);
         playerPoints = new PlayerPoints(plugin);
         getConfig().options().copyDefaults(true);
         saveConfig();
@@ -157,7 +160,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         if(!getConfig().getBoolean(pathIsSQLEnabled)) {
             dataManager = new DataManager();
             dataManager.onEnable(plugin);
-            List<Player> players = (List<Player>) Bukkit.getOnlinePlayers();
+            List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
             for(Player player: players) {
                 playerPoints = dataManager.loadPlayerFromSaveFile(playerPoints, player);
             }
@@ -168,28 +171,17 @@ public class PointsCore extends JavaPlugin implements Paths {
             try {
                 sqlManager = new SQLManager(plugin, getConfig().getString(pathSQLUsername),getConfig().getString(pathSQLPassword),"POINTS",  getConfig().getString(pathSQLHostName), getConfig().getString(pathSQLDatabase));
                 playerPoints = sqlManager.loadData().get();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException | ClassNotFoundException e) {
                 Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
                 isMySQLEnabled = false;
                 savingSetup();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                Message.errorMessage("SQL Was not successfully enabled, the details input must be incorrect.", getServer().getConsoleSender());
-                isMySQLEnabled = false;
-                savingSetup();
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
+                Message.errorMessage(e.toString(), getServer().getConsoleSender());
                 throw new RuntimeException(e);
             }
 
         }
     }
-
-    /**
-     * To avoid code duplication
-     */
 
     /**
      * Registers the events to the server
@@ -199,12 +191,17 @@ public class PointsCore extends JavaPlugin implements Paths {
         getServer().getPluginManager().registerEvents(new LeaveEvent(plugin,discord), this);
         getServer().getPluginManager().registerEvents(new HologramEvent(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(plugin, discord), this);
-        getServer().getPluginManager().registerEvents(new ChatFormatter(plugin, discord, chatPointsCooldown), this);
-        getServer().getPluginManager().registerEvents(new WeaponEvent(plugin), this); //Registers the armor points events
-        getServer().getPluginManager().registerEvents(new ToolEvents(plugin), this); //Registers the tool points events
-        getServer().getPluginManager().registerEvents(new ArmorEvent(plugin), this); //Registers the tool points events
-        getServer().getPluginManager().registerEvents(new JoinEvent(plugin, discord, latest, joinCooldown), this); // Registers the Join event
-        getServer().getPluginManager().registerEvents(new MoveEvent(plugin, noMoveTimeSpawn, noMoveTimeHome), this); // Registers the move event, this is used for tpa
+        getServer().getPluginManager().registerEvents(new ChatFormatter(plugin, discord, chatPointsCooldown, joinCooldown), this);
+        //Registers the armor points events
+        getServer().getPluginManager().registerEvents(new WeaponEvent(plugin), this);
+        //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new ToolEvents(plugin), this);
+        //Registers the tool points events
+        getServer().getPluginManager().registerEvents(new ArmorEvent(plugin), this);
+        // Registers the Join event
+        getServer().getPluginManager().registerEvents(new JoinEvent(plugin, discord, latest, joinCooldown), this);
+        // Registers the move event, this is used for tpa
+        getServer().getPluginManager().registerEvents(new MoveEvent(plugin, noMoveTimeSpawn, noMoveTimeHome), this);
     }
 
 
@@ -213,9 +210,8 @@ public class PointsCore extends JavaPlugin implements Paths {
         if(isMySQLEnabled) {
             try {
                 playerPoints = sqlManager.loadPlayerData(player).get() != null ? sqlManager.loadPlayerData(player).get() : playerPoints;
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
+                Message.errorMessage(e.toString(), getServer().getConsoleSender());
                 throw new RuntimeException(e);
             }
         } else {
@@ -237,11 +233,11 @@ public class PointsCore extends JavaPlugin implements Paths {
      * @return the Debug intensity
      */
     public DebugIntensity getDebugIntensity() {
-        if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("INTENSE")) {
+        if(Objects.requireNonNull(getConfig().getString("Points.DebugMode")).equalsIgnoreCase("INTENSE")) {
 
             return DebugIntensity.INTENSE;
 
-        } else if(getConfig().getString("Points.DebugMode").equalsIgnoreCase("LIGHT")) {
+        } else if(Objects.requireNonNull(getConfig().getString("Points.DebugMode")).equalsIgnoreCase("LIGHT")) {
 
             return DebugIntensity.LIGHT;
 
@@ -280,6 +276,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         Message.debugMessage(" ====== Discord Instance ====== \n"+discord.toString(), DebugIntensity.INTENSE);
         MessageEmbed embed = new EmbedBuilder().setDescription("Server started!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(3, 255, 0)).build();
         TextChannel textChannel = discord.getTextChannelById(channelID);
+        assert textChannel != null;
         textChannel.sendMessageEmbeds(embed).queue();
 
     }
@@ -293,6 +290,7 @@ public class PointsCore extends JavaPlugin implements Paths {
         }
         MessageEmbed embed = new EmbedBuilder().setDescription("Server Stopped!").addField("MOTD", getServer().getMotd(), true).setColor(new Color(255, 60, 60)).build();
         TextChannel textChannel = discord.getTextChannelById(channelID);
+        assert textChannel != null;
         textChannel.sendMessageEmbeds(embed).complete();
 
         discord.removeEventListener(discordChatHandler);

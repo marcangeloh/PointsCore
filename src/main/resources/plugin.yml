@@ -1,6 +1,6 @@
 name: PointsCore
 author: marcangeloh
-api-version: 1.19
+api-version: 1.21
 version: ${project.version}
 description: The Ultimate points plugin with an easy to use API.
 main: me.marcangeloh.PointsCore

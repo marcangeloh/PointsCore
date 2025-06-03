@@ -422,7 +422,7 @@ public class ToolUtil {
             case SOUL_SOIL:
             case PODZOL:
             case CLAY:
-            case GRASS:
+            case SHORT_GRASS:
             case GLASS:
             case GLASS_BOTTLE:
             case GLASS_PANE:
@@ -1107,7 +1107,8 @@ public class ToolUtil {
             case NAUTILUS_SHELL:
                 return Tools.FISH_ROD;
             case COOKED_RABBIT:
-            case SCUTE:
+            case ARMADILLO_SCUTE:
+            case TURTLE_SCUTE:
             case ARROW:
             case SPECTRAL_ARROW:
             case TIPPED_ARROW:
