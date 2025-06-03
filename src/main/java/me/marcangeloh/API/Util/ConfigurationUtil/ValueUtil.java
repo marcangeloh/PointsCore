@@ -392,8 +392,6 @@ public class ValueUtil implements Paths {
             switch (material) {
                 case DIRT:
                 case SHORT_GRASS:
-                case SHORT_DRY_GRASS:
-                case TALL_DRY_GRASS:
                 case TALL_GRASS:
                 case GRASS_BLOCK:
                     return pointsCore.getConfig().getDouble(pathDirt);

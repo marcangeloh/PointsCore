@@ -7,7 +7,7 @@
     <groupId>me.marcangeloh</groupId>
     <artifactId>PointsCore</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -29,6 +29,10 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
 
     </repositories>
 
@@ -41,9 +45,9 @@
         </dependency>
         <!--This adds the Spigot API artifact to the build -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.21.5-R0.1-SNAPSHOT</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

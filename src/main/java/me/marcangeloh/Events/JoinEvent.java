@@ -1,7 +1,6 @@
 package me.marcangeloh.Events;
 
 import me.marcangeloh.API.Events.PlayerEquipArmorEvent;
-import me.marcangeloh.API.Util.GeneralUtil.DiscordWebhook;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -18,7 +17,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class JoinEvent implements Listener {
     PointsCore pointsCore;
@@ -79,6 +77,8 @@ public class JoinEvent implements Listener {
 
     private void createEmbed(String title, String message, String fieldText, Color color) {
         long channelID = pointsCore.getConfig().getLong("Discord.ChannelID", 0);
+        if(channelID == 0)
+            return;
         MessageEmbed embed = new EmbedBuilder().setTitle(title).setDescription(message).addField("Online players: ", fieldText, true).setColor(color).build();
         TextChannel textChannel = discord.getTextChannelById(channelID);
         textChannel.sendMessageEmbeds(embed).queue();

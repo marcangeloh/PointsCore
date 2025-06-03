@@ -423,8 +423,6 @@ public class ToolUtil {
             case PODZOL:
             case CLAY:
             case SHORT_GRASS:
-            case SHORT_DRY_GRASS:
-            case TALL_DRY_GRASS:
             case GLASS:
             case GLASS_BOTTLE:
             case GLASS_PANE:

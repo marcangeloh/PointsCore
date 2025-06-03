@@ -1,6 +1,5 @@
 package me.marcangeloh.Events;
 
-import me.marcangeloh.API.Util.GeneralUtil.DiscordWebhook;
 import me.marcangeloh.API.Util.GeneralUtil.Message;
 import me.marcangeloh.PointsCore;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -15,13 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class LeaveEvent implements Listener {
 
-    private JDA discord;
+    private final JDA discord;
 
-    private PointsCore pointsCore;
+    private final PointsCore pointsCore;
 
     public LeaveEvent(PointsCore pointsCore, JDA discord) {
         this.discord = discord;
@@ -33,6 +31,9 @@ public class LeaveEvent implements Listener {
 
         if(pointsCore.getConfig().getBoolean("CustomMessages", true))
             event.setQuitMessage(Message.format(pointsCore,event.getPlayer(), pointsCore.getConfig().getString("QuitMessage", ":player: &#17fb04p&#2bf61ae&#40f131a&#54ec47c&#68e75ee&#7de274d &#91dd8bo&#a5d8a1u&#bad3b8t&#cecece.").replaceAll(":player:", event.getPlayer().getDisplayName())));
+
+        if(discord == null)
+            return;
 
         if(pointsCore.getConfig().getBoolean("Discord.Enabled", true)) {
             int online = Bukkit.getOnlinePlayers().size()-1;
